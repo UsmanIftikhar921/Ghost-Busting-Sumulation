@@ -7,6 +7,8 @@
 #include <pthread.h>
 #include <semaphore.h>
 
+#define NORMAL	   	    0
+#define GHOSTLY		    1
 #define MAX_STR            64
 #define FEAR_RATE           1
 #define MAX_FEAR          100
@@ -20,7 +22,7 @@ typedef enum { POLTERGEIST, BANSHEE, BULLIES, PHANTOM } GhostClassType;
 
 // Building type struct
 typedef struct {
-	GhostType ghost;
+	GhostType * ghost;
 	struct RoomListType rooms;
 	struct HunterArrayType hunters;
 } BuildingType;
@@ -67,6 +69,7 @@ typedef struct {
 } EvidenceNodeType;
 
 typedef struct {
+	int ghostliness;
 	EvidenceClassType type;
 	float value;
 } EvidenceType;
@@ -92,7 +95,7 @@ float randFloat(float, float);  // Generates a pseudorandom float between the pa
 
 // Building functions
 void populateRooms(BuildingType *);   // Populates the building with sample data for rooms
-void initBuilding(BuildingType *);    // Initiates a BuildingType 
+void initBuilding(BuildingType *, GhostType *);    // Initiates a BuildingType 
 void cleanupBuilding(BuildingType *); // Frees all data associated with a building
 
 
@@ -104,6 +107,7 @@ void connectRooms(RoomType *, RoomType *); // Connects two RoomTypes
 void cleanupRoom(RoomType *); 		   // Frees all data in a room
 void cleanupRoomList(RoomListType *);      // Frees all nodes in a RoomList
 
+
 // Ghost functions
 void initGhost(GhostClassType, RoomType *, GhostType **); // Initializes a GhostType
 void moveGhost(GhostType *); 				  // Moves a ghost to another room
@@ -114,7 +118,7 @@ void cleanupGhostData(GhostType *);			  // Frees all data associated with a ghos
 // Evidence functions
 void initEvidenceList(EvidenceListType *);	       // Initializes an EvidenceListType
 void initEvidence(evidenceClassType, EvidenceType **); // Initializes an EvidenceType
-void cleanupEvidenceData(EvidenceType *);	       // Frees all data associated with a piece of evidence
+void cleanupEvidenceData(EvidenceNodeType *);	       // Frees all data associated with a piece of evidence
 void cleanupEvidenceNode(EvidenceNodeType *); 	       // Frees an evidence node
 void cleanupEvidenceList(EvidenceListType *); 	       // Frees all data from an evidence list
 
