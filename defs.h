@@ -7,8 +7,10 @@
 #include <pthread.h>
 #include <semaphore.h>
 
-#define NORMAL	   	    0
-#define GHOSTLY		    1
+#define C_NOK               0
+#define C_OK                1
+#define NORMAL	   	        0
+#define GHOSTLY		        1
 #define MAX_STR            64
 #define FEAR_RATE           1
 #define MAX_FEAR          100
@@ -88,7 +90,7 @@ typedef struct {
 	int boredom;
 } HunterType;
 
-
+// Helper functions
 int randInt(int, int);          // Generates a pseudorandom integer between the parameters
 float randFloat(float, float);  // Generates a pseudorandom float between the parameters
 
@@ -121,6 +123,7 @@ void initEvidence(evidenceClassType, EvidenceType **); // Initializes an Evidenc
 void cleanupEvidenceData(EvidenceNodeType *);	       // Frees all data associated with a piece of evidence
 void cleanupEvidenceNode(EvidenceNodeType *); 	       // Frees an evidence node
 void cleanupEvidenceList(EvidenceListType *); 	       // Frees all data from an evidence list
+
 
 // Hunter functions
 void initHunter(EvidenceClassType, char *, RoomType *, HunterType **); // Initializes a HunterType
