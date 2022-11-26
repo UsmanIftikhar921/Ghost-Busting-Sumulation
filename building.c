@@ -1,5 +1,19 @@
 #include "defs.h"
 
+void initBuilding(BuildingType * building, GhostType * ghost){
+	// Initialize The Rooms List and Hunter Array
+	initRoomList(building -> rooms);
+	initHunterArray(building -> hunters);
+	building -> ghost = ghost;
+}
+
+void cleanupBuilding(BuildingType * building){
+	// Clean up the Rooms List
+	cleanupRoomList(building -> rooms);
+	// Clean up the Hunters Array
+	cleanupHunterArray(building -> hunters);
+}
+
 /*
     Note: While this function is provided, you will likely want
     to modify it to suit your solution. This has been provided
