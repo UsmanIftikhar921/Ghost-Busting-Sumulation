@@ -7,8 +7,8 @@
 #include <pthread.h>
 #include <semaphore.h>
 
-#define C_NOK               0
-#define C_OK                1
+#define C_FALSE             0
+#define C_TRUE              1
 #define NORMAL	   	        0
 #define GHOSTLY		        1
 #define MAX_STR            64

@@ -8,7 +8,7 @@ typedef struct {
 
 void initGhost(GhostClassType gc, RoomType * room, GhostType ** ghost){
 	// Assign the ghost some memory
-	(*ghost) = calloc(1, sizeof(GhostType));
+	(*ghost) = (GhostType*)calloc(1, sizeof(GhostType));
 	
 	// Initialize it's ghost class, the current room it's in, and the boredom
 	(*ghost) -> ghostClass = gc;

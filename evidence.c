@@ -36,15 +36,27 @@ void initEvidence(evidenceClassType evClass, EvidenceType ** evidence) {
 
 
 void cleanupEvidenceData(EvidenceNodeType * evNode) {
-	
+	free(evNode -> evidenceData);
 }	
 	
 	
 void cleanupEvidenceNode(EvidenceNodeType * evNode) {
-	
+    free(evNode);
 } 	
 	
 	
 void cleanupEvidenceList(EvidenceListType * evList) {
+	int evListSize = evList -> size;
 	
+	// Make two temporary nodes to iterate through the linked list
+	EvidenceNodeType * currEv = evList -> head;
+	EvidenceNodeType * nextEv;
+	
+	// Clean up every evidence in the evidence list
+	for(int i = 0; i < evListSize; i++){
+		nextEv = currEv -> next;
+		cleanupEvidenceData(currEv);
+        cleanupEvidenceNode(currEv);
+		currRoom = nextRoom;
+	}
 }	
