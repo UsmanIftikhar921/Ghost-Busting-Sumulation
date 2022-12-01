@@ -7,16 +7,16 @@
 #include <pthread.h>
 #include <semaphore.h>
 
-#define C_FALSE             0
-#define C_TRUE              1
-#define NORMAL	   	        0
-#define GHOSTLY		        1
-#define MAX_STR            64
-#define FEAR_RATE           1
-#define MAX_FEAR          100
-#define MAX_HUNTERS         4
-#define USLEEP_TIME     50000
-#define BOREDOM_MAX        99
+#define C_FALSE			0
+#define C_TRUE			1
+#define NORMAL				0
+#define GHOSTLY				1
+#define MAX_STR			64
+#define FEAR_RATE		1
+#define MAX_FEAR		100
+#define MAX_HUNTERS		4
+#define USLEEP_TIME		50000
+#define BOREDOM_MAX		99
 
 // You may rename these types if you wish
 typedef enum { EMF, TEMPERATURE, FINGERPRINTS, SOUND } EvidenceClassType;
@@ -92,45 +92,47 @@ typedef struct {
 } HunterType;
 
 // Helper functions
-int randInt(int, int);          // Generates a pseudorandom integer between the parameters
-float randFloat(float, float);  // Generates a pseudorandom float between the parameters
+int randInt(int, int);							// Generates a pseudorandom integer between the parameters
+float randFloat(float, float);						// Generates a pseudorandom float between the parameters
 
 
 // Building functions
-void populateRooms(BuildingType *);   // Populates the building with sample data for rooms
-void initBuilding(BuildingType *, GhostType *);    // Initiates a BuildingType 
-void cleanupBuilding(BuildingType *); // Frees all data associated with a building
+void populateRooms(BuildingType *);					// Populates the building with sample data for rooms
+void initBuilding(BuildingType *, GhostType *);				// Initiates a BuildingType 
+void cleanupBuilding(BuildingType *);					// Frees all data associated with a building
 
 
 // Room functions
-void initRoomList(RoomListType *);	   // Initializes a RoomListType 
-void initRoom(char *, RoomType **);        // Initializes a RoomType 
-void addRoom(RoomListType *, RoomType *);  // Adds a room to the end of a RoomListType
-void connectRooms(RoomType *, RoomType *); // Connects two RoomTypes
-void cleanupRoom(RoomType *); 		   // Frees all data in a room
-void cleanupRoomList(RoomListType *);      // Frees all nodes in a RoomList
+void initRoomList(RoomListType *);					// Initializes a RoomListType 
+void initRoom(char *, RoomType **);					// Initializes a RoomType 
+void addRoom(RoomListType *, RoomType *);				// Adds a room to the end of a RoomListType
+void connectRooms(RoomType *, RoomType *);				// Connects two RoomTypes
+void cleanupRoom(RoomType *);						// Frees all data in a room
+void cleanupRoomList(RoomListType *);					// Frees all nodes in a RoomList
 
 
 // Ghost functions
-void initGhost(GhostClassType, RoomType *, GhostType **); // Initializes a GhostType
-void moveGhost(GhostType *); 				  // Moves a ghost to another room
-void addEvidence(GhostType *);				  // Adds evidence to a room
-void cleanupGhostData(GhostType *);			  // Frees all data associated with a ghost
+void initGhost(GhostClassType, RoomType *, GhostType **);		// Initializes a GhostType
+void moveGhost(GhostType *);						// Moves a ghost to another room
+void addEvidence(GhostType *);						// Adds evidence to a room
+void cleanupGhostData(GhostType *);					// Frees all data associated with a ghost
 
 
 // Evidence functions
-void initEvidenceList(EvidenceListType *);	           // Initializes an EvidenceListType
-void initEvidence(evidenceClassType, EvidenceType **); // Initializes an EvidenceType
-void addEvidence(EvidenceType *, EvidenceListType *);  // Adds an EvidenceType to and EvidenceTypeList
-void cleanupEvidenceData(EvidenceNodeType *);	       // Frees all data associated with a piece of evidence
-void cleanupEvidenceNode(EvidenceNodeType *); 	       // Frees an evidence node
-void cleanupEvidenceList(EvidenceListType *); 	       // Frees all data from an evidence list
+void initEvidenceList(EvidenceListType *);				// Initializes an EvidenceListType
+void initEvidence(evidenceClassType, EvidenceType **);			// Initializes an EvidenceType
+EvidenceType * getEvidenceAtIndex(EvidenceType*, int);			// Returns the evidence at the index specified
+int containsEvidenceType(evidenceClassType,hunter*);			// Checks if hunter's evidence array already has the evidence type we're adding
+void addEvidence(EvidenceType *, EvidenceListType *);			// Adds an EvidenceType to and EvidenceTypeList
+void cleanupEvidenceData(EvidenceNodeType *);				// Frees all data associated with a piece of evidence
+void cleanupEvidenceNode(EvidenceNodeType *);				// Frees an evidence node
+void cleanupEvidenceList(EvidenceListType *);				// Frees all data from an evidence list
 
 
 // Hunter functions
-void initHunter(EvidenceClassType, char *, RoomType *, HunterType **); // Initializes a HunterType
-void initHunterArray(HunterArrayType *);			       // Initializes a HunterArrayType
-void collectEvidence(HunterType *);				           // Collects all evidence from a room
-void shareEvidence(HunterType *);				           // Shares evidence with another hunter
-void cleanupHunterData(HunterType *);			  	       // Frees all data from a hunter
-void cleanupHunterArray(HunterArrayType *);			       // Frees all data in a hunter array
+void initHunter(EvidenceClassType, char *, RoomType *, HunterType **);	// Initializes a HunterType
+void initHunterArray(HunterArrayType *);				// Initializes a HunterArrayType
+void collectEvidence(HunterType *);					// Collects all evidence from a room
+void shareEvidence(HunterType *);					// Shares evidence with another hunter
+void cleanupHunterData(HunterType *);					// Frees all data from a hunter
+void cleanupHunterArray(HunterArrayType *);				// Frees all data in a hunter array
