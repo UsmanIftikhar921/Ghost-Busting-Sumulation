@@ -1,15 +1,16 @@
 #include "defs.h"
 
-
-
+// Initializes the evidence list
 void initEvidenceList(EvidenceListType * evidenceList) {
 	evidenceList->head = NULL;
 	evidenceList->tail = NULL;
 	evidenceList->size = 0;
 }
 
+// Initializes the evidence data with a random variable in the range of each class' values
 void initEvidence(evidenceClassType evClass, EvidenceType ** evidence) {
-	EvidenceType tempEv = (EvidenceType*)calloc(1, sizeof(EvidenceType);
+	// Allocate memory to the evidence 
+	EvidenceType tempEv = (EvidenceType*) calloc(1, sizeof(EvidenceType);
 	
 	if (evClass == EMfF) {
 		tempEv->value = randFloat(4.7, 5);
@@ -34,17 +35,40 @@ void initEvidence(evidenceClassType evClass, EvidenceType ** evidence) {
 	*evidence = tempEv;
 }
 
+EvidenceType * getEvidenceAtIndex(EvidenceListType * evidenceList, int index){
+	evidenceListSize = evidenceList -> size;					// Size of the evidence list
+	int i = 0;									// Current index in the list
+	
+	// If the index is valid:
+	if (index <= evidenceListSize) {
+		// Make two temporary nodes to iterate through the linked list
+		EvidenceNodeType * currNode = evidenceList -> head;
+		EvidenceNodeType * nextNode;
+		
+		// Keep looping till you find a matching index
+		while (currNode != NULL){
+			if (i == index) break;
+			currNode = currNode -> next;
+			i++;
+		}
+		
+		if (i != index) printf("SOMETHING WENT WRONG WHILE SEARCHING FOR THE EVIDENCE!\n");
+		else return currNode;
+	}
+	else printf("Invalid Index!\n");
+}
 
+// Cleans up the evidene data
 void cleanupEvidenceData(EvidenceNodeType * evNode) {
 	free(evNode -> evidenceData);
 }	
 	
-	
+// Cleans up the evidence Node	
 void cleanupEvidenceNode(EvidenceNodeType * evNode) {
     free(evNode);
 } 	
 	
-	
+// Cleans up the entire evidence list
 void cleanupEvidenceList(EvidenceListType * evList) {
 	int evListSize = evList -> size;
 	

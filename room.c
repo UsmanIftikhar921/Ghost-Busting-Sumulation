@@ -58,10 +58,8 @@ void cleanupRoom(RoomType * room){
 	// Free Evidence and Room Linked List
 	cleanupEvidenceList(room -> evidence);
 	cleanupRoomList(room -> attached);
+	// Free hunter array
 	cleanupHunterArray(room -> hunters);
-	
-	// Free the room itself from memory
-	free(room);
 }
 
 void cleanupRoomList(RoomListType * roomList){
@@ -69,13 +67,14 @@ void cleanupRoomList(RoomListType * roomList){
 	int roomListSize = roomList -> size;
 	
 	// Make two temporary nodes to iterate through the linked list
-	RoomType * currRoom = roomList -> head;
-	RoomType * nextRoom;
+	RoomNodeType * currNode = roomList -> head;
+	RoomNodeType * nextNode;
 	
 	// Clean up every room in the room list
 	for(int i = 0; i < roomListSize; i++){
-		nextRoom = currRoom -> next;
-		cleanupRoom(currRoom);
-		currRoom = nextRoom;
+		nextNode = currNode -> next;
+		cleanupRoom(currNode -> data);
+		free(currNode);
+		currNode = nextNode;
 	}
 }

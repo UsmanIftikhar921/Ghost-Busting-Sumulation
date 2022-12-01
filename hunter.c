@@ -26,12 +26,12 @@ void collectEvidence(HunterType * hunter){
 	int evidenceSize = evidenceList -> size;			// Size of the evidence list
 	EvidenceListType * tempEvidence;				// Temporarily store the evidence in this variable
 	
-	printf("COLLECTING EVIDENCE...");
+	printf("COLLECTING EVIDENCE...\n");
 	
 	// Does the room have any evidence in it's evidence linked list?
 	if(evidenceSize > 0){
 		// If yes, collect a random piece of evidence (choose an int between 0 and size of the linked list)
-		int randomEvidenceIndex = randint(1,evidenceSize);
+		int randomEvidenceIndex = randint(0,(evidenceSize-1));
 		tempEvidence = getEvidenceAtIndex(evidenceList, currRoomrandomEvidenceIndex);
 		
 		// Check if the evidence is ghostly or not:
@@ -39,9 +39,9 @@ void collectEvidence(HunterType * hunter){
 			// Store the evidence data by adding it to your own linked list
 			addEvidence(tempEvidence, hunter -> evidence);
 		}
-		else printf("THE EVIDENCE IS NOT GHOSTLY!");
+		else printf("THE EVIDENCE IS NOT GHOSTLY!\n");
 	}
-	else printf("THE EVIDENCE LIST IS EMPTY");
+	else printf("THE EVIDENCE LIST IS EMPTY\n");
 }
 
 // Share the input hunter's evidence with another random hunter in the same room
@@ -89,7 +89,7 @@ void transferEvidenceData(HunterType * hunter, EvidenceType * evidence){
 	if ( containsEvidenceType(evidenceClass,hunter) == C_FALSE ) {
 		addEvidence(evidence, hunter -> evidence);
 	}
-	else printf("HUNTER ALREADY HAS EVIDENCE OF THIS TYPE!");
+	else printf("HUNTER ALREADY HAS EVIDENCE OF THIS TYPE!\n");
 }
 
 // Checks if the hunter's evidence array already contains the evidence class

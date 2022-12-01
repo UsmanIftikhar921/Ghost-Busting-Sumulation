@@ -121,8 +121,7 @@ void cleanupGhostData(GhostType *);					// Frees all data associated with a ghos
 // Evidence functions
 void initEvidenceList(EvidenceListType *);				// Initializes an EvidenceListType
 void initEvidence(evidenceClassType, EvidenceType **);			// Initializes an EvidenceType
-EvidenceType * getEvidenceAtIndex(EvidenceType*, int);			// Returns the evidence at the index specified
-int containsEvidenceType(evidenceClassType,hunter*);			// Checks if hunter's evidence array already has the evidence type we're adding
+EvidenceType * getEvidenceAtIndex(EvidenceListType*, int);			// Returns the evidence at the index specified
 void addEvidence(EvidenceType *, EvidenceListType *);			// Adds an EvidenceType to and EvidenceTypeList
 void cleanupEvidenceData(EvidenceNodeType *);				// Frees all data associated with a piece of evidence
 void cleanupEvidenceNode(EvidenceNodeType *);				// Frees an evidence node
@@ -131,8 +130,9 @@ void cleanupEvidenceList(EvidenceListType *);				// Frees all data from an evide
 
 // Hunter functions
 void initHunter(EvidenceClassType, char *, RoomType *, HunterType **);	// Initializes a HunterType
-void initHunterArray(HunterArrayType *);				// Initializes a HunterArrayType
 void collectEvidence(HunterType *);					// Collects all evidence from a room
 void shareEvidence(HunterType *);					// Shares evidence with another hunter
+int containsEvidenceType(evidenceClassType , hunter*);			// Checks if hunter's evidence array already has the evidence type we're adding
+void transferEvidenceData(HunterType *, EvidenceType *);		// Transfers evidence data to the hunter 
 void cleanupHunterData(HunterType *);					// Frees all data from a hunter
 void cleanupHunterArray(HunterArrayType *);				// Frees all data in a hunter array
