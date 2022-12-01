@@ -1,19 +1,6 @@
 #include "defs.h"
 
-typedef struct {
-	HunterType* hunters[MAX_HUNTERS];
-	int size;
-} HunterArrayType;
-
-typedef struct {
-	char name[MAX_STR];
-	RoomType * room;
-	EvidenceClassType evidenceType;
-	EvidenceListType * evidence;
-	int fear;
-	int boredom;
-} HunterType;
-
+// Initialize the hunter
 void initHunter(EvidenceClassType ec, char * name, RoomType * room, HunterType ** hunterPtr){
 	// Assign some memory to the hunter
 	(*hunterPtr) = calloc(1, sizeof(HunterType));
@@ -32,38 +19,45 @@ void initHunter(EvidenceClassType ec, char * name, RoomType * room, HunterType *
 }
 
 
+// Collect Evidence From a room
 void collectEvidence(HunterType * hunter){
-	// Take a look at the current room the hunter is in
+	RoomType * currRoom = hunter -> room;				// Current room hunter is in
+	EvidenceListType * evidenceList = currRoom -> evidence;		// Said room's evidence List
+	int evidenceSize = evidenceList -> size;			// Size of the evidence list
+	EvidenceListType * tempEvidence;				// Temporarily store the evidence in this variable
+	
+	printf("COLLECTING EVIDENCE...");
 	
 	// Does the room have any evidence in it's evidence linked list?
-	
-	// If yes, collect a random piece of evidence (choose an int between 0 and size of the linked list)
-	
-	// Store this evidence data by adding it to your own linked list, and removing it from the room's linked list
+	if(evidenceSize > 0){
+		// If yes, collect a random piece of evidence (choose an int between 0 and size of the linked list)
+		int randomEvidenceIndex = randint(1,evidenceSize);
+		tempEvidence = getEvidenceAtIndex(evidenceList, currRoomrandomEvidenceIndex);
+		
+		// Check if the evidence is ghostly or not:
+		if ( checkGhostlyEvidence(tempEvidence) > 0 ){
+			// Store the evidence data by adding it to your own linked list
+			addEvidence(tempEvidence, hunter -> evidence);
+		}
+		else printf("THE EVIDENCE IS NOT GHOSTLY!");
+	}
+	else printf("THE EVIDENCE LIST IS EMPTY");
 }
 
-typedef struct {
- 	char name[MAX_STR];
- 	GhostType * ghost;
- 	struct EvidenceListType * evidence;
-  	struct RoomListType * attached;
-  	struct HunterArrayType * hunters;
-} RoomType;
-
+// Share the input hunter's evidence with another random hunter in the same room
 void shareEvidence(HunterType * hunter){
 	// Note: Only transfer evidence that is not in standard values
 	
-	HunterArrayType * huntersInRoom = hunter -> room -> hunters
-	int numOfHuntersInRoom = huntersInRoom -> size;
+	HunterArrayType * huntersInRoom = hunter -> room -> hunters		// An array of hunters currently in the room
+	int numOfHuntersInRoom = huntersInRoom -> size;				// The number of hunters currently in the room
+	int numOfEvidence = hunter -> evidence -> size;				// The number of evidence in the hunter's evidence list
 	
-	int numOfEvidence = hunter -> evidence -> size;
-	
-	// Check if there are any hunters in the room
+	// If there are at least two hunters in the room:
 	if (numOfHuntersInRoom >= 2){
 		// Choose a second random hunter by index
 		HunterType * otherHunter;
-		int otherHunterIndex = randint(0,numOfHuntersInRoom-1);
-		int hunterId;
+		int otherHunterIndex = randint(1,numOfHuntersInRoom);		// A randomly chosen index in the hunter's array
+		int hunterId;							// A hunter's ID
 		
 		HunterType * currHunter = huntersInRoom[0]	
 		
@@ -86,29 +80,28 @@ void shareEvidence(HunterType * hunter){
 	// Pick a random hunter, and transfer all the evidence in their array
 }
 
+// Tranfers evidence data to the hunter
 void transferEvidenceData(HunterType * hunter, EvidenceType * evidence){
 	// Check the type of evidence we are about to send
 	EvidenceClassType evidenceClass = evidence -> type;
-	
-	// Check if hunter already has that type of evidence
-	int containsEvidenceType = 0;
 	
 	// See if the hunter in question already has that type of evidence
 	if ( containsEvidenceType(evidenceClass,hunter) == C_FALSE ) {
 		addEvidence(evidence, hunter -> evidence);
 	}
+	else printf("HUNTER ALREADY HAS EVIDENCE OF THIS TYPE!");
 }
 
+// Checks if the hunter's evidence array already contains the evidence class
 int containsEvidenceType (EvidenceClassType evidenceClass, HunterType * hunter){
-	// Create a temporary evidence list for simplification of code	
-	EvidenceListType * evidenceList = hunter -> evidence;
-	int numOfEvidence = evidenceList -> size;
+	EvidenceListType * evidenceList = hunter -> evidence;		// Temporary evidence list
+	int numOfEvidence = evidenceList -> size;			// Number of evidence in list
 	
 	// Set the current evidence node to the head of the list
 	EvidenceNodeType * currEvidenceNode = evidenceList -> head;
 	
 	// Loop through each element of the hunter's evidence linked list
-	for (int i = 0; i < numOfEvidence; i++){
+	for (int i = 1; i < numOfEvidence; i++){
 		// Retrieve the evidence type of the current node
 		EvidenceClassType currEvidenceType = currEvidenceNode -> evidenceData -> type;
 		
@@ -122,5 +115,19 @@ int containsEvidenceType (EvidenceClassType evidenceClass, HunterType * hunter){
 	return C_FALSE;
 }
 
-void cleanupHunterData(HunterType *);			  	       // Frees all data from a hunter
-void cleanupHunterArray(HunterArrayType *);			       // Frees all data in a hunter array
+// Cleans up the hunter's data and frees it from memory
+void cleanupHunterData(HunterType * hunter){
+	// Clean up the evidence list
+	cleanupEvidenceList(hunter -> evidence);
+	// Free the hunter from memory
+	free(hunter);
+}
+
+// Cleans up the entire hunter array from memory
+void cleanupHunterArray(HunterArrayType * hunterArray){
+	hunterArraySize = hunterArray -> size;
+	
+	for (int i = 0, i < hunterArraySize; i++){
+		cleanupHunterData(hunterArray[i]);
+	}
+}
