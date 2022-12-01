@@ -77,12 +77,13 @@ typedef struct {
 } EvidenceType;
 
 // Hunter array and type structs
-typedef struct RoomArray {
-	HunterType* hunters[MAX_HUNTERS];
+typedef struct {
+	HunterType * hunters[MAX_HUNTERS];
 	int size;
 } HunterArrayType;
 
 typedef struct {
+	char name[MAX_STR];
 	RoomType * room;
 	EvidenceClassType evidenceType;
 	EvidenceListType * evidence;
