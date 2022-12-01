@@ -7,8 +7,8 @@
 #include <pthread.h>
 #include <semaphore.h>
 
-#define C_NOK               0
-#define C_OK                1
+#define C_FALSE             0
+#define C_TRUE              1
 #define NORMAL	   	        0
 #define GHOSTLY		        1
 #define MAX_STR            64
@@ -119,8 +119,9 @@ void cleanupGhostData(GhostType *);			  // Frees all data associated with a ghos
 
 
 // Evidence functions
-void initEvidenceList(EvidenceListType *);	       // Initializes an EvidenceListType
+void initEvidenceList(EvidenceListType *);	           // Initializes an EvidenceListType
 void initEvidence(evidenceClassType, EvidenceType **); // Initializes an EvidenceType
+void addEvidence(EvidenceType *, EvidenceListType *);  // Adds an EvidenceType to and EvidenceTypeList
 void cleanupEvidenceData(EvidenceNodeType *);	       // Frees all data associated with a piece of evidence
 void cleanupEvidenceNode(EvidenceNodeType *); 	       // Frees an evidence node
 void cleanupEvidenceList(EvidenceListType *); 	       // Frees all data from an evidence list
@@ -129,7 +130,7 @@ void cleanupEvidenceList(EvidenceListType *); 	       // Frees all data from an 
 // Hunter functions
 void initHunter(EvidenceClassType, char *, RoomType *, HunterType **); // Initializes a HunterType
 void initHunterArray(HunterArrayType *);			       // Initializes a HunterArrayType
-void collectEvidence(HunterType *);				       // Collects all evidence from a room
-void shareEvidence(HunterType *);				       // Shares evidence with another hunter
+void collectEvidence(HunterType *);				           // Collects all evidence from a room
+void shareEvidence(HunterType *);				           // Shares evidence with another hunter
 void cleanupHunterData(HunterType *);			  	       // Frees all data from a hunter
 void cleanupHunterArray(HunterArrayType *);			       // Frees all data in a hunter array
