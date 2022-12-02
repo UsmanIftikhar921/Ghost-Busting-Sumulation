@@ -109,14 +109,14 @@ void addRoom(RoomListType *, RoomType *);				// Adds a room to the end of a Room
 void connectRooms(RoomType *, RoomType *);				// Connects two RoomTypes
 void cleanupRoom(RoomType *);						// Frees all data in a room
 void cleanupRoomList(RoomListType *);					// Frees all nodes in a RoomList
-
+RoomType * randRoom(RoomListType *, int);           // Gets a random room in a list
 
 // Ghost functions
 void initGhost(GhostClassType, RoomType *, GhostType **);		// Initializes a GhostType
 void moveGhost(GhostType *);						// Moves a ghost to another room
 void addEvidence(GhostType *);						// Adds evidence to a room
 void cleanupGhostData(GhostType *);					// Frees all data associated with a ghost
-
+void spawnGhost(GhostType *, BuildingType *);                       // Adds the ghost to a random room that is not the van
 
 // Evidence functions
 void initEvidenceList(EvidenceListType *);				// Initializes an EvidenceListType
@@ -136,3 +136,4 @@ int containsEvidenceType(evidenceClassType , hunter*);			// Checks if hunter's e
 void transferEvidenceData(HunterType *, EvidenceType *);		// Transfers evidence data to the hunter 
 void cleanupHunterData(HunterType *);					// Frees all data from a hunter
 void cleanupHunterArray(HunterArrayType *);				// Frees all data in a hunter array
+void moveHunter(HunterType *);                          // Moves the hunter to an adjacent room
