@@ -37,7 +37,7 @@ void cleanupGhostData(GhostType * ghost){
 
 void spawnGhost(GhostType * ghost, BuildingType * building){
 	// Check the rooms that are attached to the room the ghost is currently in:
-	RoomListType * roomList = building -> rooms	
+	RoomListType * roomList = building -> rooms;
 
 	// Change the ghost's room pointer to a random room from that room's connected rooms
 	ghost -> room = randRoom(roomList, C_TRUE);
