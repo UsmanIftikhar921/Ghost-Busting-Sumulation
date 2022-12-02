@@ -20,29 +20,29 @@ void initRoom(char * name, RoomType ** room){
 }
 
 // Adds a room to the end of a RoomListType
-void addRoom(RoomListType * roomList, RoomType * room){	
+void addRoom(RoomListType * list, RoomType * room){	
 	//A temporary node to store the information of the new tail to be added
-	RoomNodeType * newRoomNode;
+	RoomNodeType * newNode;
 	
 	//Assign memory to the new node
-	newRoomNode = calloc(1, sizeof(RoomNodeType));
+	newNode = calloc(1, sizeof(RoomNodeType));
 	
-	//The data of the new node is the ghost data
-	newRoomNode->data = room;
+	//The data of the new node is the room data
+	newNode -> data = room;
 	
 	//The new tail does not have any nodes after it, so make sure to mark it as so
-	newRoomNode->next = NULL;
+	newNode -> next = NULL;
 	
 	// If list is empty:
 	if (list -> head == NULL) {
-		roomList -> head = newRoomNode;
-		roomList -> tail = newRoomNode;
+		list -> head = newNode;
+		list -> tail = newNode;
     	}
     	
     	// If list is not empty
     	else {
-		roomList -> tail -> next = newRoomNode;
-		roomList -> tail = newRoomNode;
+		list -> tail -> next = newNode;
+		list -> tail = newNode;
    	}
 }
 

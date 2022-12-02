@@ -121,8 +121,8 @@ void spawnGhost(GhostType *, BuildingType *);                       // Adds the 
 // Evidence functions
 void initEvidenceList(EvidenceListType *);				// Initializes an EvidenceListType
 void initEvidence(evidenceClassType, EvidenceType **);			// Initializes an EvidenceType
-EvidenceType * getEvidenceAtIndex(EvidenceListType*, int);			// Returns the evidence at the index specified
-void addEvidence(EvidenceType *, EvidenceListType *);			// Adds an EvidenceType to and EvidenceTypeList
+EvidenceType * getEvidenceAtIndex(EvidenceListType*, int);		// Returns the evidence at the index specified
+void addEvidence(EvidenceListType *, EvidenceType *);			// Adds an EvidenceType to and EvidenceTypeList
 void cleanupEvidenceData(EvidenceNodeType *);				// Frees all data associated with a piece of evidence
 void cleanupEvidenceNode(EvidenceNodeType *);				// Frees an evidence node
 void cleanupEvidenceList(EvidenceListType *);				// Frees all data from an evidence list

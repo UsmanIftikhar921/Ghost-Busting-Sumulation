@@ -37,7 +37,7 @@ void collectEvidence(HunterType * hunter){
 		// Check if the evidence is ghostly or not:
 		if ( checkGhostlyEvidence(tempEvidence) > 0 ){
 			// Store the evidence data by adding it to your own linked list
-			addEvidence(tempEvidence, hunter -> evidence);
+			addEvidence(hunter -> evidence, tempEvidence);
 		}
 		else printf("THE EVIDENCE IS NOT GHOSTLY!\n");
 	}
@@ -87,7 +87,7 @@ void transferEvidenceData(HunterType * hunter, EvidenceType * evidence){
 	
 	// See if the hunter in question already has that type of evidence
 	if ( containsEvidenceType(evidenceClass,hunter) == C_FALSE ) {
-		addEvidence(evidence, hunter -> evidence);
+		addEvidence(hunter -> evidence, evidence);
 	}
 	else printf("HUNTER ALREADY HAS EVIDENCE OF THIS TYPE!\n");
 }

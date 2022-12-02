@@ -12,7 +12,7 @@ void initEvidence(evidenceClassType evClass, EvidenceType ** evidence) {
 	// Allocate memory to the evidence 
 	EvidenceType tempEv = (EvidenceType*) calloc(1, sizeof(EvidenceType);
 	
-	if (evClass == EMfF) {
+	if (evClass == EMF) {
 		tempEv->value = randFloat(4.7, 5);
 		if (tempEv->value >= 4.9) {
 			tempEv->ghostliness = GHOSTLY;
@@ -56,6 +56,33 @@ EvidenceType * getEvidenceAtIndex(EvidenceListType * evidenceList, int index){
 		else return currNode;
 	}
 	else printf("Invalid Index!\n");
+}
+
+// Add Evidence to Evidence List
+void addEvidence(EvidenceListType * list, EvidenceType * evidence){
+	//A temporary node to store the information of the new tail to be added
+	EvidenceNodeType * newNode;
+	
+	//Assign memory to the new node
+	newNode = calloc(1, sizeof(EvidenceNodeType));
+	
+	//The data of the new node is the evidence data
+	newNode->data = evidence;
+	
+	//The new tail does not have any nodes after it, so make sure to mark it as so
+	newRoomNode->next = NULL;
+	
+	// If list is empty:
+	if (list -> head == NULL) {
+		list -> head = newNode;
+		list -> tail = newNode;
+    	}
+    	
+    	// If list is not empty
+    	else {
+		list -> tail -> next = newNode;
+		list -> tail = newNode;
+   	}
 }
 
 // Cleans up the evidene data
