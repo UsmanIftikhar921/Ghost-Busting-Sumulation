@@ -89,6 +89,7 @@ typedef struct {
 	EvidenceListType * evidence;
 	int fear;
 	int boredom;
+    int id;
 } HunterType;
 
 // Helper functions

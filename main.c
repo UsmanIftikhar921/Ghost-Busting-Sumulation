@@ -13,6 +13,80 @@ int main(int argc, char *argv[])
     return 0;
 }
 
+int hunterAction (hunterType * hunter) {
+
+    while (C_TRUE) {
+        int actionChoice;
+
+        if (hunter -> room -> ghost != NULL) {
+            hunter -> fear += FEAR_RATE;
+        }
+
+
+        if (hunter -> room -> hunters -> size != 1) {
+            actionChoice = randInt(1,3);
+        } else {
+            actionChoice = randInt(1,2);
+        }
+
+        if (actionChoice == 1) {
+            moveHunter(hunter);
+        } else if (actionChoice == 2) {
+            collectEvidence(hunter);
+        } else if (actionChoice == 3) {
+            shareEvidence(hunter);
+        }
+
+
+        if (hunter -> evidence -> size >= 3) {
+            break;
+        }
+        if (hunter -> boredom <= 0) {
+            break;            
+        }
+        if (hunter -> fear >= MAX_FEAR) {
+            break;
+        }
+
+        sleep(1);
+    }
+}
+
+int ghostAction (ghostType * ghost) {
+
+    while (C_TRUE) {
+        int actionChoice;
+
+        if (ghost -> room -> hunters -> size == 0) {
+            ghost -> boredom--;
+        } else {
+            ghost -> boredom = BOREDOM_MAX;
+        }
+
+
+        if (ghost -> room -> hunters -> size >= 1) {
+            actionChoice = randInt(1,2);
+        } else {
+            actionChoice = randInt(1,3);
+        }
+
+        if (actionChoice == 1) {
+            addGhostEvidence(ghost);
+        } else if (actionChoice == 2) {
+            pritnf("THE GHOST TWIDDLES IT'S THUMBS")
+        } else if (actionChoice == 3) {
+            moveGhost(ghost);
+        }
+
+
+        if (ghost -> boredom <= 0) {
+            break;            
+        }
+
+        sleep(1);
+    }
+}
+
 
 /*
   Function:  randInt
