@@ -78,3 +78,26 @@ void cleanupRoomList(RoomListType * roomList){
 		currNode = nextNode;
 	}
 }
+
+RoomType randRoom(RoomListType * roomList, int spawnGhostCheck) {
+    if (spawnGhostCheck == C_FALSE) {
+        int selectedRoom = randInt(0, roomList -> size - 1);
+    } else {
+        int selectedRoom = randInt(1, roomList -> size - 1);
+    }
+
+    RoomNodeType currRoom = roomList -> head;
+
+    for (int i = 0; i < roomList -> size; i++) {
+        if (i == selected) {
+            return currRoom -> roomData;
+        } else {
+            currRoom = currRoom -> next;
+        }
+    }
+}
+
+
+
+
+
