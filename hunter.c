@@ -56,27 +56,29 @@ void shareEvidence(HunterType * hunter){
 	// Note: Only transfer evidence that is not in standard values
 	
 	HunterArrayType * huntersInRoom = hunter -> room -> hunters		// An array of hunters currently in the room
-	int numOfHuntersInRoom = huntersInRoom -> size;				// The number of hunters currently in the room
-	int numOfEvidence = hunter -> evidence -> size;				// The number of evidence in the hunter's evidence list
+	int numOfHuntersInRoom = huntersInRoom -> size;				    // The number of hunters currently in the room
+	int numOfEvidence = hunter -> evidence -> size;				    // The number of evidence in the hunter's evidence list
 	
 	// If there are at least two hunters in the room:
 	if (numOfHuntersInRoom >= 2){
 		// Choose a second random hunter by index
 		HunterType * otherHunter;
 		int otherHunterIndex = randint(1,numOfHuntersInRoom);		// A randomly chosen index in the hunter's array
-		int hunterId;							// A hunter's ID
-		
+        int count = 0;
+
 		HunterType * currHunter = huntersInRoom[0]	
 		
 		// In a for loop, transfer all evidence to the other hunter's evidence list
 		for (int i = 0; i < numOfHuntersInRoom; i++){
 			// If they are not the same hunter
-			if (currHunter -> id == hunter -> id){
-				hunterId = i;
-			}
+			if (huntersInRoom[i] -> id != hunter -> id){	
+                count++;
+            }
+            if (count == otherHunterIndex) {
+                
+                break;
+            }
 		}
-		
-				
 	}
 	
 	
