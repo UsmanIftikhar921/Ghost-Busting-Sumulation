@@ -131,3 +131,11 @@ void cleanupHunterArray(HunterArrayType * hunterArray){
 		cleanupHunterData(hunterArray[i]);
 	}
 }
+
+void moveHunter (HunterType * hunter) {
+	// Check the rooms that are attached to the room the hunter is currently in:
+	RoomListType * roomList = hunter -> room -> attached
+
+	// Change the hunters's room pointer to a random room from that room's connected rooms
+	hunter -> room = randRoom(roomList, C_FALSE);
+}
