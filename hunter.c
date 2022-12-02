@@ -19,11 +19,23 @@ void initHunter(EvidenceClassType ec, char * name, RoomType * room, HunterType *
 }
 
 void moveHunter (HunterType * hunter) {
+	// Decrease the number of hunters in the current room
+	hunter -> room -> hunters -> size--;
+	
+	// Remove hunter from linked list
+	removeHunterFromRoom(hunter);
+	
 	// Check the rooms that are attached to the room the hunter is currently in:
 	RoomListType * roomList = hunter -> room -> attached
 
 	// Change the hunters's room pointer to a random room from that room's connected rooms
 	hunter -> room = randRoom(roomList, C_FALSE);
+	
+	// Add hunter to the linked list
+	addHunterToRoom(hunter);
+	
+	// Increase the number of hunters in the current room
+	hunter -> room -> hunters -> size++;
 }
 
 // Collect Evidence From a room
@@ -99,6 +111,45 @@ void transferEvidenceData(HunterType * hunter, EvidenceType * evidence){
 		addEvidence(hunter -> evidence, evidence);
 	}
 	else printf("HUNTER ALREADY HAS EVIDENCE OF THIS TYPE!\n");
+}
+
+// Add hunter to the room's hunter list
+void addHunterToRoom(HunterType * hunter, RoomType * room){
+	int index;
+	HunterType * currHunter;
+	
+	// Loop through the list till you find a NULL space
+	for (int i = 0; i < MAX_HUNTERS; i++){
+		currHunter= room -> hunters[i];
+		// If found, return the index at which the hunter is at
+		if (currHunter == NULL) index = i;
+	}
+	
+	// Add hunter at index i
+	room -> hunters[index] = hunter;
+}
+
+// Remove hunter from the room's hunter list
+void removeHunterFromRoom(HunterType * hunter, roomType * room){
+	// Find the hunter with the same ID in the hunters array
+	int index = -1;
+	int currId;
+	HunterType * currHunter;
+	
+	// Loop over the list till you find the hunter
+	for (int i = 0; i < MAX_HUNTERS; i++){
+		currHunter= room -> hunters[i];
+		
+		if (currHunter != NULL){
+			currId = currHunter -> id;
+			
+			// If found, return the index at which the hunter is at
+			if (id == currId) index = i;
+		}
+	}
+	
+	if (index != -1) room -> hunters[index] = NULL;
+	else printf("COULD NOT FIND HUNTER!");
 }
 
 // Checks if the hunter's evidence array already contains the evidence class
