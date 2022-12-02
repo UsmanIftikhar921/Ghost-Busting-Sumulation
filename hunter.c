@@ -18,6 +18,13 @@ void initHunter(EvidenceClassType ec, char * name, RoomType * room, HunterType *
 	(*hunterPtr) -> boredom = 0;
 }
 
+void moveHunter (HunterType * hunter) {
+	// Check the rooms that are attached to the room the hunter is currently in:
+	RoomListType * roomList = hunter -> room -> attached
+
+	// Change the hunters's room pointer to a random room from that room's connected rooms
+	hunter -> room = randRoom(roomList, C_FALSE);
+}
 
 // Collect Evidence From a room
 void collectEvidence(HunterType * hunter){
@@ -111,7 +118,6 @@ int containsEvidenceType (EvidenceClassType evidenceClass, HunterType * hunter){
 		// Set the current node to the next node
 		currEvidenceNode = currEvidenceNode -> next;
 	}
-	
 	return C_FALSE;
 }
 
@@ -130,12 +136,4 @@ void cleanupHunterArray(HunterArrayType * hunterArray){
 	for (int i = 0, i < hunterArraySize; i++){
 		cleanupHunterData(hunterArray[i]);
 	}
-}
-
-void moveHunter (HunterType * hunter) {
-	// Check the rooms that are attached to the room the hunter is currently in:
-	RoomListType * roomList = hunter -> room -> attached
-
-	// Change the hunters's room pointer to a random room from that room's connected rooms
-	hunter -> room = randRoom(roomList, C_FALSE);
 }

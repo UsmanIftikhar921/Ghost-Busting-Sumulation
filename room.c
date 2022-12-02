@@ -79,7 +79,7 @@ void cleanupRoomList(RoomListType * roomList){
 	}
 }
 
-RoomType randRoom(RoomListType * roomList, int spawnGhostCheck) {
+RoomType * randRoom(RoomListType * roomList, int spawnGhostCheck) {
     if (spawnGhostCheck == C_FALSE) {
         int selectedRoom = randInt(0, roomList -> size - 1);
     } else {
