@@ -21,7 +21,7 @@ int main(int argc, char *argv[])
     return 0;
 }
 
-int hunterAction (hunterType * hunter) {
+int * hunterAction (hunterType * hunter) {
 
     while (C_TRUE) {
         int actionChoice;
@@ -60,7 +60,7 @@ int hunterAction (hunterType * hunter) {
     }
 }
 
-int ghostAction (ghostType * ghost) {
+int * ghostAction (ghostType * ghost) {
 
     while (C_TRUE) {
         int actionChoice;
