@@ -10,6 +10,14 @@ int main(int argc, char *argv[])
     initBuilding(&building);
     populateRooms(&building);
 
+    pthread_t ht1, ht2, ht3, ht4, gt1;
+
+    pthread_create(&ht1, NULL, hunterAction, hunter1);
+    pthread_create(&ht2, NULL, hunterAction, hunter2);
+    pthread_create(&ht3, NULL, hunterAction, hunter3);
+    pthread_create(&ht4, NULL, hunterAction, hunter4);
+    pthread_create(&gt1, NULL, ghostAction, ghost);
+
     return 0;
 }
 
@@ -95,8 +103,7 @@ int ghostAction (ghostType * ghost) {
        in:   upper end of the range of the generated number
    return:   randomly generated integer in the range [min, max-1) 
 */
-int randInt(int min, int max)
-{
+int randInt(int min, int max) {
     return rand() % (max - min) + min;
 }
 
