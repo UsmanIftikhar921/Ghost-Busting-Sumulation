@@ -9,7 +9,7 @@
        in:   the EvidenceClassType
    return:   a pointer to a HunterType with initialized contents
 */
-void initHunter(EvidenceClassType ec, char * name, RoomType * room, HunterType ** hunterPtr){
+void initHunter(EvidenceClassType ec, char * name, RoomType * room, HunterType ** hunterPtr, int id){
 	// Assign some memory to the hunter
 	(*hunterPtr) = calloc(1, sizeof(HunterType));
 	
@@ -24,6 +24,7 @@ void initHunter(EvidenceClassType ec, char * name, RoomType * room, HunterType *
 	// Set the hunter's fear and boredom level to 0
 	(*hunterPtr) -> fear = 0;
 	(*hunterPtr) -> boredom = 0;
+	(*hunterPtr) -> id = id;
 }
 
 /*

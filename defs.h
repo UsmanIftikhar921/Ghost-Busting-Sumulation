@@ -130,7 +130,7 @@ void cleanupEvidenceList(EvidenceListType *);				// Frees all data from an evide
 
 
 // Hunter functions
-void initHunter(EvidenceClassType, char *, RoomType *, HunterType **);	// Initializes a HunterType
+void initHunter(EvidenceClassType, char *, RoomType *, HunterType **, int);	// Initializes a HunterType
 void collectEvidence(HunterType *);					// Collects all evidence from a room
 void shareEvidence(HunterType *);					// Shares evidence with another hunter
 int containsEvidenceType(evidenceClassType , hunter*);			// Checks if hunter's evidence array already has the evidence type we're adding
