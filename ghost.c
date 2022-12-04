@@ -1,5 +1,13 @@
 #include "defs.h"
 
+/*
+  Function:  initGhost
+  Purpose:   initialize a ghost by setting it's fields to the corresponding values provided
+       in:   a double pointer to a ghost
+       in:   a pointer to a RoomType
+       in:   a GhostClassType that describes the type of ghost
+   return:   a pointer to a GhostType with initialized contents
+*/
 void initGhost(GhostClassType gc, RoomType * room, GhostType ** ghost){
 	// Assign the ghost some memory
 	(*ghost) = (GhostType*)calloc(1, sizeof(GhostType));
@@ -10,6 +18,12 @@ void initGhost(GhostClassType gc, RoomType * room, GhostType ** ghost){
 	(*ghost) -> boredom = 0;
 }
 
+/*
+  Function:  moveGhost
+  Purpose:   moves a ghost from one room to the next
+       in:   a pointer to a ghost
+   return:   a pointer to a GhostType with an updated room pointer
+*/
 void moveGhost(GhostType * ghost){
 	// Check the rooms that are attached to the room the ghost is currently in:
 	RoomListType * roomList = ghost -> room -> attached	
@@ -18,7 +32,12 @@ void moveGhost(GhostType * ghost){
 	ghost -> room = randRoom(roomList, C_FALSE);
 }
 
-// Add evidence to the room the ghost is currently in
+/*
+  Function:  addGhostEvidence
+  Purpose:   add evidence to the current room the ghost is in
+       in:   a pointer to a ghost
+   return:   a pointer to a room with evidence inside of it's evidence list
+*/
 void addGhostEvidence(GhostType * ghost){
 	GhostClassType ghostType = ghost -> ghostClass;		// The Type of Ghost
 	roomEvidenceList = ghost -> room -> evidence;		// The Room's Evidence List
@@ -64,10 +83,13 @@ void addGhostEvidence(GhostType * ghost){
 	addEvidence(roomEvidenceList, tempEvidence);
 }
 
-void cleanupGhostData(GhostType * ghost){
-	free (ghost);
-}
-
+/*
+  Function:  spawnGhost
+  Purpose:   spawns the ghost within a random room, except for the van
+       in:   a pointer to a GhostType
+       in:   a pointer to a BuildingType
+   return:   a pointer to a GhostType with a room pointer within it
+*/
 void spawnGhost(GhostType * ghost, BuildingType * building){
 	// Check the rooms that are attached to the room the ghost is currently in:
 	RoomListType * roomList = building -> rooms;

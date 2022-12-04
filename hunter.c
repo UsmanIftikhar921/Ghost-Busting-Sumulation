@@ -1,6 +1,14 @@
 #include "defs.h"
 
-// Initialize the hunter
+/*
+  Function:  initHunter
+  Purpose:   initialize a hunter by setting it's fields to the corresponding values provided
+       in:   a double pointer to a HunterType
+       in:   a pointer to a RoomType
+       in:   a pointer to a char
+       in:   the EvidenceClassType
+   return:   a pointer to a HunterType with initialized contents
+*/
 void initHunter(EvidenceClassType ec, char * name, RoomType * room, HunterType ** hunterPtr){
 	// Assign some memory to the hunter
 	(*hunterPtr) = calloc(1, sizeof(HunterType));
@@ -18,6 +26,12 @@ void initHunter(EvidenceClassType ec, char * name, RoomType * room, HunterType *
 	(*hunterPtr) -> boredom = 0;
 }
 
+/*
+  Function:  moveHunter
+  Purpose:   moves a hunter from one room to the next
+       in:   a pointer to a HunterType
+   return:   a pointer to a HunterType with an updated room pointer
+*/
 void moveHunter (HunterType * hunter) {
 	// Decrease the number of hunters in the current room
 	hunter -> room -> hunters -> size--;
@@ -38,7 +52,12 @@ void moveHunter (HunterType * hunter) {
 	hunter -> room -> hunters -> size++;
 }
 
-// Collect Evidence From a room
+/*
+  Function:  collectEvidence
+  Purpose:   add evidence from the room to the hunter's evidence list
+       in:   a pointer to a HunterType
+   return:   a pointer to a HunterType with evidence inside of it's evidence list
+*/
 void collectEvidence(HunterType * hunter){
 	RoomType * currRoom = hunter -> room;				// Current room hunter is in
 	EvidenceListType * evidenceList = currRoom -> evidence;		// Said room's evidence List
@@ -63,19 +82,24 @@ void collectEvidence(HunterType * hunter){
 	else printf("THE EVIDENCE LIST IS EMPTY\n");
 }
 
-// Share the input hunter's evidence with another random hunter in the same room
+/*
+  Function:  shareEvidence
+  Purpose:   Share the input hunter's evidence with another random hunter in the same room
+       in:   a pointer to a HunterType
+   return:   a randomly chosen second HunterType with evidence inside of it's evidence list
+*/
 void shareEvidence(HunterType * hunter){
 	// Note: Only transfer evidence that is not in standard values
 	
-	HunterArrayType * huntersInRoom = hunter -> room -> hunters		// An array of hunters currently in the room
-	int numOfHuntersInRoom = huntersInRoom -> size;				    // The number of hunters currently in the room
-	int numOfEvidence = hunter -> evidence -> size;				    // The number of evidence in the hunter's evidence list
+	HunterArrayType * huntersInRoom = hunter -> room -> hunters;			// An array of hunters currently in the room
+	int numOfHuntersInRoom = huntersInRoom -> size;					// The number of hunters currently in the room
+	int numOfEvidence = hunter -> evidence -> size;					// The number of evidence in the hunter's evidence list
 	
 	// If there are at least two hunters in the room:
 	if (numOfHuntersInRoom >= 2){
 		// Choose a second random hunter by index
 		HunterType * otherHunter;
-		int otherHunterIndex = randint(1,numOfHuntersInRoom);		// A randomly chosen index in the hunter's array
+		int otherHunterIndex = randint(1,numOfHuntersInRoom);			// A randomly chosen index in the hunter's array
         int count = 0;
 
 		HunterType * currHunter = huntersInRoom[0]	
@@ -92,7 +116,6 @@ void shareEvidence(HunterType * hunter){
             }
 		}
 	}
-	
 	
 	// If there are only two hunters in the room,
 	// Transfer all the evidence in their array to the other

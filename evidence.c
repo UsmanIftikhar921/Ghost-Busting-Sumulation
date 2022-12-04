@@ -1,13 +1,24 @@
 #include "defs.h"
 
-// Initializes the evidence list
+/*
+  Function:  cleanupGhostData
+  Purpose:   initializes an evidence list
+       in:   a pointer to an EvidenceListType
+   return:   a pointer to an EvidenceListType that has been initialized 
+*/
 void initEvidenceList(EvidenceListType * evidenceList) {
 	evidenceList->head = NULL;
 	evidenceList->tail = NULL;
 	evidenceList->size = 0;
 }
 
-// Initializes the evidence data with a random variable in the range of each class' values
+/*
+  Function:  initRoom
+  Purpose:   initializes the evidence data with a random float in a range depending on the evidenceClassType
+       in:   a double pointer to an EvidenceType
+       in:   an evidenceClassType to tell what type of evidence it is
+   return:   a pointer to an EvidenceType with initialized contents
+*/
 void initEvidence(evidenceClassType evClass, EvidenceType ** evidence) {
 	// Allocate memory to the evidence 
 	EvidenceType tempEv = (EvidenceType*) calloc(1, sizeof(EvidenceType);
@@ -35,6 +46,13 @@ void initEvidence(evidenceClassType evClass, EvidenceType ** evidence) {
 	*evidence = tempEv;
 }
 
+/*
+  Function:  getEvidenceAtIndex
+  Purpose:   gets the evidence data from a specific index
+       in:   a pointer to an EvidenceListType
+       in:   an integer that points to which index to retrieve the evidence from
+   return:   an address to an EvidenceType at the specified index, or an error message
+*/
 EvidenceType * getEvidenceAtIndex(EvidenceListType * evidenceList, int index){
 	evidenceListSize = evidenceList -> size;					// Size of the evidence list
 	int i = 0;									// Current index in the list
@@ -58,7 +76,13 @@ EvidenceType * getEvidenceAtIndex(EvidenceListType * evidenceList, int index){
 	else printf("Invalid Index!\n");
 }
 
-// Add Evidence to Evidence List
+/*
+  Function:  addEvidence
+  Purpose:   adds evidence to the linked list
+       in:   a pointer to the EvidenceListType
+       in:   a pointer to the EvidenceType you want stored
+   return:   a pointer to an EvidenceListType with a pointer to the evidence data stored inside of it
+*/
 void addEvidence(EvidenceListType * list, EvidenceType * evidence){
 	//A temporary node to store the information of the new tail to be added
 	EvidenceNodeType * newNode;
@@ -85,17 +109,32 @@ void addEvidence(EvidenceListType * list, EvidenceType * evidence){
    	}
 }
 
-// Cleans up the evidene data
+/*
+  Function:  cleanupEvidenceData
+  Purpose:   cleans the data of the evidence node
+       in:   a pointer to the EvidenceNodeType
+   return:   a pointer to an EvidenceNodeType with no data inside of it
+*/
 void cleanupEvidenceData(EvidenceNodeType * evNode) {
 	free(evNode -> evidenceData);
 }	
 	
-// Cleans up the evidence Node	
+/*
+  Function:  cleanupEvidenceNode
+  Purpose:   frees the evidence node from memory
+       in:   a pointer to the EvidenceNodeType
+   return:   free memory
+*/
 void cleanupEvidenceNode(EvidenceNodeType * evNode) {
     free(evNode);
 } 	
 	
-// Cleans up the entire evidence list
+/*
+  Function:  cleanupEvidenceList
+  Purpose:   cleans up the entire evidence list
+       in:   a pointer to the EvidenceListType
+   return:   an empty evidence list
+*/
 void cleanupEvidenceList(EvidenceListType * evList) {
 	int evListSize = evList -> size;
 	
@@ -107,7 +146,7 @@ void cleanupEvidenceList(EvidenceListType * evList) {
 	for(int i = 0; i < evListSize; i++){
 		nextEv = currEv -> next;
 		cleanupEvidenceData(currEv);
-        cleanupEvidenceNode(currEv);
+        	cleanupEvidenceNode(currEv);
 		currRoom = nextRoom;
 	}
 }	

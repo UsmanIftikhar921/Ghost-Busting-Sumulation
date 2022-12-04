@@ -1,5 +1,12 @@
 #include "defs.h"
 
+/*
+  Function:  initBuilding
+  Purpose:   initialize an building by initializing it's room list, it's hunter list, and assigning a ghost to it
+       in:   a pointer to a BuildingType
+       in:   a pointer to a GhostType
+   return:   a pointer to a BuildingType that has been initialized
+*/
 void initBuilding(BuildingType * building, GhostType * ghost){
 	// Initialize The Rooms List and Hunter Array
 	initRoomList(building -> rooms);
@@ -7,6 +14,12 @@ void initBuilding(BuildingType * building, GhostType * ghost){
 	building -> ghost = ghost;
 }
 
+/*
+  Function:  cleanupBuilding
+  Purpose:   cleans the contained room list and hunter array inside the building
+       in:   a pointer to a BuildingType
+   return:   a pointer to a BuildingType with no elements within it's room list and hunter array
+*/
 void cleanupBuilding(BuildingType * building){
 	// Clean up the Rooms List
 	cleanupRoomList(building -> rooms);
