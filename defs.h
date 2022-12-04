@@ -25,8 +25,8 @@ typedef enum { POLTERGEIST, BANSHEE, BULLIES, PHANTOM } GhostClassType;
 // Building type struct
 typedef struct {
 	struct GhostType * ghost;
-	struct RoomListType rooms;
-	struct HunterArrayType hunters;
+	struct RoomListType * rooms;
+	struct HunterArrayType * hunters;
 } BuildingType;
 
 
@@ -132,7 +132,7 @@ void cleanupEvidenceList(EvidenceListType *);				// Frees all data from an evide
 void initHunter(EvidenceClassType, char *, RoomType *, HunterType **, int);	// Initializes a HunterType
 void collectEvidence(HunterType *);					// Collects all evidence from a room
 void shareEvidence(HunterType *);					// Shares evidence with another hunter
-int containsEvidenceType(EvidenceClassType , hunter*);			// Checks if hunter's evidence array already has the evidence type we're adding
+int containsEvidenceType(EvidenceClassType , HunterType *);			// Checks if hunter's evidence array already has the evidence type we're adding
 void transferEvidenceData(HunterType *, EvidenceType *);		// Transfers evidence data to the hunter 
 void cleanupHunterData(HunterType *);					// Frees all data from a hunter
 void cleanupHunterArray(HunterArrayType *);				// Frees all data in a hunter array
