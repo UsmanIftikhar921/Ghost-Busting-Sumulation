@@ -6,18 +6,20 @@ int main(int argc, char *argv[])
     srand(time(NULL));
 
     // You may change this code; this is for demonstration purposes
+    GhostType * ghost;
+
     BuildingType building;
     initBuilding(&building);
     populateRooms(&building);
 
-    HunterType * hunter1, hunter2, hunter3, hunter4;
+    // Hunters
+    HunterType * hunter1, * hunter2, * hunter3, * hunter4;
+    initHunter(EMF, "Bill", building.rooms -> head, &hunter1, 1);
+    initHunter(TEMPERATURE, "Bob", building.rooms -> head, &hunter2, 2);
+    initHunter(FINGERPRINTS, "Bonzo", building.rooms -> head, &hunter3, 3);
+    initHunter(SOUND, "Bib", building.rooms -> head, &hunter4, 4);
 
-    initHunter(EMF, "Bill", building -> rooms -> head, &hunter1, 1);
-    initHunter(TEMPERATURE, "Bob", building -> rooms -> head, &hunter2, 2);
-    initHunter(FINGERPRINTS, "Bonzo", building -> rooms -> head, &hunter3, 3);
-    initHunter(SOUND, "Bib", building -> rooms -> head, &hunter4, 4);
-
-    GhostType * ghost;
+    // Ghost
     RoomType * ghostSpawnPoint = randRoom(building -> rooms, C_TRUE);
     initGhost(BANSHEE, ghostSpawnPoint, &ghost);
 
@@ -33,7 +35,7 @@ int main(int argc, char *argv[])
     return 0;
 }
 
-int * hunterAction (hunterType * hunter) {
+int * hunterAction (HunterType * hunter) {
 
     while (C_TRUE) {
         int actionChoice;
@@ -72,7 +74,7 @@ int * hunterAction (hunterType * hunter) {
     }
 }
 
-int * ghostAction (ghostType * ghost) {
+int * ghostAction (GhostType * ghost) {
 
     while (C_TRUE) {
         int actionChoice;

@@ -24,7 +24,7 @@ typedef enum { POLTERGEIST, BANSHEE, BULLIES, PHANTOM } GhostClassType;
 
 // Building type struct
 typedef struct {
-	GhostType * ghost;
+	struct GhostType * ghost;
 	struct RoomListType rooms;
 	struct HunterArrayType hunters;
 } BuildingType;
@@ -38,13 +38,13 @@ typedef struct {
 } RoomListType;
 
 typedef struct {
-	RoomType * roomData;
+	struct RoomType * roomData;
 	struct RoomNodeType * next;
 } RoomNodeType;
 
 typedef struct {
  	char name[MAX_STR];
- 	GhostType * ghost;
+ 	struct GhostType * ghost;
  	struct EvidenceListType * evidence;
   	struct RoomListType * attached;
   	struct HunterArrayType * hunters;
@@ -66,7 +66,7 @@ typedef struct {
 } EvidenceListType;
 
 typedef struct {
-	EvidenceType * evidenceData;
+	struct EvidenceType * evidenceData;
 	struct EvidenceNodeType * next;
 } EvidenceNodeType;
 
@@ -78,7 +78,7 @@ typedef struct {
 
 // Hunter array and type structs
 typedef struct {
-	HunterType * hunters[MAX_HUNTERS];
+	struct HunterType * hunters[MAX_HUNTERS];
 	int size;
 } HunterArrayType;
 
@@ -115,13 +115,12 @@ RoomType * randRoom(RoomListType *, int);           // Gets a random room in a l
 // Ghost functions
 void initGhost(GhostClassType, RoomType *, GhostType **);		// Initializes a GhostType
 void moveGhost(GhostType *);						// Moves a ghost to another room
-void addEvidence(GhostType *);						// Adds evidence to a room
 void cleanupGhostData(GhostType *);					// Frees all data associated with a ghost
 void spawnGhost(GhostType *, BuildingType *);                       // Adds the ghost to a random room that is not the van
 
 // Evidence functions
 void initEvidenceList(EvidenceListType *);				// Initializes an EvidenceListType
-void initEvidence(evidenceClassType, EvidenceType **);			// Initializes an EvidenceType
+void initEvidence(EvidenceClassType, EvidenceType **);			// Initializes an EvidenceType
 EvidenceType * getEvidenceAtIndex(EvidenceListType*, int);		// Returns the evidence at the index specified
 void addEvidence(EvidenceListType *, EvidenceType *);			// Adds an EvidenceType to and EvidenceTypeList
 void cleanupEvidenceData(EvidenceNodeType *);				// Frees all data associated with a piece of evidence
@@ -133,8 +132,12 @@ void cleanupEvidenceList(EvidenceListType *);				// Frees all data from an evide
 void initHunter(EvidenceClassType, char *, RoomType *, HunterType **, int);	// Initializes a HunterType
 void collectEvidence(HunterType *);					// Collects all evidence from a room
 void shareEvidence(HunterType *);					// Shares evidence with another hunter
-int containsEvidenceType(evidenceClassType , hunter*);			// Checks if hunter's evidence array already has the evidence type we're adding
+int containsEvidenceType(EvidenceClassType , hunter*);			// Checks if hunter's evidence array already has the evidence type we're adding
 void transferEvidenceData(HunterType *, EvidenceType *);		// Transfers evidence data to the hunter 
 void cleanupHunterData(HunterType *);					// Frees all data from a hunter
 void cleanupHunterArray(HunterArrayType *);				// Frees all data in a hunter array
 void moveHunter(HunterType *);                          // Moves the hunter to an adjacent room
+
+// main threading control
+void hunterAction (HunterType *);
+void ghostAction (GhostType *)
