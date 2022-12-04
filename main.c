@@ -10,6 +10,18 @@ int main(int argc, char *argv[])
     initBuilding(&building);
     populateRooms(&building);
 
+    HunterType * hunter1, hunter2, hunter3, hunter4;
+
+    initHunter(EMF, "Bill", building -> rooms -> head, &hunter1, 1);
+    initHunter(TEMPERATURE, "Bob", building -> rooms -> head, &hunter2, 2);
+    initHunter(FINGERPRINTS, "Bonzo", building -> rooms -> head, &hunter3, 3);
+    initHunter(SOUND, "Bib", building -> rooms -> head, &hunter4, 4);
+
+    GhostType * ghost;
+    RoomType * ghostSpawnPoint = randRoom(building -> rooms, C_TRUE);
+    initGhost(BANSHEE, ghostSpawnPoint, &ghost);
+
+
     pthread_t ht1, ht2, ht3, ht4, gt1;
 
     pthread_create(&ht1, NULL, hunterAction, hunter1);
