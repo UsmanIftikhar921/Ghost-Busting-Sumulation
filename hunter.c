@@ -111,17 +111,15 @@ void shareEvidence(HunterType * hunter){
                 count++;
             }
             if (count == otherHunterIndex) {
-                
+                EvidenceNodeType * evidenceNode = hunter -> evidence -> head;
+                for (int i = 0; i < hunter -> evidence -> size; i++){
+                    transferEvidenceData(huntersInRoom[i], evidenceNode -> evidenceData)
+                    evidenceNode = evidenceNode -> next;
+                }
                 break;
             }
 		}
 	}
-	
-	// If there are only two hunters in the room,
-	// Transfer all the evidence in their array to the other
-	
-	// If there are multiple hunters in the room,
-	// Pick a random hunter, and transfer all the evidence in their array
 }
 
 // Tranfers evidence data to the hunter
