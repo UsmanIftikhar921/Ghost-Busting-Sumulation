@@ -2,35 +2,35 @@
 
 int main(int argc, char *argv[])
 {
-    // Initialize a random seed for the random number generators
-    srand(time(NULL));
+//     // Initialize a random seed for the random number generators
+//     srand(time(NULL));
 
-    // You may change this code; this is for demonstration purposes
-    GhostType * ghost;
+//     // You may change this code; this is for demonstration purposes
+//     GhostType * ghost;
 
-    BuildingType building;
-    initBuilding(&building);
-    populateRooms(&building);
+//     BuildingType building;
+//     initBuilding(&building);
+//     populateRooms(&building);
 
-    // Hunters
-    HunterType * hunter1, * hunter2, * hunter3, * hunter4;
-    initHunter(EMF, "Bill", building.rooms -> head, &hunter1, 1);
-    initHunter(TEMPERATURE, "Bob", building.rooms -> head, &hunter2, 2);
-    initHunter(FINGERPRINTS, "Bonzo", building.rooms -> head, &hunter3, 3);
-    initHunter(SOUND, "Bib", building.rooms -> head, &hunter4, 4);
+//     // Hunters
+//     HunterType * hunter1, * hunter2, * hunter3, * hunter4;
+//     initHunter(EMF, "Bill", building.rooms -> head, &hunter1, 1);
+//     initHunter(TEMPERATURE, "Bob", building.rooms -> head, &hunter2, 2);
+//     initHunter(FINGERPRINTS, "Bonzo", building.rooms -> head, &hunter3, 3);
+//     initHunter(SOUND, "Bib", building.rooms -> head, &hunter4, 4);
 
-    // Ghost
-    RoomType * ghostSpawnPoint = randRoom(building -> rooms, C_TRUE);
-    initGhost(BANSHEE, ghostSpawnPoint, &ghost);
+//     // Ghost
+//     RoomType * ghostSpawnPoint = randRoom(building -> rooms, C_TRUE);
+//     initGhost(BANSHEE, ghostSpawnPoint, &ghost);
 
 
-    pthread_t ht1, ht2, ht3, ht4, gt1;
+//     pthread_t ht1, ht2, ht3, ht4, gt1;
 
-    pthread_create(&ht1, NULL, hunterAction, hunter1);
-    pthread_create(&ht2, NULL, hunterAction, hunter2);
-    pthread_create(&ht3, NULL, hunterAction, hunter3);
-    pthread_create(&ht4, NULL, hunterAction, hunter4);
-    pthread_create(&gt1, NULL, ghostAction, ghost);
+//     pthread_create(&ht1, NULL, hunterAction, hunter1);
+//     pthread_create(&ht2, NULL, hunterAction, hunter2);
+//     pthread_create(&ht3, NULL, hunterAction, hunter3);
+//     pthread_create(&ht4, NULL, hunterAction, hunter4);
+//     pthread_create(&gt1, NULL, ghostAction, ghost);
 
     return 0;
 }
@@ -72,6 +72,7 @@ int hunterAction (HunterType * hunter) {
 
         sleep(1);
     }
+    return 0;
 }
 
 int ghostAction (GhostType * ghost) {
@@ -95,7 +96,7 @@ int ghostAction (GhostType * ghost) {
         if (actionChoice == 1) {
             addGhostEvidence(ghost);
         } else if (actionChoice == 2) {
-            pritnf("THE GHOST TWIDDLES IT'S THUMBS")
+            printf("THE GHOST TWIDDLES IT'S THUMBS");
         } else if (actionChoice == 3) {
             moveGhost(ghost);
         }
@@ -107,6 +108,7 @@ int ghostAction (GhostType * ghost) {
 
         sleep(1);
     }
+    return 0;
 }
 
 
