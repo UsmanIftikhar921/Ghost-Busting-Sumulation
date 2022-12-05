@@ -6,7 +6,7 @@
        in:   a pointer to a RoomListType
    return:   a pointer to a RoomListType that has been initialized
 */
-void initRoomList(RoomListType * roomList){
+void initRoomList(struct RoomListType * roomList){
 	roomList->head = NULL;
 	roomList->tail = NULL;
 	roomList->size = 0;
@@ -47,7 +47,7 @@ void addRoom(RoomListType * list, RoomType * room){
 	newNode = calloc(1, sizeof(RoomNodeType));
 	
 	//The data of the new node is the room data
-	newNode -> data = room;
+	newNode -> roomData = room;
 	
 	//The new tail does not have any nodes after it, so make sure to mark it as so
 	newNode -> next = NULL;
@@ -111,7 +111,7 @@ void cleanupRoomList(RoomListType * roomList){
 	// Clean up every room in the room list
 	for(int i = 0; i < roomListSize; i++){
 		nextNode = currNode -> next;
-		cleanupRoom(currNode -> data);
+		cleanupRoom(currNode -> roomData);
 		free(currNode);
 		currNode = nextNode;
 	}
@@ -125,21 +125,23 @@ void cleanupRoomList(RoomListType * roomList){
    return:   a pointer to a room that has been randomly chosen
 */
 RoomType * randRoom(RoomListType * roomList, int spawnGhostCheck) {
-    if (spawnGhostCheck == C_FALSE) {
-        int selectedRoom = randInt(0, roomList -> size - 1);
-    } else {
-        int selectedRoom = randInt(1, roomList -> size - 1);
-    }
+	int selectedRoom;
+    	if (spawnGhostCheck == C_FALSE) {
+        	selectedRoom = randInt(0, roomList -> size - 1);
+    	} else {
+        	selectedRoom = randInt(1, roomList -> size - 1);
+    	}
 
-    RoomNodeType currRoom = roomList -> head;
+    	RoomNodeType * currRoom = roomList -> head;
 
-    for (int i = 0; i < roomList -> size; i++) {
-        if (i == selected) {
-            return currRoom -> roomData;
-        } else {
-            currRoom = currRoom -> next;
-        }
-    }
+    	for (int i = 0; i < roomList -> size; i++) {
+        	if (i == selectedRoom) {
+            	return currRoom -> roomData;
+        	} else {
+            	currRoom = currRoom -> next;
+        	}
+    	}
+    	return roomList -> head -> roomData;
 }
 
 

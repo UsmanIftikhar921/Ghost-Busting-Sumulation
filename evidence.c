@@ -19,9 +19,9 @@ void initEvidenceList(EvidenceListType * evidenceList) {
        in:   an evidenceClassType to tell what type of evidence it is
    return:   a pointer to an EvidenceType with initialized contents
 */
-void initEvidence(evidenceClassType evClass, EvidenceType ** evidence) {
+void initEvidence(EvidenceClassType evClass, EvidenceType ** evidence) {
 	// Allocate memory to the evidence 
-	EvidenceType tempEv = (EvidenceType*) calloc(1, sizeof(EvidenceType);
+	EvidenceType * tempEv = (EvidenceType*) calloc(1, sizeof(EvidenceType));
 	
 	if (evClass == EMF) {
 		tempEv->value = randFloat(4.7, 5);
@@ -54,14 +54,13 @@ void initEvidence(evidenceClassType evClass, EvidenceType ** evidence) {
    return:   an address to an EvidenceType at the specified index, or an error message
 */
 EvidenceType * getEvidenceAtIndex(EvidenceListType * evidenceList, int index){
-	evidenceListSize = evidenceList -> size;					// Size of the evidence list
+	int evidenceListSize = evidenceList -> size;					// Size of the evidence list
 	int i = 0;									// Current index in the list
 	
 	// If the index is valid:
 	if (index <= evidenceListSize) {
 		// Make two temporary nodes to iterate through the linked list
-		EvidenceNodeType * currNode = evidenceList -> head;
-		EvidenceNodeType * nextNode;
+		struct EvidenceNodeType * currNode = evidenceList -> head;
 		
 		// Keep looping till you find a matching index
 		while (currNode != NULL){
@@ -71,7 +70,7 @@ EvidenceType * getEvidenceAtIndex(EvidenceListType * evidenceList, int index){
 		}
 		
 		if (i != index) printf("SOMETHING WENT WRONG WHILE SEARCHING FOR THE EVIDENCE!\n");
-		else return currNode;
+		else return currNode -> evidenceData;
 	}
 	else printf("Invalid Index!\n");
 }
@@ -91,10 +90,10 @@ void addEvidence(EvidenceListType * list, EvidenceType * evidence){
 	newNode = calloc(1, sizeof(EvidenceNodeType));
 	
 	//The data of the new node is the evidence data
-	newNode->data = evidence;
+	newNode -> evidenceData = evidence;
 	
 	//The new tail does not have any nodes after it, so make sure to mark it as so
-	newRoomNode->next = NULL;
+	newNode -> next = NULL;
 	
 	// If list is empty:
 	if (list -> head == NULL) {
@@ -147,6 +146,6 @@ void cleanupEvidenceList(EvidenceListType * evList) {
 		nextEv = currEv -> next;
 		cleanupEvidenceData(currEv);
         	cleanupEvidenceNode(currEv);
-		currRoom = nextRoom;
+		currEv = nextEv;
 	}
 }	

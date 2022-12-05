@@ -26,7 +26,7 @@ void initGhost(GhostClassType gc, RoomType * room, GhostType ** ghost){
 */
 void moveGhost(GhostType * ghost){
 	// Check the rooms that are attached to the room the ghost is currently in:
-	struct RoomListType * roomList = ghost -> room -> attached;
+	RoomListType * roomList = ghost -> room -> attached;
 	
 	// Change the ghost's room pointer to a random room from that room's connected rooms
 	ghost -> room = randRoom(roomList, C_FALSE);
@@ -40,7 +40,7 @@ void moveGhost(GhostType * ghost){
 */
 void addGhostEvidence(GhostType * ghost){
 	GhostClassType ghostType = ghost -> ghostType;		// The Type of Ghost
-	struct EvidenceListType * roomEvidenceList = ghost -> room -> evidence;		// The Room's Evidence List
+	EvidenceListType * roomEvidenceList = ghost -> room -> evidence;		// The Room's Evidence List
 	EvidenceType * tempEvidence;				// A Temporary Evidence Variable
 	int ghostTypeNum = randInt(1,3);			// A random number b/w one to three, used to determine which type of evidence to drop
 	
@@ -92,7 +92,7 @@ void addGhostEvidence(GhostType * ghost){
 */
 void spawnGhost(GhostType * ghost, BuildingType * building){
 	// Check the rooms that are attached to the room the ghost is currently in:
-	struct RoomListType * roomList = building -> rooms;
+	RoomListType * roomList = building -> rooms;
 
 	// Change the ghost's room pointer to a random room from that room's connected rooms
 	ghost -> room = randRoom(roomList, C_TRUE);

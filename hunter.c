@@ -45,7 +45,7 @@ void moveHunter (HunterType * hunter) {
 	removeHunterFromRoom(hunter, hunter -> room);
 	
 	// Check the rooms that are attached to the room the hunter is currently in:
-	RoomListType * roomList = hunter -> room -> attached
+	RoomListType * roomList = hunter -> room -> attached;
 
 	// Change the hunters's room pointer to a random room from that room's connected rooms
 	hunter -> room = randRoom(roomList, C_FALSE);
@@ -67,18 +67,18 @@ void collectEvidence(HunterType * hunter){
 	RoomType * currRoom = hunter -> room;				// Current room hunter is in
 	EvidenceListType * evidenceList = currRoom -> evidence;		// Said room's evidence List
 	int evidenceSize = evidenceList -> size;			// Size of the evidence list
-	EvidenceListType * tempEvidence;				// Temporarily store the evidence in this variable
+	EvidenceType * tempEvidence;				// Temporarily store the evidence in this variable
 	
 	printf("COLLECTING EVIDENCE...\n");
 	
 	// Does the room have any evidence in it's evidence linked list?
 	if(evidenceSize > 0){
 		// If yes, collect a random piece of evidence (choose an int between 0 and size of the linked list)
-		int randomEvidenceIndex = randint(0,(evidenceSize-1));
-		tempEvidence = getEvidenceAtIndex(evidenceList, currRoomrandomEvidenceIndex);
+		int randomEvidenceIndex = randInt(0,(evidenceSize-1));
+		tempEvidence = getEvidenceAtIndex(evidenceList, randomEvidenceIndex);
 		
 		// Check if the evidence is ghostly or not:
-		if ( checkGhostlyEvidence(tempEvidence) > 0 ){
+		if (tempEvidence -> ghostliness == GHOSTLY){
 			// Store the evidence data by adding it to your own linked list
 			addEvidence(hunter -> evidence, tempEvidence);
 		}
@@ -96,33 +96,34 @@ void collectEvidence(HunterType * hunter){
 void shareEvidence(HunterType * hunter){
 	// Note: Only transfer evidence that is not in standard values
 	
-	HunterArrayType * huntersInRoom = hunter -> room -> hunters;			// An array of hunters currently in the room
+	struct HunterArrayType * huntersInRoom = hunter -> room -> hunters;			// An array of hunters currently in the room
 	int numOfHuntersInRoom = huntersInRoom -> size;					// The number of hunters currently in the room
 	int numOfEvidence = hunter -> evidence -> size;					// The number of evidence in the hunter's evidence list
 	
 	// If there are at least two hunters in the room:
 	if (numOfHuntersInRoom >= 2){
 		// Choose a second random hunter by index
-		HunterType * otherHunter;
-		int otherHunterIndex = randint(1,numOfHuntersInRoom);			// A randomly chosen index in the hunter's array
-        int count = 0;
+		int otherHunterIndex = randInt(1,numOfHuntersInRoom);			// A randomly chosen index in the hunter's array
+        	int count = 0;
 
-		HunterType * currHunter = huntersInRoom[0]	
+		struct HunterType * currHunter = huntersInRoom -> hunters[0];
 		
 		// In a for loop, transfer all evidence to the other hunter's evidence list
 		for (int i = 0; i < numOfHuntersInRoom; i++){
+			currHunter = huntersInRoom -> hunters[i];
 			// If they are not the same hunter
-			if (huntersInRoom[i] -> id != hunter -> id){	
-                count++;
-            }
-            if (count == otherHunterIndex) {
-                EvidenceNodeType * evidenceNode = hunter -> evidence -> head;
-                for (int i = 0; i < hunter -> evidence -> size; i++){
-                    transferEvidenceData(huntersInRoom[i], evidenceNode -> evidenceData)
-                    evidenceNode = evidenceNode -> next;
-                }
-                break;
-            }
+			if (currHunter -> id != hunter -> id){	
+                		count++;
+                		
+            		}
+            		if (count == otherHunterIndex) {
+                		EvidenceNodeType * evidenceNode = hunter -> evidence -> head;
+                		for (int i = 0; i < numOfEvidence; i++){
+                    			transferEvidenceData(huntersInRoom -> hunters[i], evidenceNode -> evidenceData);
+                    			evidenceNode = evidenceNode -> next;
+                		}
+                		break;
+            		}
 		}
 	}
 }
@@ -146,17 +147,17 @@ void addHunterToRoom(HunterType * hunter, RoomType * room){
 	
 	// Loop through the list till you find a NULL space
 	for (int i = 0; i < MAX_HUNTERS; i++){
-		currHunter= room -> hunters[i];
+		currHunter = room -> hunters -> hunters[i];
 		// If found, return the index at which the hunter is at
 		if (currHunter == NULL) index = i;
 	}
 	
 	// Add hunter at index i
-	room -> hunters[index] = hunter;
+	room -> hunters -> hunters[index] = hunter;
 }
 
 // Remove hunter from the room's hunter list
-void removeHunterFromRoom(HunterType * hunter, roomType * room){
+void removeHunterFromRoom(HunterType * hunter, RoomType * room){
 	// Find the hunter with the same ID in the hunters array
 	int index = -1;
 	int currId;
@@ -164,17 +165,17 @@ void removeHunterFromRoom(HunterType * hunter, roomType * room){
 	
 	// Loop over the list till you find the hunter
 	for (int i = 0; i < MAX_HUNTERS; i++){
-		currHunter= room -> hunters[i];
+		currHunter= room -> hunters -> hunters[i];
 		
 		if (currHunter != NULL){
 			currId = currHunter -> id;
 			
 			// If found, return the index at which the hunter is at
-			if (id == currId) index = i;
+			if (hunter -> id == currId) index = i;
 		}
 	}
 	
-	if (index != -1) room -> hunters[index] = NULL;
+	if (index != -1) room -> hunters -> hunters[index] = NULL;
 	else printf("COULD NOT FIND HUNTER!");
 }
 
@@ -210,9 +211,9 @@ void cleanupHunterData(HunterType * hunter){
 
 // Cleans up the entire hunter array from memory
 void cleanupHunterArray(HunterArrayType * hunterArray){
-	hunterArraySize = hunterArray -> size;
+	int hunterArraySize = hunterArray -> size;
 	
-	for (int i = 0, i < hunterArraySize; i++){
-		cleanupHunterData(hunterArray[i]);
+	for (int i = 0; i < hunterArraySize; i++){
+		cleanupHunterData(hunterArray -> hunters[i]);
 	}
 }
