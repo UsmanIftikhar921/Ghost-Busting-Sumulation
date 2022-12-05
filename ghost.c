@@ -13,7 +13,7 @@ void initGhost(GhostClassType gc, RoomType * room, GhostType ** ghost){
 	(*ghost) = (GhostType*)calloc(1, sizeof(GhostType));
 	
 	// Initialize it's ghost class, the current room it's in, and the boredom
-	(*ghost) -> ghostClass = gc;
+	(*ghost) -> ghostType = gc;
 	(*ghost) -> room = room;
 	(*ghost) -> boredom = 0;
 }
@@ -26,7 +26,7 @@ void initGhost(GhostClassType gc, RoomType * room, GhostType ** ghost){
 */
 void moveGhost(GhostType * ghost){
 	// Check the rooms that are attached to the room the ghost is currently in:
-	RoomListType * roomList = ghost -> room -> attached	
+	struct RoomListType * roomList = ghost -> room -> attached;
 	
 	// Change the ghost's room pointer to a random room from that room's connected rooms
 	ghost -> room = randRoom(roomList, C_FALSE);
@@ -39,10 +39,10 @@ void moveGhost(GhostType * ghost){
    return:   a pointer to a room with evidence inside of it's evidence list
 */
 void addGhostEvidence(GhostType * ghost){
-	GhostClassType ghostType = ghost -> ghostClass;		// The Type of Ghost
-	roomEvidenceList = ghost -> room -> evidence;		// The Room's Evidence List
+	GhostClassType ghostType = ghost -> ghostType;		// The Type of Ghost
+	struct EvidenceListType * roomEvidenceList = ghost -> room -> evidence;		// The Room's Evidence List
 	EvidenceType * tempEvidence;				// A Temporary Evidence Variable
-	int ghostTypeNum = randint(1,3);			// A random number b/w one to three, used to determine which type of evidence to drop
+	int ghostTypeNum = randInt(1,3);			// A random number b/w one to three, used to determine which type of evidence to drop
 	
 	//Print out Ghost Type:
 	switch(ghostType){
@@ -92,7 +92,7 @@ void addGhostEvidence(GhostType * ghost){
 */
 void spawnGhost(GhostType * ghost, BuildingType * building){
 	// Check the rooms that are attached to the room the ghost is currently in:
-	RoomListType * roomList = building -> rooms;
+	struct RoomListType * roomList = building -> rooms;
 
 	// Change the ghost's room pointer to a random room from that room's connected rooms
 	ghost -> room = randRoom(roomList, C_TRUE);

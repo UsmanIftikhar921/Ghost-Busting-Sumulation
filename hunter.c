@@ -27,6 +27,10 @@ void initHunter(EvidenceClassType ec, char * name, RoomType * room, HunterType *
 	(*hunterPtr) -> id = id;
 }
 
+void initHunterArray(HunterArrayType * hunterArray) {
+	hunterArray -> size = 0;
+}
+
 /*
   Function:  moveHunter
   Purpose:   moves a hunter from one room to the next
@@ -38,7 +42,7 @@ void moveHunter (HunterType * hunter) {
 	hunter -> room -> hunters -> size--;
 	
 	// Remove hunter from linked list
-	removeHunterFromRoom(hunter);
+	removeHunterFromRoom(hunter, hunter -> room);
 	
 	// Check the rooms that are attached to the room the hunter is currently in:
 	RoomListType * roomList = hunter -> room -> attached
@@ -47,7 +51,7 @@ void moveHunter (HunterType * hunter) {
 	hunter -> room = randRoom(roomList, C_FALSE);
 	
 	// Add hunter to the linked list
-	addHunterToRoom(hunter);
+	addHunterToRoom(hunter, hunter -> room);
 	
 	// Increase the number of hunters in the current room
 	hunter -> room -> hunters -> size++;
