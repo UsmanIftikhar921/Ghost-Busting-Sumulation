@@ -58,21 +58,22 @@ EvidenceType * getEvidenceAtIndex(EvidenceListType * evidenceList, int index){
 	int i = 0;									// Current index in the list
 	
 	// If the index is valid:
-	if (index <= evidenceListSize) {
+	if (index <= evidenceListSize && evidenceListSize > 0) {
 		// Make two temporary nodes to iterate through the linked list
 		struct EvidenceNodeType * currNode = evidenceList -> head;
 		
 		// Keep looping till you find a matching index
 		while (currNode != NULL){
+			i++;
 			if (i == index) break;
 			currNode = currNode -> next;
-			i++;
 		}
 		
 		if (i != index) printf("SOMETHING WENT WRONG WHILE SEARCHING FOR THE EVIDENCE!\n");
 		else return currNode -> evidenceData;
 	}
 	else printf("Invalid Index!\n");
+	return NULL;
 }
 
 /*
