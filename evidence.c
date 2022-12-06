@@ -87,7 +87,7 @@ void addEvidence(EvidenceListType * list, EvidenceType * evidence){
 	EvidenceNodeType * newNode;
 	
 	//Assign memory to the new node
-	newNode = calloc(1, sizeof(EvidenceNodeType));
+	newNode = (EvidenceNodeType*)calloc(1, sizeof(EvidenceNodeType));
 	
 	//The data of the new node is the evidence data
 	newNode -> evidenceData = evidence;
@@ -106,6 +106,7 @@ void addEvidence(EvidenceListType * list, EvidenceType * evidence){
 		list -> tail -> next = newNode;
 		list -> tail = newNode;
    	}
+   	list -> size++;
 }
 
 /*

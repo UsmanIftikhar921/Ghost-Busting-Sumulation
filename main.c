@@ -2,120 +2,141 @@
 
 int main(int argc, char *argv[])
 {
-//     // Initialize a random seed for the random number generators
-       srand(time(NULL));
+     	// Initialize a random seed for the random number generators
+       	srand(time(NULL));
+	
+       	BuildingType building;
+       	initBuilding(&building);
+       	populateRooms(&building);
+
+       	// Ghost
+       	GhostType * ghost;
+       	RoomType * ghostSpawnPoint = randRoom(building.rooms, C_TRUE);
+
+       	initGhost(BANSHEE, ghostSpawnPoint, &ghost);
 
 
-       BuildingType building;
-       initBuilding(&building);
-       populateRooms(&building);
-       
-       printf("%s", building.rooms->head->next->roomData->attached->head->roomData->name);
+       	// Hunters
+       	HunterType * hunter1, * hunter2, * hunter3, * hunter4;
+       	initHunter(EMF, "Bill", building.rooms -> head -> roomData, &hunter1, 1);
+       	//initHunter(TEMPERATURE, "Bob", building.rooms -> head -> roomData, &hunter2, 2);
+       	//initHunter(FINGERPRINTS, "Bonzo", building.rooms -> head -> roomData, &hunter3, 3);
+       	//initHunter(SOUND, "Bib", building.rooms -> head -> roomData, &hunter4, 4);
 
-       // Ghost
-       //GhostType * ghost;
-       //RoomType * ghostSpawnPoint = randRoom(building.rooms, C_TRUE);
-       //initGhost(BANSHEE, ghostSpawnPoint, &ghost);
-       
+	pthread_t  ht1, ht2, ht3, ht4, gt1;
+
+	pthread_create(&ht1, NULL, hunterAction, hunter1);
+	//pthread_create(&ht2, NULL, hunterAction, hunter2);
+	//pthread_create(&ht3, NULL, hunterAction, hunter3);
+	//pthread_create(&ht4, NULL, hunterAction, hunter4);
+	pthread_create(&gt1, NULL, ghostAction, ghost);
+
+	pthread_join(ht1, NULL);
+	printf("\nh1 is back\n");
+	//pthread_join(ht2, NULL);
+	//printf("h2 is back\n");
+	//pthread_join(ht3, NULL);
+	//printf("h3 is back\n");
+	//pthread_join(ht4, NULL);
+	//printf("h4 is back\n");
+	pthread_join(gt1, NULL);
+	printf("gt1 is back\n");
 
 
-
-
-//     // Hunters
-//     HunterType * hunter1, * hunter2, * hunter3, * hunter4;
-//     initHunter(EMF, "Bill", building.rooms -> head, &hunter1, 1);
-//     initHunter(TEMPERATURE, "Bob", building.rooms -> head, &hunter2, 2);
-//     initHunter(FINGERPRINTS, "Bonzo", building.rooms -> head, &hunter3, 3);
-//     initHunter(SOUND, "Bib", building.rooms -> head, &hunter4, 4);
-
-
-
-
-//     pthread_t ht1, ht2, ht3, ht4, gt1;
-
-//     pthread_create(&ht1, NULL, hunterAction, hunter1);
-//     pthread_create(&ht2, NULL, hunterAction, hunter2);
-//     pthread_create(&ht3, NULL, hunterAction, hunter3);
-//     pthread_create(&ht4, NULL, hunterAction, hunter4);
-//     pthread_create(&gt1, NULL, ghostAction, ghost);
-
-    return 0;
+    	return 0;
 }
 
-int hunterAction (HunterType * hunter) {
+void * hunterAction (void * hunter) {
 
-    while (C_TRUE) {
-        int actionChoice;
+	HunterType * gameHunter = (HunterType*)hunter;
 
-        if (hunter -> room -> ghost != NULL) {
-            hunter -> fear += FEAR_RATE;
-        }
+    	for (int i = 0; i < 100; i++) {
+        	int actionChoice;
 
-
-        if (hunter -> room -> hunters -> size != 1) {
-            actionChoice = randInt(1,3);
-        } else {
-            actionChoice = randInt(1,2);
-        }
-
-        if (actionChoice == 1) {
-            moveHunter(hunter);
-        } else if (actionChoice == 2) {
-            collectEvidence(hunter);
-        } else if (actionChoice == 3) {
-            shareEvidence(hunter);
-        }
+        	if (gameHunter -> room -> ghost != NULL) {
+            		gameHunter -> fear += FEAR_RATE;
+        	}
 
 
-        if (hunter -> evidence -> size >= 3) {
-            break;
-        }
-        if (hunter -> boredom <= 0) {
-            break;            
-        }
-        if (hunter -> fear >= MAX_FEAR) {
-            break;
-        }
+        	if (gameHunter -> room -> hunters -> size != 1) {
+            		actionChoice = randInt(1,3);
+        	} else {
+            		actionChoice = randInt(1,2);
+        	}
 
-        sleep(1);
-    }
-    return 0;
+        	if (actionChoice == 1) {
+			sem_wait(&gameHunter -> room -> mutex);
+            		moveHunter(gameHunter);
+            		printf("Hunter Move %s\n", gameHunter -> room -> name);
+			sem_post(&gameHunter -> room -> mutex);
+        	} else if (actionChoice == 2) {
+			sem_wait(&gameHunter -> room -> mutex);
+            		collectEvidence(gameHunter);
+            		printf("Hunter Collect Evidence\n");
+			sem_post(&gameHunter -> room -> mutex);
+        	} else if (actionChoice == 3) {
+			sem_wait(&gameHunter -> room -> mutex);
+           	 	shareEvidence(gameHunter);
+           	 	printf("Hunter Share Evidence\n");
+			sem_post(&gameHunter -> room -> mutex);
+        	}
+
+
+        	if (gameHunter -> evidence -> size >= 3) {
+            		break;
+        	}
+        	if (gameHunter -> boredom <= 0) {
+            		break;            
+        	}
+        	if (gameHunter -> fear >= MAX_FEAR) {
+            		break;
+        	}
+
+        	sleep(1);
+    	}
+    	return 0;
 }
 
-int ghostAction (GhostType * ghost) {
-
-    while (C_TRUE) {
-        int actionChoice;
-
-        if (ghost -> room -> hunters -> size == 0) {
-            ghost -> boredom--;
-        } else {
-            ghost -> boredom = BOREDOM_MAX;
-        }
-
-
-        if (ghost -> room -> hunters -> size >= 1) {
-            actionChoice = randInt(1,2);
-        } else {
-            actionChoice = randInt(1,3);
-        }
-
-        if (actionChoice == 1) {
-            addGhostEvidence(ghost);
-        } else if (actionChoice == 2) {
-            printf("THE GHOST TWIDDLES IT'S THUMBS");
-        } else if (actionChoice == 3) {
-            moveGhost(ghost);
-        }
+void * ghostAction (void * ghost) {
+	GhostType * gameGhost = (GhostType*)ghost;
+    	for (int i = 0; i < 100; i++) {
+        	int actionChoice;
+	
+        	if (gameGhost -> room -> hunters -> size == 0) {
+        		gameGhost -> boredom--;
+        	} else {
+            		gameGhost -> boredom = BOREDOM_MAX;
+        	}
 
 
-        if (ghost -> boredom <= 0) {
-            break;            
-        }
+        	if (gameGhost -> room -> hunters -> size >= 1) {
+            		actionChoice = randInt(1,2);
+        	} else {
+	            	actionChoice = randInt(1,3);
+        	}
 
-        sleep(1);
-    }
-    return 0;
+        	if (actionChoice == 1) {
+			sem_wait(&gameGhost -> room -> mutex);
+            		addGhostEvidence(gameGhost);
+            		printf("Ghost Haunt\n");
+			sem_post(&gameGhost -> room -> mutex);
+        	} else if (actionChoice == 2) {
+            		printf("Ghost Wait\n");
+        	} else if (actionChoice == 3) {
+            		moveGhost(gameGhost);
+            		printf("Ghost Move %s\n", gameGhost -> room -> name);
+        	} else {
+        		printf("Error\n");
+        	}
+
+
+        	if (gameGhost -> boredom <= 0) {
+            		break;            
+        	}
+
+        	sleep(1);
+    	}
+    	return 0;
 }
 
 
@@ -127,8 +148,14 @@ int ghostAction (GhostType * ghost) {
    return:   randomly generated integer in the range [min, max-1) 
 */
 int randInt(int min, int max) {
-    return rand() % (max - min) + min;
-}
+ 	
+    	return rand() % (max - min + 1) + min;
+ 	//srand(time(0));
+	
+ 	//int val = (rand() % (max - min + 1)) + min;
+	
+ 	//return val;
+ }
 
 /*
   Function:  randFloat

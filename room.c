@@ -23,12 +23,7 @@ void initRoomList(struct RoomListType * roomList){
 void initRoom(RoomType ** room, char * name){
 
 	RoomType * roomInit = (RoomType*)calloc(1,sizeof(RoomType));
-	
-	
-
-	//Assign memory for the room data
-	*room = calloc(1, sizeof(RoomType));
-	
+		
 	//Initialize the room's Name
 	strcpy(roomInit -> name, name);
 	
@@ -41,8 +36,14 @@ void initRoom(RoomType ** room, char * name){
 	initRoomList(rooms);
 	roomInit -> attached = rooms;
 	
+	HunterArrayType * hunters = (HunterArrayType*)calloc(1,sizeof(HunterArrayType));
+	initHunterArray(hunters);
+	roomInit -> hunters = hunters;
 	
-	//initHunterArray((*room) -> hunters);
+	sem_t mutex;
+	sem_init(&mutex, 0, 1);
+	roomInit -> mutex = mutex;
+	
 	
 	*room = roomInit;
 }
@@ -78,6 +79,7 @@ void addRoom(RoomListType * list, RoomType * room){
 		list -> tail -> next = newNode;
 		list -> tail = newNode;
    	}
+   	list -> size++;
 }
 
 /*
@@ -146,14 +148,14 @@ RoomType * randRoom(RoomListType * roomList, int spawnGhostCheck) {
     	} else {
         	selectedRoom = randInt(1, roomList -> size - 1);
     	}
-
+	
     	RoomNodeType * currRoom = roomList -> head;
 
     	for (int i = 0; i < roomList -> size; i++) {
         	if (i == selectedRoom) {
-            	return currRoom -> roomData;
+            		return currRoom -> roomData;
         	} else {
-            	currRoom = currRoom -> next;
+            		currRoom = currRoom -> next;
         	}
     	}
     	return roomList -> head -> roomData;

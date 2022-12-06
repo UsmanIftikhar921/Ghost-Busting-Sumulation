@@ -15,7 +15,7 @@ void initGhost(GhostClassType gc, RoomType * room, GhostType ** ghost){
 	// Initialize it's ghost class, the current room it's in, and the boredom
 	(*ghost) -> ghostType = gc;
 	(*ghost) -> room = room;
-	(*ghost) -> boredom = 0;
+	(*ghost) -> boredom = BOREDOM_MAX;
 }
 
 /*
@@ -27,9 +27,10 @@ void initGhost(GhostClassType gc, RoomType * room, GhostType ** ghost){
 void moveGhost(GhostType * ghost){
 	// Check the rooms that are attached to the room the ghost is currently in:
 	RoomListType * roomList = ghost -> room -> attached;
-	
+	ghost -> room -> ghost = NULL;
 	// Change the ghost's room pointer to a random room from that room's connected rooms
 	ghost -> room = randRoom(roomList, C_FALSE);
+	ghost -> room -> ghost = ghost;
 }
 
 /*
@@ -39,9 +40,11 @@ void moveGhost(GhostType * ghost){
    return:   a pointer to a room with evidence inside of it's evidence list
 */
 void addGhostEvidence(GhostType * ghost){
+	//sem_wait(ghost -> room -> evidence -> mutex);
+
 	GhostClassType ghostType = ghost -> ghostType;		// The Type of Ghost
 	EvidenceListType * roomEvidenceList = ghost -> room -> evidence;		// The Room's Evidence List
-	EvidenceType * tempEvidence;				// A Temporary Evidence Variable
+	EvidenceType * tempEvidence = (EvidenceType*)calloc(1, sizeof(EvidenceType));;				// A Temporary Evidence Variable
 	int ghostTypeNum = randInt(1,3);			// A random number b/w one to three, used to determine which type of evidence to drop
 	
 	//Print out Ghost Type:
@@ -81,6 +84,7 @@ void addGhostEvidence(GhostType * ghost){
 	
 	// Add the evidence data to the room's evidence linked list
 	addEvidence(roomEvidenceList, tempEvidence);
+	//sem_post(ghost -> room -> evidence -> mutex);
 }
 
 /*

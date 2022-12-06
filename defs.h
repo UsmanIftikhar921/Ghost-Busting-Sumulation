@@ -25,6 +25,7 @@ typedef enum { POLTERGEIST, BANSHEE, BULLIES, PHANTOM } GhostClassType;
 // Hunder list
 typedef struct HunterArrayType {
 	struct HunterType * hunters[MAX_HUNTERS];
+	sem_t * mutex;
 	int size;
 } HunterArrayType;
 
@@ -33,6 +34,7 @@ typedef struct HunterArrayType {
 typedef struct EvidenceListType {
 	struct EvidenceNodeType * head;
 	struct EvidenceNodeType * tail;
+	sem_t * mutex;
 	int size;
 } EvidenceListType;
 
@@ -60,6 +62,7 @@ typedef struct RoomType {
  	EvidenceListType * evidence;
   	RoomListType * attached;
   	HunterArrayType * hunters;
+	sem_t mutex;
 } RoomType;
  
 // Ghost type struct
@@ -145,5 +148,5 @@ void removeHunterFromRoom(HunterType *, RoomType *);
 void addHunterToRoom(HunterType *, RoomType *);
 
 // main threading control
-int hunterAction (HunterType *);
-int ghostAction (GhostType *);
+void * hunterAction (void *);
+void * ghostAction (void *);
