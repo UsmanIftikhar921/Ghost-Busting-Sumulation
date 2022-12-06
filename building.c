@@ -2,15 +2,17 @@
 
 /*
   Function:  initBuilding
-  Purpose:   initialize an building by initializing it's room list, it's hunter list, and assigning a ghost to it
+  Purpose:   initialize an building by initializing it's room list, it's hunter list, and assigning a ghost to NULL
        in:   a pointer to a BuildingType
-       in:   a pointer to a GhostType
    return:   a pointer to a BuildingType that has been initialized
 */
-void initBuilding(BuildingType * building, GhostType * ghost){
+void initBuilding(BuildingType * building){
 	// Initialize The Rooms List and Hunter Array
-	initRoomList(building -> rooms);
-	building -> ghost = ghost;
+	RoomListType * rooms = (RoomListType*)calloc(1, sizeof(RoomListType));
+	initRoomList(rooms);
+	
+	building -> rooms = rooms;
+	building -> ghost = NULL;
 }
 
 /*
@@ -45,90 +47,65 @@ void cleanupBuilding(BuildingType * building){
 void populateRooms(BuildingType* building) {
     // First, create each room. Perhaps you want to include more data 
     // in the init parameters?
-    //RoomType* van = calloc(1, sizeof(RoomType));
-    //initRoom(van, "Van");
-    //RoomType* hallway = calloc(1, sizeof(RoomType));
-    //initRoom(hallway, "Hallway");
-    //RoomType* master_bedroom = calloc(1, sizeof(RoomType));
-    //initRoom(master_bedroom, "Master Bedroom");
-    //RoomType* boys_bedroom = calloc(1, sizeof(RoomType));
-    //initRoom(boys_bedroom, "Boy's Bedroom");
-    //RoomType* bathroom = calloc(1, sizeof(RoomType));
-    //initRoom(bathroom, "Bathroom");
-    //RoomType* basement = calloc(1, sizeof(RoomType));
-    //initRoom(basement, "Basement");
-    //RoomType* basement_hallway = calloc(1, sizeof(RoomType));
-    //initRoom(basement_hallway, "Basement Hallway");
-    //RoomType* right_storage_room = calloc(1, sizeof(RoomType));
-    //initRoom(right_storage_room, "Right Storage Room");
-    //RoomType* left_storage_room = calloc(1, sizeof(RoomType));
-    //initRoom(left_storage_room, "Left Storage Room");
-    //RoomType* kitchen = calloc(1, sizeof(RoomType));
-    //initRoom(kitchen, "Kitchen");
-    //RoomType* living_room = calloc(1, sizeof(RoomType));
-    //initRoom(living_room, "Living Room");
-    //RoomType* garage = calloc(1, sizeof(RoomType));
-    //initRoom(garage, "Garage");
-    //RoomType* utility_room = calloc(1, sizeof(RoomType));
-    //initRoom(utility_room, "Utility Room");
+    
+    //First, create each room. Perhaps you want to include more data 
+    //in the init parameters?
+    RoomType* van = calloc(1, sizeof(RoomType));
+    initRoom(&van, "Van");
+    RoomType* hallway = calloc(1, sizeof(RoomType));
+    initRoom(&hallway, "Hallway");
+    RoomType* master_bedroom = calloc(1, sizeof(RoomType));
+    initRoom(&master_bedroom, "Master Bedroom");
+    RoomType* boys_bedroom = calloc(1, sizeof(RoomType));
+    initRoom(&boys_bedroom, "Boy's Bedroom");
+    RoomType* bathroom = calloc(1, sizeof(RoomType));
+    initRoom(&bathroom, "Bathroom");
+    RoomType* basement = calloc(1, sizeof(RoomType));
+    initRoom(&basement, "Basement Staircase");
+    RoomType* basement_hallway = calloc(1, sizeof(RoomType));
+    initRoom(&basement_hallway, "Basement Hallway");
+    RoomType* right_storage_room = calloc(1, sizeof(RoomType));
+    initRoom(&right_storage_room, "Right Storage Room");
+    RoomType* left_storage_room = calloc(1, sizeof(RoomType));
+    initRoom(&left_storage_room, "Left Storage Room");
+    RoomType* kitchen = calloc(1, sizeof(RoomType));
+    initRoom(&kitchen, "Kitchen");
+    RoomType* living_room = calloc(1, sizeof(RoomType));
+    initRoom(&living_room, "Living Room");
+    RoomType* garage = calloc(1, sizeof(RoomType));
+    initRoom(&garage, "Garage");
+    RoomType* utility_room = calloc(1, sizeof(RoomType));
+    initRoom(&utility_room, "Utility Room");
 
-    // Now create a linked list of rooms using RoomNodeType in the Building
-    //RoomNodeType* van_node = calloc(1, sizeof(RoomNodeType));
-    //van_node->room = van;
-    //RoomNodeType* hallway_node = calloc(1, sizeof(RoomNodeType));
-    //hallway_node->room = hallway;
-    //RoomNodeType* master_bedroom_node = calloc(1, sizeof(RoomNodeType));
-    //master_bedroom_node->room = master_bedroom;
-    //RoomNodeType* boys_bedroom_node = calloc(1, sizeof(RoomNodeType));
-    //boys_bedroom_node->room = boys_bedroom;
-    //RoomNodeType* bathroom_node = calloc(1, sizeof(RoomNodeType));
-    //bathroom_node->room = bathroom;
-    //RoomNodeType* basement_node = calloc(1, sizeof(RoomNodeType));
-    //basement_node->room = basement;
-    //RoomNodeType* basement_hallway_node = calloc(1, sizeof(RoomNodeType));
-    //basement_hallway_node->room = basement_hallway;
-    //RoomNodeType* right_storage_room_node = calloc(1, sizeof(RoomNodeType));
-    //right_storage_room_node->room = right_storage_room;
-    //RoomNodeType* left_storage_room_node = calloc(1, sizeof(RoomNodeType));
-    //left_storage_room_node->room = left_storage_room;
-    //RoomNodeType* kitchen_node = calloc(1, sizeof(RoomNodeType));
-    //kitchen_node->room = kitchen;
-    //RoomNodeType* living_room_node = calloc(1, sizeof(RoomNodeType));
-    //living_room_node->room = living_room;
-    //RoomNodeType* garage_node = calloc(1, sizeof(RoomNodeType));
-    //garage_node->room = garage;
-    //RoomNodeType* utility_room_node = calloc(1, sizeof(RoomNodeType));
-    //utility_room_node->room = utility_room;
+    //Building->rooms might be a linked list structre, or maybe just a node.
+    initRoomList(building->rooms);
 
-    // Building->rooms might be a linked list structre, or maybe just a node.
-    //initRoomList(&building->rooms);
+    addRoom(building->rooms, van);
+    addRoom(building->rooms, hallway);
+    addRoom(building->rooms, master_bedroom);
+    addRoom(building->rooms, boys_bedroom);
+    addRoom(building->rooms, bathroom);
+    addRoom(building->rooms, basement);
+    addRoom(building->rooms, basement_hallway);
+    addRoom(building->rooms, right_storage_room);
+    addRoom(building->rooms, left_storage_room);
+    addRoom(building->rooms, kitchen);
+    addRoom(building->rooms, living_room);
+    addRoom(building->rooms, garage);
+    addRoom(building->rooms, utility_room);
 
-    //appendRoom(building->rooms, van_node);
-    //appendRoom(building->rooms, hallway_node);
-    //appendRoom(building->rooms, master_bedroom_node);
-    //appendRoom(building->rooms, boys_bedroom_node);
-    //appendRoom(building->rooms, bathroom_node);
-    //appendRoom(building->rooms, basement_node);
-    //appendRoom(building->rooms, basement_hallway_node);
-    //appendRoom(building->rooms, right_storage_room_node);
-    //appendRoom(building->rooms, left_storage_room_node);
-    //appendRoom(building->rooms, kitchen_node);
-    //appendRoom(building->rooms, living_room_node);
-    //appendRoom(building->rooms, garage_node);
-    //appendRoom(building->rooms, utility_room_node);
-
-    // Now connect the rooms. It is possible you do not need a separate
-    // function for this, but it is provided to give you a starting point.
-    //connectRooms(van, hallway);
-    //connectRooms(hallway, master_bedroom);
-    //connectRooms(hallway, boys_bedroom);
-    //connectRooms(hallway, bathroom);
-    //connectRooms(hallway, kitchen);
-    //connectRooms(hallway, basement);
-    //connectRooms(basement, basement_hallway);
-    //connectRooms(basement_hallway, right_storage_room);
-    //connectRooms(basement_hallway, left_storage_room);
-    //connectRooms(kitchen, living_room);
-    //connectRooms(kitchen, garage);
-    //connectRooms(garage, utility_room);
+    //Now connect the rooms. It is possible you do not need a separate
+    //function for this, but it is provided to give you a starting point.
+    connectRooms(van, hallway);
+    connectRooms(hallway, master_bedroom);
+    connectRooms(hallway, boys_bedroom);
+    connectRooms(hallway, bathroom);
+    connectRooms(hallway, kitchen);
+    connectRooms(hallway, basement);
+    connectRooms(basement, basement_hallway);
+    connectRooms(basement_hallway, right_storage_room);
+    connectRooms(basement_hallway, left_storage_room);
+    connectRooms(kitchen, living_room);
+    connectRooms(kitchen, garage);
+    connectRooms(garage, utility_room);
 }

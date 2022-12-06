@@ -7,9 +7,10 @@
    return:   a pointer to a RoomListType that has been initialized
 */
 void initRoomList(struct RoomListType * roomList){
-	roomList->head = NULL;
-	roomList->tail = NULL;
-	roomList->size = 0;
+	RoomNodeType * temp = NULL; 
+	roomList -> head = temp;
+	roomList -> tail = temp;
+	roomList -> size = 0;
 }
 
 /*
@@ -19,17 +20,31 @@ void initRoomList(struct RoomListType * roomList){
        in:   a pointer to the name of the room
    return:   a pointer to a RoomType with initialized contents
 */
-void initRoom(char * name, RoomType ** room){
+void initRoom(RoomType ** room, char * name){
+
+	RoomType * roomInit = (RoomType*)calloc(1,sizeof(RoomType));
+	
+	
+
 	//Assign memory for the room data
 	*room = calloc(1, sizeof(RoomType));
 	
 	//Initialize the room's Name
-	strcpy((*room) -> name, name);
+	strcpy(roomInit -> name, name);
 	
 	//Initialize The Evidence List, Room List and Hunter Array
-	initEvidenceList((*room) -> evidence);
-	initRoomList((*room) -> attached);
-	initHunterArray((*room) -> hunters);
+	EvidenceListType * evidence = (EvidenceListType*)calloc(1, sizeof(EvidenceListType));
+	initEvidenceList(evidence);
+	roomInit -> evidence = evidence;
+
+	RoomListType * rooms = (RoomListType*)calloc(1, sizeof(RoomListType));
+	initRoomList(rooms);
+	roomInit -> attached = rooms;
+	
+	
+	//initHunterArray((*room) -> hunters);
+	
+	*room = roomInit;
 }
 
 /*

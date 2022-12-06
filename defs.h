@@ -101,13 +101,13 @@ float randFloat(float, float);						// Generates a pseudorandom float between th
 
 // Building functions
 void populateRooms(BuildingType *);					// Populates the building with sample data for rooms
-void initBuilding(BuildingType *, struct GhostType *);				// Initiates a BuildingType 
+void initBuilding(BuildingType *);
 void cleanupBuilding(BuildingType *);					// Frees all data associated with a building
 
 
 // Room functions
 void initRoomList(RoomListType *);					// Initializes a RoomListType 
-void initRoom(char *, RoomType **);					// Initializes a RoomType 
+void initRoom(RoomType **, char *);					// Initializes a RoomType 
 void addRoom(RoomListType *, RoomType *);				// Adds a room to the end of a RoomListType
 void connectRooms(RoomType *, RoomType *);				// Connects two RoomTypes
 void cleanupRoom(RoomType *);						// Frees all data in a room
@@ -118,6 +118,7 @@ RoomType * randRoom(RoomListType *, int);           // Gets a random room in a l
 void initGhost(GhostClassType, RoomType *, GhostType **);		// Initializes a GhostType
 void moveGhost(GhostType *);						// Moves a ghost to another room
 void cleanupGhostData(GhostType *);					// Frees all data associated with a ghost
+void addGhostEvidence(GhostType *);
 void spawnGhost(GhostType *, BuildingType *);                       // Adds the ghost to a random room that is not the van
 
 // Evidence functions
@@ -144,5 +145,5 @@ void removeHunterFromRoom(HunterType *, RoomType *);
 void addHunterToRoom(HunterType *, RoomType *);
 
 // main threading control
-void hunterAction (struct HunterType *);
-void ghostAction (struct GhostType *);
+int hunterAction (HunterType *);
+int ghostAction (GhostType *);

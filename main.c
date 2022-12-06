@@ -3,14 +3,23 @@
 int main(int argc, char *argv[])
 {
 //     // Initialize a random seed for the random number generators
-//     srand(time(NULL));
+       srand(time(NULL));
 
-//     // You may change this code; this is for demonstration purposes
-//     GhostType * ghost;
 
-//     BuildingType building;
-//     initBuilding(&building);
-//     populateRooms(&building);
+       BuildingType building;
+       initBuilding(&building);
+       populateRooms(&building);
+       
+       printf("%s", building.rooms->head->next->roomData->attached->head->roomData->name);
+
+       // Ghost
+       //GhostType * ghost;
+       //RoomType * ghostSpawnPoint = randRoom(building.rooms, C_TRUE);
+       //initGhost(BANSHEE, ghostSpawnPoint, &ghost);
+       
+
+
+
 
 //     // Hunters
 //     HunterType * hunter1, * hunter2, * hunter3, * hunter4;
@@ -19,9 +28,7 @@ int main(int argc, char *argv[])
 //     initHunter(FINGERPRINTS, "Bonzo", building.rooms -> head, &hunter3, 3);
 //     initHunter(SOUND, "Bib", building.rooms -> head, &hunter4, 4);
 
-//     // Ghost
-//     RoomType * ghostSpawnPoint = randRoom(building -> rooms, C_TRUE);
-//     initGhost(BANSHEE, ghostSpawnPoint, &ghost);
+
 
 
 //     pthread_t ht1, ht2, ht3, ht4, gt1;
