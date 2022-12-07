@@ -13,7 +13,6 @@ int main(int argc, char *argv[])
        	GhostType * ghost;
        	RoomType * ghostSpawnPoint = randRoom(building -> rooms, C_TRUE);
 
-
 	GhostClassType ghostClass;
 	int ghostSelector = randInt(1, 4);
 	if (ghostSelector == 1) {
@@ -26,10 +25,7 @@ int main(int argc, char *argv[])
 		ghostClass = PHANTOM;
 	}
 	
-	
-	
        	initGhost(ghostClass, ghostSpawnPoint, &ghost, building);
-
 
 	char hunter1Name[MAX_STR] = {'\0'};;
 	char hunter2Name[MAX_STR] = {'\0'};;
@@ -49,12 +45,12 @@ int main(int argc, char *argv[])
 
 
        	HunterArrayType * vanHunters = van -> hunters;
-       	vanHunters -> hunters[0] = hunter1;
-       	vanHunters -> hunters[1] = hunter2;
-       	vanHunters -> hunters[2] = hunter3;
-       	vanHunters -> hunters[3] = hunter4;
+       	vanHunters -> hunters[0] = hunter1; building -> hunters -> hunters[0] = hunter1;
+       	vanHunters -> hunters[1] = hunter2; building -> hunters -> hunters[1] = hunter2;
+       	vanHunters -> hunters[2] = hunter3; building -> hunters -> hunters[2] = hunter3;
+       	vanHunters -> hunters[3] = hunter4; building -> hunters -> hunters[3] = hunter4;
 
-	pthread_t  ht1, ht2, ht3, ht4, gt1;
+	pthread_t ht1, ht2, ht3, ht4, gt1;
 
 	printf("The mystery crew pull up to the haunted house. Time for some ghostbusting!\n\n");
 
@@ -87,7 +83,6 @@ int main(int argc, char *argv[])
 	
 	cleanupBuilding(building);
 	free(building);
-	
     	return 0;
 }
 

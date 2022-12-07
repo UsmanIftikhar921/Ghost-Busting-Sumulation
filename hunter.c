@@ -213,18 +213,14 @@ int containsEvidenceType (EvidenceClassType evidenceClass, HunterType * hunter){
 
 // Cleans up the hunter's data and frees it from memory
 void cleanupHunterData(HunterType * hunter){
-	// Clean up the evidence list
-	//cleanupEvidenceListNodes(hunter -> evidence);
-	// Free the hunter from memory
-	//free(hunter);
+
 }
 
 // Cleans up the entire hunter array from memory
 void cleanupHunterArray(HunterArrayType * hunterArray){
-	int hunterArraySize = hunterArray -> size;
-	
-	for (int i = 0; i < hunterArraySize; i++){
-		cleanupHunterData(hunterArray -> hunters[i]);
+	for (int i = 0; i < MAX_HUNTERS; i++){
+		cleanupEvidenceListNodes(hunterArray -> hunters[i] -> evidence);
+		//free(hunterArray -> hunters[i] -> evidence);
 		
 		free(hunterArray -> hunters[i]);
 	}

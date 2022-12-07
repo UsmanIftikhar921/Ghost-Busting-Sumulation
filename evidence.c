@@ -24,6 +24,7 @@ void initEvidenceList(EvidenceListType * evidenceList) {
    return:   a pointer to an EvidenceType with initialized contents
 */
 void initEvidence(EvidenceClassType evClass, EvidenceType ** evidence) {
+	free(*evidence);
 	// Allocate memory to the evidence 
 	EvidenceType * tempEv = (EvidenceType*) calloc(1, sizeof(EvidenceType));
 	
@@ -115,10 +116,7 @@ EvidenceType * getEvidenceAtIndex(EvidenceListType * evidenceList, int index){
 */
 void addEvidence(EvidenceListType * list, EvidenceType * evidence){
 	//A temporary node to store the information of the new tail to be added
-	EvidenceNodeType * newNode;
-	
-	//Assign memory to the new node
-	newNode = (EvidenceNodeType*)calloc(1, sizeof(EvidenceNodeType));
+	EvidenceNodeType * newNode = (EvidenceNodeType*)calloc(1, sizeof(EvidenceNodeType));
 	
 	//The data of the new node is the evidence data
 	newNode -> evidenceData = evidence;
@@ -135,7 +133,7 @@ void addEvidence(EvidenceListType * list, EvidenceType * evidence){
     	// If list is not empty
     	else {
 		list -> tail -> next = newNode;
-		list -> tail = list -> tail -> next;
+		list -> tail = newNode;
 		
    	}
    	list -> size++;
@@ -191,7 +189,7 @@ void cleanupEvidenceListNodes(EvidenceListType * evList) {
 	EvidenceNodeType * nextEv;
 	
 	// Clean up every evidence in the evidence list
-	while (currEv != NULL){
+	for (int i = 0; i < evList -> size; i++){
 		nextEv = currEv -> next;
         	cleanupEvidenceNode(currEv);
 		currEv = nextEv;
