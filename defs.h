@@ -12,8 +12,8 @@
 #define NORMAL			0
 #define GHOSTLY			1
 #define MAX_STR			64
-#define FEAR_RATE		3
-#define BOREDOM_RATE		3
+#define FEAR_RATE		10
+#define BOREDOM_RATE		10
 #define MAX_FEAR		100
 #define MAX_HUNTERS		4
 #define USLEEP_TIME		50000
@@ -70,6 +70,7 @@ typedef struct RoomType {
 typedef struct GhostType {
 	GhostClassType ghostType;
 	RoomType * room;
+	struct BuildingType * building;
 	int boredom;
 } GhostType;
 
@@ -95,6 +96,7 @@ typedef struct BuildingType {
 	GhostType * ghost;
 	RoomListType * rooms;
 	HunterArrayType * hunters;
+	EvidenceListType * evidence;
 } BuildingType;
 
 
@@ -117,9 +119,10 @@ void connectRooms(RoomType *, RoomType *);				// Connects two RoomTypes
 void cleanupRoom(RoomType *);						// Frees all data in a room
 void cleanupRoomList(RoomListType *);					// Frees all nodes in a RoomList
 RoomType * randRoom(RoomListType *, int);           // Gets a random room in a list
+void cleanupRoomListNodes(RoomListType *);
 
 // Ghost functions
-void initGhost(GhostClassType, RoomType *, GhostType **);		// Initializes a GhostType
+void initGhost(GhostClassType, RoomType *, GhostType **, BuildingType *);		// Initializes a GhostType
 void moveGhost(GhostType *);						// Moves a ghost to another room
 void cleanupGhostData(GhostType *);					// Frees all data associated with a ghost
 void addGhostEvidence(GhostType *);
@@ -134,6 +137,8 @@ void addEvidence(EvidenceListType *, EvidenceType *);			// Adds an EvidenceType 
 void cleanupEvidenceData(struct EvidenceNodeType *);				// Frees all data associated with a piece of evidence
 void cleanupEvidenceNode(struct EvidenceNodeType *);				// Frees an evidence node
 void cleanupEvidenceList(EvidenceListType *);				// Frees all data from an evidence list
+void cleanupEvidenceListNodes(EvidenceListType *);
+
 
 
 // Hunter functions

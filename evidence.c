@@ -175,10 +175,26 @@ void cleanupEvidenceList(EvidenceListType * evList) {
 	EvidenceNodeType * nextEv;
 	
 	// Clean up every evidence in the evidence list
-	for(int i = 0; i < evListSize; i++){
+	while (currEv != NULL){
 		nextEv = currEv -> next;
 		cleanupEvidenceData(currEv);
         	cleanupEvidenceNode(currEv);
 		currEv = nextEv;
 	}
+	free(evList);
+}	
+
+
+void cleanupEvidenceListNodes(EvidenceListType * evList) {
+	// Make two temporary nodes to iterate through the linked list
+	EvidenceNodeType * currEv = evList -> head;
+	EvidenceNodeType * nextEv;
+	
+	// Clean up every evidence in the evidence list
+	while (currEv != NULL){
+		nextEv = currEv -> next;
+        	cleanupEvidenceNode(currEv);
+		currEv = nextEv;
+	}
+	free(evList);
 }	

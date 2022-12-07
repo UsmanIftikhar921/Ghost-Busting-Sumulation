@@ -10,9 +10,20 @@ void initBuilding(BuildingType * building){
 	// Initialize The Rooms List and Hunter Array
 	RoomListType * rooms = (RoomListType*)calloc(1, sizeof(RoomListType));
 	initRoomList(rooms);
-	
 	building -> rooms = rooms;
+	
 	building -> ghost = NULL;
+	
+	HunterArrayType * hunters = (HunterArrayType*)calloc(1,sizeof(HunterArrayType));
+	initHunterArray(hunters);
+	hunters -> size = 4;
+	building -> hunters = hunters;
+	
+	
+	EvidenceListType * evidence = (EvidenceListType*)calloc(1, sizeof(EvidenceListType));
+	initEvidenceList(evidence);
+	building -> evidence = evidence;
+	
 }
 
 /*
@@ -22,10 +33,20 @@ void initBuilding(BuildingType * building){
    return:   a pointer to a BuildingType with no elements within it's room list and hunter array
 */
 void cleanupBuilding(BuildingType * building){
-	// Clean up the Rooms List
-	cleanupRoomList(building -> rooms);
 	// Clean up the Hunters Array
 	cleanupHunterArray(building -> hunters);
+	
+	cleanupGhostData(building -> ghost);
+
+	cleanupEvidenceList(building -> evidence);
+
+	// Clean up the Rooms List
+	cleanupRoomList(building -> rooms);
+
+	
+
+	
+
 }
 
 /*
@@ -77,8 +98,6 @@ void populateRooms(BuildingType* building) {
     RoomType* utility_room = calloc(1, sizeof(RoomType));
     initRoom(&utility_room, "Utility Room");
 
-    //Building->rooms might be a linked list structre, or maybe just a node.
-    initRoomList(building->rooms);
 
     addRoom(building->rooms, van);
     addRoom(building->rooms, hallway);

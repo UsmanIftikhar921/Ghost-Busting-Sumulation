@@ -36,7 +36,7 @@ void initRoom(RoomType ** room, char * name){
 	initRoomList(rooms);
 	roomInit -> attached = rooms;
 	
-	HunterArrayType * hunters = (HunterArrayType*)calloc(1,sizeof(HunterArrayType));
+	HunterArrayType * hunters = (HunterArrayType*)calloc(1, sizeof(HunterArrayType));
 	initHunterArray(hunters);
 	roomInit -> hunters = hunters;
 	
@@ -60,7 +60,7 @@ void addRoom(RoomListType * list, RoomType * room){
 	RoomNodeType * newNode;
 	
 	//Assign memory to the new node
-	newNode = calloc(1, sizeof(RoomNodeType));
+	newNode = (RoomNodeType*)calloc(1, sizeof(RoomNodeType));
 	
 	//The data of the new node is the room data
 	newNode -> roomData = room;
@@ -105,10 +105,11 @@ void connectRooms(RoomType * room1, RoomType * room2){
 */
 void cleanupRoom(RoomType * room){
 	// Free Evidence and Room Linked List
-	cleanupEvidenceList(room -> evidence);
-	cleanupRoomList(room -> attached);
+	cleanupEvidenceListNodes(room -> evidence);
+	cleanupRoomListNodes(room -> attached);
 	// Free hunter array
-	cleanupHunterArray(room -> hunters);
+	free(room -> hunters);
+	free(room);
 }
 
 /*
@@ -123,16 +124,40 @@ void cleanupRoomList(RoomListType * roomList){
 	
 	// Make two temporary nodes to iterate through the linked list
 	RoomNodeType * currNode = roomList -> head;
-	RoomNodeType * nextNode;
+	RoomNodeType * nextNode = roomList -> head -> next;
 	
 	// Clean up every room in the room list
 	for(int i = 0; i < roomListSize; i++){
 		nextNode = currNode -> next;
 		cleanupRoom(currNode -> roomData);
 		free(currNode);
+		
 		currNode = nextNode;
 	}
+	free(roomList);
 }
+
+/*
+  Function:  cleanupRoomList
+  Purpose:   clears all of the contents of the room list
+       in:   a pointer to a RoomListType
+   return:   a pointer to an empty RoomListType
+*/
+void cleanupRoomListNodes(RoomListType * roomList) {
+	
+	// Make two temporary nodes to iterate through the linked list
+	RoomNodeType * currNode = roomList -> head;
+	RoomNodeType * nextNode;
+	
+	// Clean up every room in the room list
+	while(currNode != NULL){
+		nextNode = currNode -> next;
+		free(currNode);
+		currNode = nextNode;
+	}
+	free(roomList);
+}
+
 
 /*
   Function:  randRoom

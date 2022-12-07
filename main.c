@@ -5,13 +5,14 @@ int main(int argc, char *argv[])
      	// Initialize a random seed for the random number generators
        	srand(time(NULL));
 	
-       	BuildingType building;
-       	initBuilding(&building);
-       	populateRooms(&building);
+       	BuildingType * building = (BuildingType*)calloc(1, sizeof(BuildingType));
+       	initBuilding(building);
+       	populateRooms(building);
 
        	// Ghost
        	GhostType * ghost;
-       	RoomType * ghostSpawnPoint = randRoom(building.rooms, C_TRUE);
+       	RoomType * ghostSpawnPoint = randRoom(building -> rooms, C_TRUE);
+
 
 	GhostClassType ghostClass;
 	int ghostSelector = randInt(1, 4);
@@ -27,8 +28,9 @@ int main(int argc, char *argv[])
 	
 	
 	
-       	initGhost(ghostClass, ghostSpawnPoint, &ghost);
-	
+       	initGhost(ghostClass, ghostSpawnPoint, &ghost, building);
+
+
 	char hunter1Name[MAX_STR] = {'\0'};;
 	char hunter2Name[MAX_STR] = {'\0'};;
 	char hunter3Name[MAX_STR] = {'\0'};;
@@ -38,7 +40,7 @@ int main(int argc, char *argv[])
 	
        	// Hunters
        	HunterType * hunter1, * hunter2, * hunter3, * hunter4;
-       	RoomType * van = building.rooms -> head -> roomData;
+       	RoomType * van = building -> rooms -> head -> roomData;
        	initHunter(EMF, hunter1Name, van, &hunter1, 0);
        	initHunter(TEMPERATURE, hunter2Name, van, &hunter2, 1);
        	initHunter(FINGERPRINTS, hunter3Name, van, &hunter3, 2);
@@ -54,7 +56,7 @@ int main(int argc, char *argv[])
 
 	pthread_t  ht1, ht2, ht3, ht4, gt1;
 
-	printf("The mystery crew pull up to the hauned house. Time for some ghostbusting!\n\n");
+	printf("The mystery crew pull up to the haunted house. Time for some ghostbusting!\n\n");
 
 	pthread_create(&ht1, NULL, hunterAction, hunter1);
 	pthread_create(&ht2, NULL, hunterAction, hunter2);
@@ -82,6 +84,10 @@ int main(int argc, char *argv[])
 			typeCalculator(hunter4 -> evidence);
 		}	
 	}
+	
+	cleanupBuilding(building);
+	free(building);
+	
     	return 0;
 }
 
@@ -230,7 +236,7 @@ void * hunterAction (void * hunter) {
 								printf("%s tells %s about some exciting evidence that they found.\n", gameHunter -> name, otherHunter -> name);
                 						sem_post(&otherHunter -> evidence -> mutex);
                 						break;
-            						}
+            						} 
 						}
 					}
 				} else {
@@ -317,7 +323,7 @@ void * ghostAction (void * ghost) {
 				addGhostEvidence(gameGhost);
 				sem_post(&gameGhost -> room -> mutex);
 			} else {
-				printf("An ominous presence looms over the %s.", gameGhost -> room -> name);
+				printf("An ominous presence looms over the %s.\n", gameGhost -> room -> name);
 			}
         	} else if (actionChoice == 2) {
             		printf("The ghost twiddles its thumbs.\n");

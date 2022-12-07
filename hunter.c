@@ -121,6 +121,8 @@ void collectEvidence(HunterType * hunter){
 				printf("%s scans the %s and finds evidence that reinforces their findings!\n", hunter -> name, hunter -> room -> name);
 				
 				hunter -> boredom = BOREDOM_MAX;
+			} else {
+				printf("%s scans the %s and finds standard readings.\n", hunter -> name, hunter -> room -> name);
 			}
 			//else printf("THE EVIDENCE IS NOT OF INTEREST!\n");
 		} else {
@@ -212,9 +214,9 @@ int containsEvidenceType (EvidenceClassType evidenceClass, HunterType * hunter){
 // Cleans up the hunter's data and frees it from memory
 void cleanupHunterData(HunterType * hunter){
 	// Clean up the evidence list
-	cleanupEvidenceList(hunter -> evidence);
+	//cleanupEvidenceListNodes(hunter -> evidence);
 	// Free the hunter from memory
-	free(hunter);
+	//free(hunter);
 }
 
 // Cleans up the entire hunter array from memory
@@ -223,5 +225,7 @@ void cleanupHunterArray(HunterArrayType * hunterArray){
 	
 	for (int i = 0; i < hunterArraySize; i++){
 		cleanupHunterData(hunterArray -> hunters[i]);
+		
+		free(hunterArray -> hunters[i]);
 	}
 }
