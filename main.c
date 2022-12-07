@@ -28,7 +28,7 @@ int main(int argc, char *argv[])
 	
 	
        	initGhost(ghostClass, ghostSpawnPoint, &ghost);
-		
+	
 	char hunter1Name[MAX_STR] = {'\0'};;
 	char hunter2Name[MAX_STR] = {'\0'};;
 	char hunter3Name[MAX_STR] = {'\0'};;
@@ -54,6 +54,8 @@ int main(int argc, char *argv[])
 
 	pthread_t  ht1, ht2, ht3, ht4, gt1;
 
+	printf("The mystery crew pull up to the hauned house. Time for some ghostbusting!\n\n");
+
 	pthread_create(&ht1, NULL, hunterAction, hunter1);
 	pthread_create(&ht2, NULL, hunterAction, hunter2);
 	pthread_create(&ht3, NULL, hunterAction, hunter3);
@@ -61,15 +63,10 @@ int main(int argc, char *argv[])
 	pthread_create(&gt1, NULL, ghostAction, ghost);
 
 	pthread_join(ht1, NULL);
-	printf("\nh1 is back\n");
 	pthread_join(ht2, NULL);
-	printf("h2 is back\n");
 	pthread_join(ht3, NULL);
-	printf("h3 is back\n");
 	pthread_join(ht4, NULL);
-	printf("h4 is back\n");
 	pthread_join(gt1, NULL);
-	printf("gt1 is back\n");
 	
 	if ((hunter1 -> fear >= MAX_FEAR || hunter1 -> boredom <= 0) && (hunter2 -> fear >= MAX_FEAR || hunter2 -> boredom <= 0) && (hunter3 -> fear >= MAX_FEAR || hunter3 -> boredom <= 0) && (hunter4 -> fear >= MAX_FEAR || hunter4 -> boredom <= 0)) {
 		printf("All the hunters have gotten bored or been frightened off by the ghost! The ghost wins!\n");
@@ -182,6 +179,8 @@ void * hunterAction (void * hunter) {
 
 					// Add hunter to the linked list
 					addHunterToRoom(gameHunter, gameHunter -> room);
+				} else {
+					printf("%s starts heading for the %s, but his attention is drawn back to the %s.\n", gameHunter -> name, newRoom -> name, gameHunter -> room -> name);
 				}
 				sem_post(&gameHunter -> room -> mutex);
 			} else {
@@ -234,6 +233,8 @@ void * hunterAction (void * hunter) {
             						}
 						}
 					}
+				} else {
+					printf("%s wishes they could share evidence.\n", gameHunter -> name);
 				}
 				sem_post(&gameHunter -> evidence -> mutex);
 				sem_post(&gameHunter -> room -> mutex);
@@ -269,12 +270,12 @@ void * hunterAction (void * hunter) {
             		}
       
         		if (gameHunter -> boredom <= 0) {
-        			printf("%s has gotten bored and exited the house!\n", gameHunter -> name);
+        			printf("\n\n%s has gotten bored and exited the house!\n\n\n", gameHunter -> name);
            			endCondition = C_TRUE;
             		}          
         
         		if (gameHunter -> fear >= MAX_FEAR) {
-        			printf("%s has gotten too scared and run from the house!\n", gameHunter -> name);
+        			printf("\n\n%s has gotten too scared and run from the house!\n\n\n", gameHunter -> name);
             			endCondition = C_TRUE;
             		}  
             		if (endCondition == C_TRUE){
@@ -315,6 +316,8 @@ void * ghostAction (void * ghost) {
 			if(sem_trywait(&gameGhost -> room -> mutex) == 0) {
 				addGhostEvidence(gameGhost);
 				sem_post(&gameGhost -> room -> mutex);
+			} else {
+				printf("An ominous presence looms over the %s.", gameGhost -> room -> name);
 			}
         	} else if (actionChoice == 2) {
             		printf("The ghost twiddles its thumbs.\n");
@@ -334,7 +337,9 @@ void * ghostAction (void * ghost) {
 					gameGhost -> room = newRoom;
 					gameGhost -> room -> ghost = gameGhost;
 		
-				}	
+				} else {
+					printf("The ghost peeks through the wall of the %s andinto the %s.\n", gameGhost -> room -> name, newRoom -> name);
+				}
         			
         			sem_post(&gameGhost -> room -> mutex);
         		} else {
@@ -346,7 +351,7 @@ void * ghostAction (void * ghost) {
 
 
         	if (gameGhost -> boredom <= 0) {
-        		printf("The ghost has gotten bored and exited the house!\n");
+        		printf("\n\nThe ghost has gotten bored and exited the house!\n\n\n");
             		break;            
         	}
 

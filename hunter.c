@@ -123,8 +123,11 @@ void collectEvidence(HunterType * hunter){
 				hunter -> boredom = BOREDOM_MAX;
 			}
 			//else printf("THE EVIDENCE IS NOT OF INTEREST!\n");
+		} else {
+			printf("%s hits his reader, something seems off about it.\n", hunter -> name);
 		}
-
+	} else {
+		printf("The %s seems perfectly normal to %s. Too normal...\n", hunter -> room -> name, hunter -> name);
 	}
 	//else printf("THE EVIDENCE LIST IS EMPTY\n");
 }
