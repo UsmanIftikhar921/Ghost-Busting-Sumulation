@@ -10,6 +10,10 @@ void initEvidenceList(EvidenceListType * evidenceList) {
 	evidenceList->head = NULL;
 	evidenceList->tail = NULL;
 	evidenceList->size = 0;
+	
+	sem_t mutex;
+	sem_init(&mutex, 0, 1);
+	evidenceList -> mutex = mutex;
 }
 
 /*
@@ -43,7 +47,33 @@ void initEvidence(EvidenceClassType evClass, EvidenceType ** evidence) {
 		} else {tempEv->ghostliness = NORMAL;}
 	}
 	
+	tempEv -> type = evClass;
+	
 	*evidence = tempEv;
+}
+
+EvidenceType * getRandEvidence(EvidenceListType * evidenceList, EvidenceClassType evidenceClass) {
+	// Set the current evidence node to the head of the list
+	EvidenceNodeType * currEvidenceNode = evidenceList -> head;
+	
+	// Loop through each element of the hunter's evidence linked list
+	while (currEvidenceNode != NULL && evidenceList -> size > 0){
+		// Retrieve the evidence type of the current node
+		if (currEvidenceNode -> evidenceData != NULL) {
+		
+			EvidenceClassType currEvidenceType = currEvidenceNode -> evidenceData -> type;
+			
+			// Compare against the evidence type you are trying to add
+			if (evidenceClass == currEvidenceType) {
+				EvidenceType * returnEvidence = currEvidenceNode -> evidenceData;
+				return returnEvidence;
+			}
+		}
+		
+		// Set the current node to the next node
+		currEvidenceNode = currEvidenceNode -> next;
+	}
+	return NULL;
 }
 
 /*
@@ -105,7 +135,8 @@ void addEvidence(EvidenceListType * list, EvidenceType * evidence){
     	// If list is not empty
     	else {
 		list -> tail -> next = newNode;
-		list -> tail = newNode;
+		list -> tail = list -> tail -> next;
+		
    	}
    	list -> size++;
 }

@@ -34,7 +34,7 @@ typedef struct HunterArrayType {
 typedef struct EvidenceListType {
 	struct EvidenceNodeType * head;
 	struct EvidenceNodeType * tail;
-	sem_t * mutex;
+	sem_t mutex;
 	int size;
 } EvidenceListType;
 
@@ -127,6 +127,7 @@ void spawnGhost(GhostType *, BuildingType *);                       // Adds the 
 // Evidence functions
 void initEvidenceList(EvidenceListType *);				// Initializes an EvidenceListType
 void initEvidence(EvidenceClassType, EvidenceType **);			// Initializes an EvidenceType
+EvidenceType * getRandEvidence(EvidenceListType *, EvidenceClassType);
 EvidenceType * getEvidenceAtIndex(EvidenceListType*, int);		// Returns the evidence at the index specified
 void addEvidence(EvidenceListType *, EvidenceType *);			// Adds an EvidenceType to and EvidenceTypeList
 void cleanupEvidenceData(struct EvidenceNodeType *);				// Frees all data associated with a piece of evidence

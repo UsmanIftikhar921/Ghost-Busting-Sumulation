@@ -48,8 +48,6 @@ void moveGhost(GhostType * ghost){
    return:   a pointer to a room with evidence inside of it's evidence list
 */
 void addGhostEvidence(GhostType * ghost){
-	//sem_wait(ghost -> room -> evidence -> mutex);
-
 	GhostClassType ghostType = ghost -> ghostType;		// The Type of Ghost
 	EvidenceListType * roomEvidenceList = ghost -> room -> evidence;		// The Room's Evidence List
 	EvidenceType * tempEvidence = (EvidenceType*)calloc(1, sizeof(EvidenceType));;				// A Temporary Evidence Variable
@@ -92,7 +90,6 @@ void addGhostEvidence(GhostType * ghost){
 	
 	// Add the evidence data to the room's evidence linked list
 	addEvidence(roomEvidenceList, tempEvidence);
-	//sem_post(ghost -> room -> evidence -> mutex);
 }
 
 /*
