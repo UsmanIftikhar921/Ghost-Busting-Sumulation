@@ -27,10 +27,18 @@ void initGhost(GhostClassType gc, RoomType * room, GhostType ** ghost){
 void moveGhost(GhostType * ghost){
 	// Check the rooms that are attached to the room the ghost is currently in:
 	RoomListType * roomList = ghost -> room -> attached;
-	ghost -> room -> ghost = NULL;
-	// Change the ghost's room pointer to a random room from that room's connected rooms
-	ghost -> room = randRoom(roomList, C_FALSE);
-	ghost -> room -> ghost = ghost;
+	RoomType * newRoom = randRoom(roomList, C_FALSE);
+	
+	if (sem_trywait(&newRoom -> mutex) == 0) {
+		
+		ghost -> room -> ghost = NULL;
+		sem_post(&ghost -> room -> mutex);
+		// Change the ghost's room pointer to a random room from that room's connected rooms
+		ghost -> room = newRoom;
+		ghost -> room -> ghost = ghost;
+	
+	}	
+
 }
 
 /*

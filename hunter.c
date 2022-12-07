@@ -47,26 +47,30 @@ void initHunterArray(HunterArrayType * hunterArray) {
    return:   a pointer to a HunterType with an updated room pointer
 */
 void moveHunter (HunterType * hunter) {
-
-	//sem_wait(hunter -> room -> hunters -> mutex);
-	// Decrease the number of hunters in the current room
-	hunter -> room -> hunters -> size--;
-	
 	// Check the rooms that are attached to the room the hunter is currently in:
 	RoomListType * roomList = hunter -> room -> attached;
+	RoomType * newRoom = randRoom(roomList, C_FALSE);
 
-	// Remove hunter from linked list
-	removeHunterFromRoom(hunter, hunter -> room);
 
-	// Change the hunters's room pointer to a random room from that room's connected rooms
-	hunter -> room = randRoom(roomList, C_FALSE);
+	if (sem_trywait(&newRoom -> mutex) == 0) {	
+		// Decrease the number of hunters in the current room
+		hunter -> room -> hunters -> size--;
+
 	
-	// Add hunter to the linked list
-	addHunterToRoom(hunter, hunter -> room);
+		// Remove hunter from linked list
+		removeHunterFromRoom(hunter, hunter -> room);
+
+		sem_post(&hunter -> room -> mutex);
 	
-	// Increase the number of hunters in the current room
-	hunter -> room -> hunters -> size++;
-	//sem_post(hunter -> room -> hunters -> mutex);
+		// Change the hunters's room pointer to a random room from that room's connected rooms
+		hunter -> room = newRoom;
+
+		// Add hunter to the linked list
+		addHunterToRoom(hunter, hunter -> room);
+		
+		// Increase the number of hunters in the current room
+		hunter -> room -> hunters -> size++;
+	}
 }
 
 // Remove hunter from the room's hunter list
@@ -155,8 +159,6 @@ void collectEvidence(HunterType * hunter){
 */
 void shareEvidence(HunterType * hunter){
 	// Note: Only transfer evidence that is not in standard values
-	sem_wait(hunter -> room -> evidence -> mutex);
-	
 	HunterArrayType * huntersInRoom = hunter -> room -> hunters;			// An array of hunters currently in the room
 	int numOfHuntersInRoom = huntersInRoom -> size;					// The number of hunters currently in the room
 	int numOfEvidence = hunter -> evidence -> size;					// The number of evidence in the hunter's evidence list
@@ -186,7 +188,6 @@ void shareEvidence(HunterType * hunter){
             		}
 		}
 	}
-	sem_post(hunter -> room -> evidence -> mutex);
 }
 
 // Tranfers evidence data to the hunter
