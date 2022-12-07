@@ -49,7 +49,8 @@ int main(int argc, char *argv[])
        	vanHunters -> hunters[1] = hunter2; building -> hunters -> hunters[1] = hunter2;
        	vanHunters -> hunters[2] = hunter3; building -> hunters -> hunters[2] = hunter3;
        	vanHunters -> hunters[3] = hunter4; building -> hunters -> hunters[3] = hunter4;
-
+	building -> ghost = ghost;
+	
 	pthread_t ht1, ht2, ht3, ht4, gt1;
 
 	printf("The mystery crew pull up to the haunted house. Time for some ghostbusting!\n\n");
