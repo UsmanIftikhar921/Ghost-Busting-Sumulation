@@ -13,15 +13,38 @@ int main(int argc, char *argv[])
        	GhostType * ghost;
        	RoomType * ghostSpawnPoint = randRoom(building.rooms, C_TRUE);
 
-       	initGhost(PHANTOM, ghostSpawnPoint, &ghost);
+	GhostClassType ghostClass;
+	int ghostSelector = randInt(1, 4);
+	if (ghostSelector == 1) {
+		ghostClass = POLTERGEIST;
+	} else if ( ghostSelector == 2) {
+		ghostClass = BANSHEE;
+	} else if (ghostSelector == 3) {
+		ghostClass = BULLIES;
+	} else if (ghostSelector == 4) {
+		ghostClass = PHANTOM;
+	}
+	
+	
+	
+       	initGhost(ghostClass, ghostSpawnPoint, &ghost);
+		
+	char hunter1Name[MAX_STR] = {'\0'};;
+	char hunter2Name[MAX_STR] = {'\0'};;
+	char hunter3Name[MAX_STR] = {'\0'};;
+	char hunter4Name[MAX_STR] = {'\0'};;
 
+	getHunterNames(hunter1Name, hunter2Name, hunter3Name, hunter4Name);
+	
        	// Hunters
        	HunterType * hunter1, * hunter2, * hunter3, * hunter4;
        	RoomType * van = building.rooms -> head -> roomData;
-       	initHunter(EMF, "Bill", van, &hunter1, 0);
-       	initHunter(TEMPERATURE, "Bob", van, &hunter2, 1);
-       	initHunter(FINGERPRINTS, "Bonzo", van, &hunter3, 2);
-       	initHunter(SOUND, "Bib", van, &hunter4, 3);
+       	initHunter(EMF, hunter1Name, van, &hunter1, 0);
+       	initHunter(TEMPERATURE, hunter2Name, van, &hunter2, 1);
+       	initHunter(FINGERPRINTS, hunter3Name, van, &hunter3, 2);
+       	initHunter(SOUND, hunter4Name, van, &hunter4, 3);
+
+
 
        	HunterArrayType * vanHunters = van -> hunters;
        	vanHunters -> hunters[0] = hunter1;
@@ -47,9 +70,76 @@ int main(int argc, char *argv[])
 	printf("h4 is back\n");
 	pthread_join(gt1, NULL);
 	printf("gt1 is back\n");
-
-
+	
+	if ((hunter1 -> fear >= MAX_FEAR || hunter1 -> boredom <= 0) && (hunter2 -> fear >= MAX_FEAR || hunter2 -> boredom <= 0) && (hunter3 -> fear >= MAX_FEAR || hunter3 -> boredom <= 0) && (hunter4 -> fear >= MAX_FEAR || hunter4 -> boredom <= 0)) {
+		printf("All the hunters have gotten bored or been frightened off by the ghost! The ghost wins!\n");
+	} else {
+		printf("Your hunters have found out the ghost's type and won!\n");
+		if (hunter1 -> evidence -> size == 3) {
+			typeCalculator(hunter1 -> evidence);
+		} else if (hunter2 -> evidence -> size == 3) {
+			typeCalculator(hunter2 -> evidence);
+		} else if (hunter3 -> evidence -> size == 3) {
+			typeCalculator(hunter3 -> evidence);
+		} else if (hunter4 -> evidence -> size == 3) {
+			typeCalculator(hunter4 -> evidence);
+		}	
+	}
     	return 0;
+}
+
+void getHunterNames(char * hunter1Name, char * hunter2Name, char * hunter3Name, char * hunter4Name) {
+	printf("Enter hunter 1's name: ");
+	fgets(hunter1Name, MAX_STR, stdin);
+	while (getchar() != '\n');
+	hunter1Name[strcspn(hunter1Name, "\n")] = 0;
+	
+	printf("Enter hunter 2's name: ");
+	fgets(hunter2Name, MAX_STR, stdin);
+	while (getchar() != '\n');
+	hunter2Name[strcspn(hunter2Name, "\n")] = 0;
+	
+	printf("Enter hunter 3's name: ");
+	fgets(hunter3Name, MAX_STR, stdin);
+	while (getchar() != '\n');
+	hunter3Name[strcspn(hunter3Name, "\n")] = 0;
+	
+	printf("Enter hunter 4's name: ");
+	fgets(hunter4Name, MAX_STR, stdin);
+	while (getchar() != '\n');
+	hunter4Name[strcspn(hunter4Name, "\n")] = 0;
+}
+
+void typeCalculator (EvidenceListType * evidenceList) {
+
+	EvidenceNodeType * currNode = evidenceList -> head;
+		
+	int poltergeist = 0, banshee = 0, bullies = 0, phantom = 0;
+	char * ghostType;
+
+	// Keep looping till you find a matching index
+	while (currNode != NULL){
+		if (currNode -> evidenceData -> type == EMF) {
+			poltergeist++; banshee++; bullies++;
+		}
+		if (currNode -> evidenceData -> type == TEMPERATURE) {
+			poltergeist++; banshee++; phantom++;
+		}
+		if (currNode -> evidenceData -> type == FINGERPRINTS) {
+			poltergeist++; bullies++; phantom++;
+		}
+		if (currNode -> evidenceData -> type == SOUND) {
+			banshee++; bullies++; phantom++;
+		}
+		currNode = currNode -> next;
+	}
+	if (poltergeist >= 3) ghostType = "Poltergeist";
+	if (banshee >= 3) ghostType = "Banshee";
+	if (bullies >= 3) ghostType = "Bullies";
+	if (phantom >= 3) ghostType = "Phantom";
+	
+	printf("With careful teamwork and great detective skills, the hunters discovered that the ghost was really a %s!\n", ghostType);
+	
 }
 
 void * hunterAction (void * hunter) {
@@ -61,6 +151,9 @@ void * hunterAction (void * hunter) {
 
         	if (gameHunter -> room -> ghost != NULL) {
             		gameHunter -> fear += FEAR_RATE;
+            		gameHunter -> boredom = BOREDOM_MAX;
+        	} else {
+        		gameHunter -> boredom -= BOREDOM_RATE;
         	}
 
         	if (gameHunter -> room -> hunters -> size > 1) {
@@ -70,7 +163,6 @@ void * hunterAction (void * hunter) {
         	}
 
         	if (actionChoice == 1) {
-            		printf("Hunter Move %s\n", gameHunter -> room -> name);
 			if (sem_trywait(&gameHunter -> room -> mutex) == 0) {
 				// Check the rooms that are attached to the room the hunter is currently 	in:
 				RoomListType * roomList = gameHunter -> room -> attached;
@@ -82,25 +174,29 @@ void * hunterAction (void * hunter) {
 					removeHunterFromRoom(gameHunter, gameHunter -> room);
 		
 					sem_post(&gameHunter -> room -> mutex);
-			
+					
+					printf("%s leaves the %s and moves into the %s.\n", gameHunter -> name, gameHunter -> room -> name, newRoom -> name);
+					
 					// Change the hunters's room pointer to a random room from that room's connected rooms
 					gameHunter -> room = newRoom;
-		
+
 					// Add hunter to the linked list
 					addHunterToRoom(gameHunter, gameHunter -> room);
 				}
 				sem_post(&gameHunter -> room -> mutex);
+			} else {
+				printf("%s dreams of a world of peace.\n", gameHunter -> name);
 			}
         	} else if (actionChoice == 2) {
-            		printf("Hunter Collect Evidence\n");
 			if (sem_trywait(&gameHunter -> room -> mutex) == 0) {
 				sem_wait(&gameHunter -> evidence -> mutex);
 				collectEvidence(gameHunter);
 				sem_post(&gameHunter -> evidence -> mutex);
 				sem_post(&gameHunter -> room -> mutex);
+			} else {
+				printf("%s's readings get drowned out by static.\n", gameHunter -> name);
 			}
         	} else if (actionChoice == 3) {
-           	 	printf("Hunter Share Evidence\n");
 			if (sem_trywait(&gameHunter -> room -> mutex) == 0) {
 				sem_wait(&gameHunter -> evidence -> mutex);
 				// Note: Only transfer evidence that is not in standard values
@@ -132,6 +228,7 @@ void * hunterAction (void * hunter) {
                     							transferEvidenceData(otherHunter, evidenceNode -> evidenceData);
                     							evidenceNode = evidenceNode -> next;
                 						}
+								printf("%s tells %s about some exciting evidence that they found.\n", gameHunter -> name, otherHunter -> name);
                 						sem_post(&otherHunter -> evidence -> mutex);
                 						break;
             						}
@@ -140,15 +237,16 @@ void * hunterAction (void * hunter) {
 				}
 				sem_post(&gameHunter -> evidence -> mutex);
 				sem_post(&gameHunter -> room -> mutex);
+			} else {
+				printf("%s is overcome by social anxiety and doesn't want to talk to anyone.\n", gameHunter -> name);
 			}
-
         	}
 
 
 		if (sem_trywait(&gameHunter -> room -> mutex) == 0) {
 			int endCondition = C_FALSE;
         		if (gameHunter -> evidence -> size >= 3) {
-        			printf("Your hunters have found out the ghost's type and won!\n");
+        			printf("%s has found out the ghost's type and won!\n", gameHunter -> name);
 				EvidenceNodeType * currNode = gameHunter -> evidence -> head;
 		
 				// Keep looping till you find a matching index
@@ -171,12 +269,12 @@ void * hunterAction (void * hunter) {
             		}
       
         		if (gameHunter -> boredom <= 0) {
-        			printf("Your hunter has gotten bored and exited the house!\n");
+        			printf("%s has gotten bored and exited the house!\n", gameHunter -> name);
            			endCondition = C_TRUE;
             		}          
         
         		if (gameHunter -> fear >= MAX_FEAR) {
-        			printf("Your hunter has gotten too scared and run from the house!\n");
+        			printf("%s has gotten too scared and run from the house!\n", gameHunter -> name);
             			endCondition = C_TRUE;
             		}  
             		if (endCondition == C_TRUE){
@@ -201,7 +299,7 @@ void * ghostAction (void * ghost) {
         	int actionChoice;
 	
         	if (gameGhost -> room -> hunters -> size == 0) {
-        		gameGhost -> boredom--;
+        		gameGhost -> boredom -= BOREDOM_RATE;
         	} else {
             		gameGhost -> boredom = BOREDOM_MAX;
         	}
@@ -214,15 +312,13 @@ void * ghostAction (void * ghost) {
         	}
 
         	if (actionChoice == 1) {
-            		printf("Ghost Haunt %d\n", gameGhost -> room -> hunters -> size);
 			if(sem_trywait(&gameGhost -> room -> mutex) == 0) {
 				addGhostEvidence(gameGhost);
 				sem_post(&gameGhost -> room -> mutex);
 			}
         	} else if (actionChoice == 2) {
-            		printf("Ghost Wait\n");
+            		printf("The ghost twiddles its thumbs.\n");
         	} else if (actionChoice == 3) {
-               		printf("Ghost Move %s\n", gameGhost -> room -> name);
         		if (sem_trywait(&gameGhost -> room -> mutex) == 0) {
         			
 				// Check the rooms that are attached to the room the ghost is currently in:
@@ -233,6 +329,7 @@ void * ghostAction (void * ghost) {
 		
 					gameGhost -> room -> ghost = NULL;
 					sem_post(&gameGhost -> room -> mutex);
+					printf("The ghost dissaparates from the %s and appears in the %s.\n", gameGhost -> room -> name, newRoom -> name);
 					// Change the ghost's room pointer to a random room from that room's connected rooms
 					gameGhost -> room = newRoom;
 					gameGhost -> room -> ghost = gameGhost;
@@ -240,6 +337,8 @@ void * ghostAction (void * ghost) {
 				}	
         			
         			sem_post(&gameGhost -> room -> mutex);
+        		} else {
+				printf("The ghost contemplates leaving the %s, but decides that it's comfy where it is.\n", gameGhost -> room -> name);
         		}
         	} else {
         		printf("Error\n");

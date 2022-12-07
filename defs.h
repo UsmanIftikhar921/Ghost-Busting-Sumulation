@@ -12,7 +12,8 @@
 #define NORMAL			0
 #define GHOSTLY			1
 #define MAX_STR			64
-#define FEAR_RATE		1
+#define FEAR_RATE		3
+#define BOREDOM_RATE		3
 #define MAX_FEAR		100
 #define MAX_HUNTERS		4
 #define USLEEP_TIME		50000
@@ -149,5 +150,7 @@ void removeHunterFromRoom(HunterType *, RoomType *);
 void addHunterToRoom(HunterType *, RoomType *);
 
 // main threading control
+void getHunterNames (char *, char *, char *, char *);
+void typeCalculator (EvidenceListType *); 
 void * hunterAction (void *);
 void * ghostAction (void *);

@@ -111,15 +111,22 @@ void collectEvidence(HunterType * hunter){
 
 		if (tempEvidence != NULL) {
 			// Check if the evidence is ghostly or not:
-			if (tempEvidence -> ghostliness == GHOSTLY && containsEvidenceType(tempEvidence -> type, hunter) == C_FALSE){
+			if (tempEvidence -> ghostliness == GHOSTLY){
+				if (containsEvidenceType(tempEvidence -> type, hunter) == C_FALSE) {
+					addEvidence(hunter -> evidence, tempEvidence);
+				
+					printf("%s scans the %s and finds a new piece of ghostly evidence!\n", hunter -> name, hunter -> room -> name);
+				}
 				// Store the evidence data by adding it to your own linked list
-				addEvidence(hunter -> evidence, tempEvidence);
+				printf("%s scans the %s and finds evidence that reinforces their findings!\n", hunter -> name, hunter -> room -> name);
+				
+				hunter -> boredom = BOREDOM_MAX;
 			}
-			else printf("THE EVIDENCE IS NOT OF INTEREST!\n");
+			//else printf("THE EVIDENCE IS NOT OF INTEREST!\n");
 		}
 
 	}
-	else printf("THE EVIDENCE LIST IS EMPTY\n");
+	//else printf("THE EVIDENCE LIST IS EMPTY\n");
 }
 
 /*
@@ -170,7 +177,7 @@ void transferEvidenceData(HunterType * hunter, EvidenceType * evidence){
 	if (containsEvidenceType(evidenceClass, hunter) == C_FALSE ) {
 		addEvidence(hunter -> evidence, evidence);
 	}
-	else printf("HUNTER ALREADY HAS EVIDENCE OF THIS TYPE!\n");
+	//else printf("HUNTER ALREADY HAS EVIDENCE OF THIS TYPE!\n");
 }
 
 

@@ -57,30 +57,30 @@ void addGhostEvidence(GhostType * ghost){
 	switch(ghostType){
 		case POLTERGEIST :
 			// Choose b/w EMF, Temperature and Fingerprints
-			if(ghostTypeNum == 1) initEvidence(EMF, &tempEvidence);
-			else if (ghostTypeNum == 2) initEvidence(TEMPERATURE, &tempEvidence);
-			else initEvidence(FINGERPRINTS, &tempEvidence);
+			if(ghostTypeNum == 1) { initEvidence(EMF, &tempEvidence); printf("A menacing aura emanates from %s.\n", ghost -> room -> name); }
+			else if (ghostTypeNum == 2) { initEvidence(TEMPERATURE, &tempEvidence); printf("The air of the %s chills suddenly.\n", ghost -> room -> name); }
+			else { initEvidence(FINGERPRINTS, &tempEvidence); printf("Fingerprints start to appear on the walls of the %s.\n", ghost -> room -> name); }
 			break;
 			
 		case PHANTOM:
 			// Choose b/w Temperature, Fingerprints and Sound
-			if(ghostTypeNum == 1) initEvidence(TEMPERATURE, &tempEvidence);
-			else if (ghostTypeNum == 2) initEvidence(FINGERPRINTS, &tempEvidence);
-			else initEvidence(SOUND, &tempEvidence);
+			if(ghostTypeNum == 1) { initEvidence(TEMPERATURE, &tempEvidence); printf("Frost crackles on the walls in the %s.\n", ghost -> room -> name);  }
+			else if (ghostTypeNum == 2) { initEvidence(FINGERPRINTS, &tempEvidence); printf("In the %s, a mug slowly starts to levitate.\n", ghost -> room -> name); }
+			else { initEvidence(SOUND, &tempEvidence); printf("A scream can be heard coming from the %s.\n", ghost -> room -> name); }
 			break;
 			
 		case BULLIES:
 			// Choose b/w EMF, Fingerprints and Sound
-			if(ghostTypeNum == 1) initEvidence(EMF, &tempEvidence);
-			else if (ghostTypeNum == 2) initEvidence(FINGERPRINTS, &tempEvidence);
-			else initEvidence(SOUND, &tempEvidence);
+			if(ghostTypeNum == 1) { initEvidence(EMF, &tempEvidence); printf("The air seems different in the %s.\n", ghost -> room -> name);  }
+			else if (ghostTypeNum == 2) { initEvidence(FINGERPRINTS, &tempEvidence); printf("Several things are moved arund in the %s.\n", ghost -> room -> name); }
+			else { initEvidence(SOUND, &tempEvidence); printf("A baby crying is heard coming from the %s.\n", ghost -> room -> name); }
 			break;
 			
 		case BANSHEE:
 			// Choose b/w EMF, Temperature and Sound
-			if(ghostTypeNum == 1) initEvidence(EMF, &tempEvidence);
-			else if (ghostTypeNum == 2) initEvidence(TEMPERATURE, &tempEvidence);
-			else initEvidence(SOUND, &tempEvidence);
+			if(ghostTypeNum == 1) { initEvidence(EMF, &tempEvidence); printf("Lights in the %s shift and fray.\n", ghost -> room -> name);  }
+			else if (ghostTypeNum == 2) { initEvidence(TEMPERATURE, &tempEvidence); printf("Ice crackles underfoot in the %s.\n", ghost -> room -> name);  }
+			else { initEvidence(SOUND, &tempEvidence); printf("Something is scratching the walls of the %s.\n", ghost -> room -> name);  }
 			break;
 			
 		default:
