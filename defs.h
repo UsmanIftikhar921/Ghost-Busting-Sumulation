@@ -12,8 +12,8 @@
 #define NORMAL			0
 #define GHOSTLY			1
 #define MAX_STR			64
-#define FEAR_RATE		1
-#define BOREDOM_RATE		1
+#define FEAR_RATE		5
+#define BOREDOM_RATE		5
 #define MAX_FEAR		100
 #define MAX_HUNTERS		4
 #define USLEEP_TIME		50000
@@ -139,6 +139,7 @@ void cleanupEvidenceData(struct EvidenceNodeType *);				// Frees all data associ
 void cleanupEvidenceNode(struct EvidenceNodeType *);				// Frees an evidence node
 void cleanupEvidenceList(EvidenceListType *);				// Frees all data from an evidence list
 void cleanupEvidenceListNodes(EvidenceListType *);
+void removeEvidence(EvidenceListType *, EvidenceType *);
 
 
 

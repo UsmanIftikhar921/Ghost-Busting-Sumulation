@@ -154,7 +154,7 @@ void * hunterAction (void * hunter) {
         	int actionChoice;
 
         	if (gameHunter -> room -> ghost != NULL) {
-        		printf("%s feels a chill run down their spine.", gameHunter -> name);
+        		printf("%s feels a chill run down their spine.\n", gameHunter -> name);
             		gameHunter -> fear += FEAR_RATE;
         	}
         	if (gameHunter -> room -> hunters -> size > 1) {
