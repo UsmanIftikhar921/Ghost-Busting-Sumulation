@@ -112,6 +112,39 @@ EvidenceType * getEvidenceAtIndex(EvidenceListType * evidenceList, int index){
 }
 
 /*
+  Function:  removeEvidence
+  Purpose:   removes evidence from the linked list
+       in:   a pointer to the EvidenceListType
+       in:   a pointer to the EvidenceType you want removed
+   return:   a pointer to an EvidenceListType with a pointer to the evidence data stored inside of it
+*/
+void removeEvidence(EvidenceListType * evidenceList, EvidenceType * evidence){
+	EvidenceNodeType * currNode = evidenceList -> head;
+	EvidenceNodeType * temp;
+
+	if (currNode == NULL) {
+	} else {
+		while (currNode -> next != NULL) {
+			if (currNode -> next -> evidenceData -> ghostliness == evidence -> ghostliness && currNode -> next -> evidenceData -> type == evidence -> type && currNode -> next -> evidenceData -> value == evidence -> value) {	
+				evidenceList -> size--;
+				if (currNode -> next == evidenceList -> tail) {
+					cleanupEvidenceNode(currNode -> next);
+					currNode -> next = NULL;
+					evidenceList -> tail = currNode;
+					break;
+				}
+				temp = currNode -> next -> next;
+				cleanupEvidenceNode(currNode -> next);
+				currNode -> next = temp;
+				break;
+			}
+			currNode = currNode -> next;
+		}
+	}
+	
+}
+
+/*
   Function:  addEvidence
   Purpose:   adds evidence to the linked list
        in:   a pointer to the EvidenceListType
