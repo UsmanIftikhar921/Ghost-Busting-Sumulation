@@ -122,8 +122,9 @@ void removeEvidence(EvidenceListType * evidenceList, EvidenceType * evidence){
 	EvidenceNodeType * currNode = evidenceList -> head;
 	EvidenceNodeType * temp;
 
+	// checks if head is null
 	if (currNode == NULL) {
-	} else {
+	} else { // else loops through and checks if the evidence matches
 		while (currNode -> next != NULL) {
 			if (currNode -> next -> evidenceData -> ghostliness == evidence -> ghostliness && currNode -> next -> evidenceData -> type == evidence -> type && currNode -> next -> evidenceData -> value == evidence -> value) {	
 				evidenceList -> size--;
