@@ -15,6 +15,8 @@ int main(int argc, char *argv[])
 
 	char * ghostName;
 	GhostClassType ghostClass;
+	
+	// Select a random ghost class (along with a name)
 	int ghostSelector = randInt(1, 4);
 	if (ghostSelector == 1) {
 		ghostClass = POLTERGEIST;
@@ -30,48 +32,56 @@ int main(int argc, char *argv[])
 		ghostName = "Phantom";
 	}
 	
+	// Initialize the ghost	
        	initGhost(ghostClass, ghostSpawnPoint, &ghost, building);
 
 	char hunter1Name[MAX_STR] = {'\0'};;
 	char hunter2Name[MAX_STR] = {'\0'};;
 	char hunter3Name[MAX_STR] = {'\0'};;
 	char hunter4Name[MAX_STR] = {'\0'};;
-
+	
+	// Get the hunter names from the user
 	getHunterNames(hunter1Name, hunter2Name, hunter3Name, hunter4Name);
 	
-       	// Hunters
-       	HunterType * hunter1, * hunter2, * hunter3, * hunter4;
-       	RoomType * van = building -> rooms -> head -> roomData;
+       	HunterType * hunter1, * hunter2, * hunter3, * hunter4;					// Pointer to hunters
+       	RoomType * van = building -> rooms -> head -> roomData;					// Pointer to the van
+       	
+       	// Initialize the 4 hunters
        	initHunter(EMF, hunter1Name, van, &hunter1, 0);
        	initHunter(TEMPERATURE, hunter2Name, van, &hunter2, 1);
        	initHunter(FINGERPRINTS, hunter3Name, van, &hunter3, 2);
        	initHunter(SOUND, hunter4Name, van, &hunter4, 3);
-
-
-
-       	HunterArrayType * vanHunters = van -> hunters;
+       	
+       	// Assign hunters to the van and to the building as well
+       	HunterArrayType * vanHunters = van -> hunters;						// Pointer to the hunters in the van
        	vanHunters -> hunters[0] = hunter1; building -> hunters -> hunters[0] = hunter1;
        	vanHunters -> hunters[1] = hunter2; building -> hunters -> hunters[1] = hunter2;
        	vanHunters -> hunters[2] = hunter3; building -> hunters -> hunters[2] = hunter3;
        	vanHunters -> hunters[3] = hunter4; building -> hunters -> hunters[3] = hunter4;
+       	
+       	// Assign the ghost to the building
 	building -> ghost = ghost;
 	
+	// Make 5 threads (4 For the hunters, 1 for the ghost)
 	pthread_t ht1, ht2, ht3, ht4, gt1;
 
 	printf("The mystery crew pull up to the haunted house. Time for some ghostbusting!\n\n");
 	
+	// Create threads for the hunters and ghost
 	pthread_create(&ht1, NULL, hunterAction, hunter1);
 	pthread_create(&ht2, NULL, hunterAction, hunter2);
 	pthread_create(&ht3, NULL, hunterAction, hunter3);
 	pthread_create(&ht4, NULL, hunterAction, hunter4);
 	pthread_create(&gt1, NULL, ghostAction, ghost);
-
+	
+	// Join the threads
 	pthread_join(ht1, NULL);
 	pthread_join(ht2, NULL);
 	pthread_join(ht3, NULL);
 	pthread_join(ht4, NULL);
 	pthread_join(gt1, NULL);
 	
+	// If all 4 hunters are too scared or bored:
 	if ((hunter1 -> fear >= MAX_FEAR || hunter1 -> boredom <= 0) && (hunter2 -> fear >= MAX_FEAR || hunter2 -> boredom <= 0) && (hunter3 -> fear >= MAX_FEAR || hunter3 -> boredom <= 0) && (hunter4 -> fear >= MAX_FEAR || hunter4 -> boredom <= 0)) {
 		printf("All the hunters have gotten bored or been frightened off by the %s!\n", ghostName);
 	} else {
@@ -87,11 +97,18 @@ int main(int argc, char *argv[])
 		}	
 	}
 	
+	// Clean up the building and free it from memory	
 	cleanupBuilding(building);
 	free(building);
     	return 0;
 }
 
+/*
+  Function:  getHunterNames
+  Purpose:   get the hunter names from the user
+       in:   pointers to 4 chars for each hunter
+   return:   pointers to 4 chars with initialized hunter names
+*/
 void getHunterNames(char * hunter1Name, char * hunter2Name, char * hunter3Name, char * hunter4Name) {
 	printf("Enter hunter 1's name: ");
 	fgets(hunter1Name, MAX_STR, stdin);
@@ -114,7 +131,13 @@ void getHunterNames(char * hunter1Name, char * hunter2Name, char * hunter3Name, 
 	hunter4Name[strcspn(hunter4Name, "\n")] = 0;
 }
 
-void typeCalculator (EvidenceListType * evidenceList) {
+/*
+  Function:  typeCalculator
+  Purpose:   Find out what type of ghost the ghost in the building is
+       in:   pointer to an evidence list
+   return:   a string print that tells us the type of ghost we're hunting
+*/
+void typeCalculator(EvidenceListType * evidenceList) {
 
 	EvidenceNodeType * currNode = evidenceList -> head;
 		
@@ -146,6 +169,12 @@ void typeCalculator (EvidenceListType * evidenceList) {
 	
 }
 
+/*
+  Function:  hunterAction
+  Purpose:   processes a hunter's action during his turn via threading
+       in:   void pointer to the thread
+   return:   a hunter pointer with updated data regarding his location, evidence array, etc
+*/
 void * hunterAction (void * hunter) {
 
 	HunterType * gameHunter = (HunterType*)hunter;
@@ -187,11 +216,17 @@ void * hunterAction (void * hunter) {
 			}
         	}
 
-        	usleep(1000);
+        	usleep(USLEEP_TIME);
     	}
     	return 0;
 }
 
+/*
+  Function:  ghostAction
+  Purpose:   processes a ghost's action during it's turn via threading
+       in:   void pointer to the thread
+   return:   a ghost pointer with updated data regarding it's location, dropping evidence in a room, etc
+*/
 void * ghostAction (void * ghost) {
 	GhostType * gameGhost = (GhostType*)ghost;
 	
@@ -254,12 +289,17 @@ void * ghostAction (void * ghost) {
             		break;            
         	}
 
-        	usleep(1000);
+        	usleep(USLEEP_TIME);
     	}
     	return 0;
 }
 
-
+/*
+  Function:  moveHunter
+  Purpose:   Moves a hunter from one location to the next
+       in:   pointer to a HunterType
+   return:   an updated pointer to a HunterType with a new location
+*/
 void moveHunter(HunterType * gameHunter) {
 	if (sem_trywait(&gameHunter -> room -> mutex) == 0) {
 		// Check the rooms that are attached to the room the hunter is currently in:
@@ -298,9 +338,9 @@ void shareEvidence(HunterType * gameHunter) {
 	if (sem_wait(&gameHunter -> room -> mutex) == 0) {
 		sem_wait(&gameHunter -> evidence -> mutex);
 		// Note: Only transfer evidence that is not in standard values
-		HunterArrayType * huntersInRoom = gameHunter -> room -> hunters;			// An array of hunters currently in the room
+		HunterArrayType * huntersInRoom = gameHunter -> room -> hunters;		// An array of hunters currently in the room
 		int numOfHuntersInRoom = huntersInRoom -> size;					// The number of hunters currently in the room
-		int numOfEvidence = gameHunter -> evidence -> size;					// The number of evidence in the hunter's evidence list
+		int numOfEvidence = gameHunter -> evidence -> size;				// The number of evidence in the hunter's evidence list
 	
 		// If there are at least two hunters in the room:
 		if (numOfHuntersInRoom >= 2 && gameHunter -> evidence > 0){
@@ -342,7 +382,12 @@ void shareEvidence(HunterType * gameHunter) {
 	}
 }
 
-
+/*
+  Function:  endGameConditions
+  Purpose:   Checks if the conditions for the game to end are complete
+       in:   a pointer to a HunterType
+   return:   string print regarding the status of the game's end
+*/
 int endGameConditions(HunterType * gameHunter) {
 	int endCondition = C_FALSE;
       	if (gameHunter -> evidence -> size >= 3) {
