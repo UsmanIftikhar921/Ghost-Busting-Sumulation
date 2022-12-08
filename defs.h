@@ -108,7 +108,7 @@ float randFloat(float, float);						// Generates a pseudorandom float between th
 
 // Building functions
 void populateRooms(BuildingType *);					// Populates the building with sample data for rooms
-void initBuilding(BuildingType *);
+void initBuilding(BuildingType *);					// Initializes a BuildingType
 void cleanupBuilding(BuildingType *);					// Frees all data associated with a building
 
 
@@ -119,46 +119,47 @@ void addRoom(RoomListType *, RoomType *);				// Adds a room to the end of a Room
 void connectRooms(RoomType *, RoomType *);				// Connects two RoomTypes
 void cleanupRoom(RoomType *);						// Frees all data in a room
 void cleanupRoomList(RoomListType *);					// Frees all nodes in a RoomList
-RoomType * randRoom(RoomListType *, int);           // Gets a random room in a list
-void cleanupRoomListNodes(RoomListType *);
+RoomType * randRoom(RoomListType *, int);          			// Gets a random room in a list
+void cleanupRoomListNodes(RoomListType *);				// Cleans up the nodes of a RoomListType
 
 // Ghost functions
-void initGhost(GhostClassType, RoomType *, GhostType **, BuildingType *);		// Initializes a GhostType
+void initGhost(GhostClassType, RoomType *, GhostType **, BuildingType *);	// Initializes a GhostType
 void moveGhost(GhostType *);						// Moves a ghost to another room
 void cleanupGhostData(GhostType *);					// Frees all data associated with a ghost
-void addGhostEvidence(GhostType *);
-void spawnGhost(GhostType *, BuildingType *);                       // Adds the ghost to a random room that is not the van
+void addGhostEvidence(GhostType *);					// Adds ghostly evidence to a room
+void spawnGhost(GhostType *, BuildingType *);                       	// Adds the ghost to a random room that is not the van
 
 // Evidence functions
 void initEvidenceList(EvidenceListType *);				// Initializes an EvidenceListType
 void initEvidence(EvidenceClassType, EvidenceType **);			// Initializes an EvidenceType
-EvidenceType * getRandEvidence(EvidenceListType *, EvidenceClassType);
+EvidenceType * getRandEvidence(EvidenceListType *, EvidenceClassType);	// Gets evidence at a random index
 EvidenceType * getEvidenceAtIndex(EvidenceListType*, int);		// Returns the evidence at the index specified
 void addEvidence(EvidenceListType *, EvidenceType *);			// Adds an EvidenceType to and EvidenceTypeList
-void cleanupEvidenceData(struct EvidenceNodeType *);				// Frees all data associated with a piece of evidence
-void cleanupEvidenceNode(struct EvidenceNodeType *);				// Frees an evidence node
+void cleanupEvidenceData(struct EvidenceNodeType *);			// Frees all data associated with a piece of evidence
+void cleanupEvidenceNode(struct EvidenceNodeType *);			// Frees an evidence node
 void cleanupEvidenceList(EvidenceListType *);				// Frees all data from an evidence list
-void cleanupEvidenceListNodes(EvidenceListType *);
-void removeEvidence(EvidenceListType *, EvidenceType *);
+void cleanupEvidenceListNodes(EvidenceListType *);			// CLeans up all EvidenceNodeTypes in an EvidenceListType
+void removeEvidence(EvidenceListType *, EvidenceType *);		// Removes evidence from a list if it matches the input evidence
 
 
 
 // Hunter functions
 void initHunter(EvidenceClassType, char *, RoomType *, HunterType **, int);	// Initializes a HunterType
-void initHunterArray(HunterArrayType *);
+void initHunterArray(HunterArrayType *);				// Initializes a HunterArrayType
 void collectEvidence(HunterType *);					// Collects all evidence from a room
-int containsEvidenceType(EvidenceClassType , struct HunterType *);			// Checks if hunter's evidence array already has the evidence type we're adding
+int containsEvidenceType(EvidenceClassType , struct HunterType *);	// Checks if hunter's evidence array already has the evidence type we're adding
 void transferEvidenceData(HunterType *, EvidenceType *);		// Transfers evidence data to the hunter 
 void cleanupHunterData(HunterType *);					// Frees all data from a hunter
 void cleanupHunterArray(HunterArrayType *);				// Frees all data in a hunter array
-void removeHunterFromRoom(HunterType *, RoomType *);
-void addHunterToRoom(HunterType *, RoomType *);
+void removeHunterFromRoom(HunterType *, RoomType *);			// Removes a hunter from a room
+void addHunterToRoom(HunterType *, RoomType *);				// Adds a hunter to another room
 
 // main threading control
-void getHunterNames (char *, char *, char *, char *);
-void typeCalculator (EvidenceListType *); 
-void * hunterAction (void *);
-void * ghostAction (void *);
-void moveHunter (HunterType *);
+void getHunterNames (char *, char *, char *, char *);			// Creates the hunter's names
+void typeCalculator (EvidenceListType *); 				// Calculates the type of a ghost based on hunter's evidence
+void * hunterAction (void *);						// Loops through the hunter's possible actions
+void * ghostAction (void *);						// Loops through the ghosts possible actions
+void moveHunter (HunterType *);						// Moves hunter through the house
 void shareEvidence(HunterType *);					// Shares evidence with another hunter
-int endGameConditions(HunterType *);
+int endGameConditions(HunterType *);					// Determine if the hunter exits the house
+void endGame(HunterType *, HunterType *, HunterType *, HunterType *);   // Determines if the hunters won
