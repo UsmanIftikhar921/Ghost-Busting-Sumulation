@@ -11,19 +11,19 @@ void initBuilding(BuildingType * building){
 	RoomListType * rooms = (RoomListType*)calloc(1, sizeof(RoomListType));
 	initRoomList(rooms);
 	building -> rooms = rooms;
-	
+	// Set the ghost pointer to NULL for now
 	building -> ghost = NULL;
 	
+	// Allocate memory to the hunter array, initialize it after
 	HunterArrayType * hunters = (HunterArrayType*)calloc(1,sizeof(HunterArrayType));
 	initHunterArray(hunters);
 	hunters -> size = 4;
 	building -> hunters = hunters;
 	
-	
+	// Allocate memory to the evidence array, initialize it after
 	EvidenceListType * evidence = (EvidenceListType*)calloc(1, sizeof(EvidenceListType));
 	initEvidenceList(evidence);
 	building -> evidence = evidence;
-	
 }
 
 /*
@@ -45,31 +45,17 @@ void cleanupBuilding(BuildingType * building){
 	// Clean up ghost data
 	cleanupGhostData(building -> ghost);
 	
+	// Free the hunters from memory
 	free(building -> hunters);
 }
 
 /*
-    Note: While this function is provided, you will likely want
-    to modify it to suit your solution. This has been provided
-    to give you a starting point to lay out the room connectivity,
-    but it is entirely possible that you will want to use different
-    data structures to represent the rooms and their connectivity,
-    or different function names.
-
-    Not following this function's structure exactly will not result
-    in a deduction of points.
-
-    The map that this is recreating is visible in the assignment
-    specification, and also available by the original creator here:
-    https://steamcommunity.com/sharedfiles/filedetails/?id=2251267947
-    
+  Function:  populateRooms
+  Purpose:   fills the building with rooms
+       in:   a pointer to a BuildingType
+   return:   a pointer to a BuildingType that is populated with rooms
 */
 void populateRooms(BuildingType* building) {
-    // First, create each room. Perhaps you want to include more data 
-    // in the init parameters?
-    
-    //First, create each room. Perhaps you want to include more data 
-    //in the init parameters?
     RoomType* van;
     initRoom(&van, "Van");
     RoomType* hallway;
@@ -112,8 +98,6 @@ void populateRooms(BuildingType* building) {
     addRoom(building->rooms, garage);
     addRoom(building->rooms, utility_room);
 
-    //Now connect the rooms. It is possible you do not need a separate
-    //function for this, but it is provided to give you a starting point.
     connectRooms(van, hallway);
     connectRooms(hallway, master_bedroom);
     connectRooms(hallway, boys_bedroom);

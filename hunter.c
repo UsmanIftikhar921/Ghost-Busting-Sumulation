@@ -13,7 +13,6 @@ void initHunter(EvidenceClassType ec, char * name, RoomType * room, HunterType *
 	// Assign some memory to the hunter
 	HunterType * hunterInit = (HunterType*)calloc(1,sizeof(HunterType));
 	
-	
 	// Initialize the hunter's name, the current room he is in and the type of evidence they can collect
 	strcpy(hunterInit -> name, name);
 	hunterInit -> room = room;
@@ -39,6 +38,7 @@ void initHunterArray(HunterArrayType * hunterArray) {
 	for (int i = 0; i < MAX_HUNTERS; i++){
 		hunterArray -> hunters[i] = NULL;
 	}
+	
 	hunterArray -> size = 0;
 }
 
@@ -75,14 +75,26 @@ void moveHunter (HunterType * hunter) {
 	}
 }
 
-// Remove hunter from the room's hunter list
+/*
+  Function:  removeHunterFromRoom
+  Purpose:   remove hunter from the room's hunter list
+       in:   a pointer to a hunter
+       in:   a pointer to a room
+   return:   a pointer to a room without the hunter that we wanted to remove
+*/
 void removeHunterFromRoom(HunterType * hunter, RoomType * room){
 	// Find the hunter with the same ID in the hunters array
 	room -> hunters -> hunters[hunter -> id] = NULL;
 	room -> hunters -> size--;
 }
 
-// Add hunter to the room's hunter list
+/*
+  Function:  addHunterToRoom
+  Purpose:   add hunter to the room's hunter list
+       in:   a pointer to a hunter
+       in:   a pointer to a room
+   return:   a pointer to a room with the hunter that we wanted to add
+*/
 void addHunterToRoom(HunterType * hunter, RoomType * room){
 	// Add hunter 
 	room -> hunters -> hunters[hunter -> id] = hunter;
@@ -131,7 +143,6 @@ void collectEvidence(HunterType * hunter){
 	} else {
 		printf("The %s seems perfectly normal to %s. Too normal...\n", hunter -> room -> name, hunter -> name);
 	}
-	//else printf("THE EVIDENCE LIST IS EMPTY\n");
 }
 
 /*
@@ -173,7 +184,13 @@ void shareEvidence(HunterType * hunter){
 	}
 }
 
-// Tranfers evidence data to the hunter
+/*
+  Function:  transferEvidenceData
+  Purpose:   tranfers evidence data to the hunter
+       in:   a pointer to a HunterType
+       in:   a pointer to an EvidenceType
+   return:   a pointer to a HunterType with evidence inside it
+*/
 void transferEvidenceData(HunterType * hunter, EvidenceType * evidence){
 	// Check the type of evidence we are about to send
 	EvidenceClassType evidenceClass = evidence -> type;
@@ -185,8 +202,13 @@ void transferEvidenceData(HunterType * hunter, EvidenceType * evidence){
 	//else printf("HUNTER ALREADY HAS EVIDENCE OF THIS TYPE!\n");
 }
 
-
-// Checks if the hunter's evidence array already contains the evidence class
+/*
+  Function:  containsEvidenceType
+  Purpose:   checks if the hunter's evidence array already contains the evidence class
+       in:   a pointer to a HunterType
+       in:   an EvidenceClassType
+   return:   a pointer to a HunterType with evidence inside it
+*/
 int containsEvidenceType (EvidenceClassType evidenceClass, HunterType * hunter){
 	EvidenceListType * evidenceList = hunter -> evidence;		// Temporary evidence list
 	
@@ -211,12 +233,12 @@ int containsEvidenceType (EvidenceClassType evidenceClass, HunterType * hunter){
 	return C_FALSE;
 }
 
-// Cleans up the hunter's data and frees it from memory
-void cleanupHunterData(HunterType * hunter){
-
-}
-
-// Cleans up the entire hunter array from memory
+/*
+  Function:  cleanupHunterArray
+  Purpose:   cleans up the entire hunter array from memory
+       in:   a pointer to a HunterType
+   return:   an empty hunter array
+*/
 void cleanupHunterArray(HunterArrayType * hunterArray){
 	for (int i = 0; i < MAX_HUNTERS; i++){
 		cleanupEvidenceListNodes(hunterArray -> hunters[i] -> evidence);

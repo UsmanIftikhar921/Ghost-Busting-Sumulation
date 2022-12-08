@@ -109,7 +109,6 @@ void cleanupRoom(RoomType * room){
 	cleanupRoomListNodes(room -> attached);
 	// Free hunter array
 	free(room -> hunters);
-
 }
 
 /*
@@ -140,15 +139,14 @@ void cleanupRoomList(RoomListType * roomList){
 		free(currNode);
 		
 		currNode = nextNode;
-	
 	}	
 
 	free(roomList);
 }
 
 /*
-  Function:  cleanupRoomList
-  Purpose:   clears all of the contents of the room list
+  Function:  cleanupRoomListNodes
+  Purpose:   clears all of the nodes of the room list
        in:   a pointer to a RoomListType
    return:   a pointer to an empty RoomListType
 */
@@ -194,8 +192,3 @@ RoomType * randRoom(RoomListType * roomList, int spawnGhostCheck) {
     	}
     	return roomList -> head -> roomData;
 }
-
-
-
-
-

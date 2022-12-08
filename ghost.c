@@ -21,7 +21,6 @@ void initGhost(GhostClassType gc, RoomType * room, GhostType ** ghost, BuildingT
 	*ghost = ghostInit; // sets ghost double pointer
 }
 
-
 /*
   Function:  moveGhost
   Purpose:   moves a ghost from one room to the next
@@ -61,30 +60,66 @@ void addGhostEvidence(GhostType * ghost){
 	switch(ghostType){
 		case POLTERGEIST :
 			// Choose b/w EMF, Temperature and Fingerprints
-			if(ghostTypeNum == 1) { initEvidence(EMF, &tempEvidence); printf("A menacing aura emanates from %s.\n", ghost -> room -> name); }
-			else if (ghostTypeNum == 2) { initEvidence(TEMPERATURE, &tempEvidence); printf("The air of the %s chills suddenly.\n", ghost -> room -> name); }
-			else { initEvidence(FINGERPRINTS, &tempEvidence); printf("Fingerprints start to appear on the walls of the %s.\n", ghost -> room -> name); }
+			if(ghostTypeNum == 1) { 
+				initEvidence(EMF, &tempEvidence);
+				printf("A menacing aura emanates from %s.\n", ghost -> room -> name);
+			}
+			else if (ghostTypeNum == 2) {
+				initEvidence(TEMPERATURE, &tempEvidence);
+				printf("The air of the %s chills suddenly.\n", ghost -> room -> name);
+			}
+			else {
+				initEvidence(FINGERPRINTS, &tempEvidence);
+				printf("Fingerprints start to appear on the walls of the %s.\n", ghost -> room -> name);
+			}
 			break;
 			
 		case PHANTOM:
 			// Choose b/w Temperature, Fingerprints and Sound
-			if(ghostTypeNum == 1) { initEvidence(TEMPERATURE, &tempEvidence); printf("Frost crackles on the walls in the %s.\n", ghost -> room -> name);  }
-			else if (ghostTypeNum == 2) { initEvidence(FINGERPRINTS, &tempEvidence); printf("In the %s, a mug slowly starts to levitate.\n", ghost -> room -> name); }
-			else { initEvidence(SOUND, &tempEvidence); printf("A scream can be heard coming from the %s.\n", ghost -> room -> name); }
+			if(ghostTypeNum == 1) {
+				initEvidence(TEMPERATURE, &tempEvidence);
+				printf("Frost crackles on the walls in the %s.\n", ghost -> room -> name);
+			}
+			else if (ghostTypeNum == 2) {
+				initEvidence(FINGERPRINTS, &tempEvidence);
+				printf("In the %s, a mug slowly starts to levitate.\n", ghost -> room -> name);
+			}
+			else { 
+				initEvidence(SOUND, &tempEvidence);
+				printf("A scream can be heard coming from the %s.\n", ghost -> room -> name);
+			}
 			break;
 			
 		case BULLIES:
 			// Choose b/w EMF, Fingerprints and Sound
-			if(ghostTypeNum == 1) { initEvidence(EMF, &tempEvidence); printf("The air seems different in the %s.\n", ghost -> room -> name);  }
-			else if (ghostTypeNum == 2) { initEvidence(FINGERPRINTS, &tempEvidence); printf("Several things are moved arund in the %s.\n", ghost -> room -> name); }
-			else { initEvidence(SOUND, &tempEvidence); printf("A baby crying is heard coming from the %s.\n", ghost -> room -> name); }
+			if(ghostTypeNum == 1) { 
+				initEvidence(EMF, &tempEvidence);
+				printf("The air seems different in the %s.\n", ghost -> room -> name);
+			}
+			else if (ghostTypeNum == 2) {
+				initEvidence(FINGERPRINTS, &tempEvidence);
+				printf("Several things are moved arund in the %s.\n", ghost -> room -> name);
+			}
+			else {
+				initEvidence(SOUND, &tempEvidence);
+				printf("A baby crying is heard coming from the %s.\n", ghost -> room -> name);
+			}
 			break;
 			
 		case BANSHEE:
 			// Choose b/w EMF, Temperature and Sound
-			if(ghostTypeNum == 1) { initEvidence(EMF, &tempEvidence); printf("Lights in the %s shift and fray.\n", ghost -> room -> name);  }
-			else if (ghostTypeNum == 2) { initEvidence(TEMPERATURE, &tempEvidence); printf("Ice crackles underfoot in the %s.\n", ghost -> room -> name);  }
-			else { initEvidence(SOUND, &tempEvidence); printf("Something is scratching the walls of the %s.\n", ghost -> room -> name);  }
+			if(ghostTypeNum == 1) {
+				initEvidence(EMF, &tempEvidence);
+				printf("Lights in the %s shift and fray.\n", ghost -> room -> name);
+			}
+			else if (ghostTypeNum == 2) {
+				initEvidence(TEMPERATURE, &tempEvidence);
+				printf("Ice crackles underfoot in the %s.\n", ghost -> room -> name);
+			}
+			else {
+				initEvidence(SOUND, &tempEvidence);
+				printf("Something is scratching the walls of the %s.\n", ghost -> room -> name);
+			}
 			break;
 			
 		default:
@@ -112,8 +147,12 @@ void spawnGhost(GhostType * ghost, BuildingType * building){
 	ghost -> room = randRoom(roomList, C_TRUE);
 }
 
-
+/*
+  Function:  cleanupGhostData
+  Purpose:   frees the ghost from memory
+       in:   a pointer to a GhostType
+   return:   free memory
+*/
 void cleanupGhostData(GhostType * ghost) {
 	free(ghost);
 }
-

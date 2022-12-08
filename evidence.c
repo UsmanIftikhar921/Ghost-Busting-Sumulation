@@ -1,7 +1,7 @@
 #include "defs.h"
 
 /*
-  Function:  cleanupGhostData
+  Function:  initEvidenceList
   Purpose:   initializes an evidence list
        in:   a pointer to an EvidenceListType
    return:   a pointer to an EvidenceListType that has been initialized 
@@ -17,7 +17,7 @@ void initEvidenceList(EvidenceListType * evidenceList) {
 }
 
 /*
-  Function:  initRoom
+  Function:  initEvidence
   Purpose:   initializes the evidence data with a random float in a range depending on the evidenceClassType
        in:   a double pointer to an EvidenceType
        in:   an evidenceClassType to tell what type of evidence it is
@@ -49,10 +49,16 @@ void initEvidence(EvidenceClassType evClass, EvidenceType ** evidence) {
 	}
 	
 	tempEv -> type = evClass;
-	
 	*evidence = tempEv;
 }
 
+/*
+  Function:  getRandEvidence
+  Purpose:   gets a random evidence node from the evidence list
+       in:   a double pointer to an evidenceList
+       in:   an evidenceClassType to tell what type of evidence it is
+   return:   a pointer to an EvidenceType chosen at random
+*/
 EvidenceType * getRandEvidence(EvidenceListType * evidenceList, EvidenceClassType evidenceClass) {
 	// Set the current evidence node to the head of the list
 	EvidenceNodeType * currEvidenceNode = evidenceList -> head;
@@ -61,7 +67,6 @@ EvidenceType * getRandEvidence(EvidenceListType * evidenceList, EvidenceClassTyp
 	while (currEvidenceNode != NULL && evidenceList -> size > 0){
 		// Retrieve the evidence type of the current node
 		if (currEvidenceNode -> evidenceData != NULL) {
-		
 			EvidenceClassType currEvidenceType = currEvidenceNode -> evidenceData -> type;
 			
 			// Compare against the evidence type you are trying to add
@@ -70,7 +75,6 @@ EvidenceType * getRandEvidence(EvidenceListType * evidenceList, EvidenceClassTyp
 				return returnEvidence;
 			}
 		}
-		
 		// Set the current node to the next node
 		currEvidenceNode = currEvidenceNode -> next;
 	}
@@ -182,7 +186,12 @@ void cleanupEvidenceList(EvidenceListType * evList) {
 	free(evList);
 }	
 
-
+/*
+  Function:  cleanupEvidenceListNodes
+  Purpose:   cleans up all the nodes in the evidence list
+       in:   a pointer to the EvidenceListType
+   return:   an evidence list with no nodes in it
+*/
 void cleanupEvidenceListNodes(EvidenceListType * evList) {
 	// Make two temporary nodes to iterate through the linked list
 	EvidenceNodeType * currEv = evList -> head;
