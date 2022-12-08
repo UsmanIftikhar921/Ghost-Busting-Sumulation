@@ -62,15 +62,15 @@ void addGhostEvidence(GhostType * ghost){
 			// Choose b/w EMF, Temperature and Fingerprints
 			if(ghostTypeNum == 1) { 
 				initEvidence(EMF, &tempEvidence);
-				printf("A menacing aura emanates from %s.\n", ghost -> room -> name);
+				printf("A menacing aura emanates from the %s.		(The ghost creates EMF evidence)\n", ghost -> room -> name);
 			}
 			else if (ghostTypeNum == 2) {
 				initEvidence(TEMPERATURE, &tempEvidence);
-				printf("The air of the %s chills suddenly.\n", ghost -> room -> name);
+				printf("The air of the %s chills suddenly.		(The ghost creates TEMPERATURE evidence)\n", ghost -> room -> name);
 			}
 			else {
 				initEvidence(FINGERPRINTS, &tempEvidence);
-				printf("Fingerprints start to appear on the walls of the %s.\n", ghost -> room -> name);
+				printf("Fingerprints start to appear on the walls of the %s.		(The ghost creates FINGERPRINT evidence)\n", ghost -> room -> name);
 			}
 			break;
 			
@@ -78,15 +78,15 @@ void addGhostEvidence(GhostType * ghost){
 			// Choose b/w Temperature, Fingerprints and Sound
 			if(ghostTypeNum == 1) {
 				initEvidence(TEMPERATURE, &tempEvidence);
-				printf("Frost crackles on the walls in the %s.\n", ghost -> room -> name);
+				printf("Frost crackles on the walls in the %s.		(The ghost creates TEMPERATURE evidence)\n", ghost -> room -> name);
 			}
 			else if (ghostTypeNum == 2) {
 				initEvidence(FINGERPRINTS, &tempEvidence);
-				printf("In the %s, a mug slowly starts to levitate.\n", ghost -> room -> name);
+				printf("In the %s, a mug slowly starts to levitate.		(The ghost creates FINGERPRINT evidence)\n", ghost -> room -> name);
 			}
 			else { 
 				initEvidence(SOUND, &tempEvidence);
-				printf("A scream can be heard coming from the %s.\n", ghost -> room -> name);
+				printf("A scream can be heard coming from the %s.		(The ghost creates SOUND evidence)\n", ghost -> room -> name);
 			}
 			break;
 			
@@ -94,15 +94,15 @@ void addGhostEvidence(GhostType * ghost){
 			// Choose b/w EMF, Fingerprints and Sound
 			if(ghostTypeNum == 1) { 
 				initEvidence(EMF, &tempEvidence);
-				printf("The air seems different in the %s.\n", ghost -> room -> name);
+				printf("The air seems different in the %s.		(The ghost creates EMF evidence)\n", ghost -> room -> name);
 			}
 			else if (ghostTypeNum == 2) {
 				initEvidence(FINGERPRINTS, &tempEvidence);
-				printf("Several things are moved arund in the %s.\n", ghost -> room -> name);
+				printf("Several things are tossed arund in the %s.		(The ghost creates FINGERPRINT evidence)\n", ghost -> room -> name);
 			}
 			else {
 				initEvidence(SOUND, &tempEvidence);
-				printf("A baby crying is heard coming from the %s.\n", ghost -> room -> name);
+				printf("A baby crying is heard coming from the %s.		(The ghost creates SOUND evidence)\n", ghost -> room -> name);
 			}
 			break;
 			
@@ -110,15 +110,15 @@ void addGhostEvidence(GhostType * ghost){
 			// Choose b/w EMF, Temperature and Sound
 			if(ghostTypeNum == 1) {
 				initEvidence(EMF, &tempEvidence);
-				printf("Lights in the %s shift and fray.\n", ghost -> room -> name);
+				printf("Lights in the %s shift and fray.		(The ghost creates EMF evidence)\n", ghost -> room -> name);
 			}
 			else if (ghostTypeNum == 2) {
 				initEvidence(TEMPERATURE, &tempEvidence);
-				printf("Ice crackles underfoot in the %s.\n", ghost -> room -> name);
+				printf("Ice crackles underfoot in the %s.		(The ghost creates TEMPERATURE evidence)\n", ghost -> room -> name);
 			}
 			else {
 				initEvidence(SOUND, &tempEvidence);
-				printf("Something is scratching the walls of the %s.\n", ghost -> room -> name);
+				printf("Something is scratching the walls of the %s.		(The ghost creates SOUND evidence)\n", ghost -> room -> name);
 			}
 			break;
 			
