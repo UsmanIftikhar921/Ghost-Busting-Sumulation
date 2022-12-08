@@ -113,44 +113,6 @@ void collectEvidence(HunterType * hunter){
 	}
 }
 
-/*
-  Function:  shareEvidence
-  Purpose:   Share the input hunter's evidence with another random hunter in the same room
-       in:   a pointer to a HunterType
-   return:   a randomly chosen second HunterType with evidence inside of it's evidence list
-*/
-void shareEvidence(HunterType * hunter){
-	// Note: Only transfer evidence that is not in standard values
-	HunterArrayType * huntersInRoom = hunter -> room -> hunters;			// An array of hunters currently in the room
-	int numOfHuntersInRoom = huntersInRoom -> size;					// The number of hunters currently in the room
-	int numOfEvidence = hunter -> evidence -> size;					// The number of evidence in the hunter's evidence list
-	
-	// If there are at least two hunters in the room:
-	if (numOfHuntersInRoom >= 2){
-		// Choose a second random hunter by index
-		int otherHunterIndex = randInt(1,numOfHuntersInRoom);			// A randomly chosen index in the hunter's array
-        	int count = 0;
-
-		struct HunterType * currHunter;
-		
-		// In a for loop, transfer all evidence to the other hunter's evidence list
-		for (int i = 0; i < numOfHuntersInRoom; i++){
-			currHunter = huntersInRoom -> hunters[i];
-			// If they are not the same hunter
-			if (currHunter -> id != hunter -> id){	
-                		count++;
-            		}
-            		if (count == otherHunterIndex) {
-                		EvidenceNodeType * evidenceNode = hunter -> evidence -> head;
-                		for (int i = 0; i < numOfEvidence; i++){
-                    			transferEvidenceData(huntersInRoom -> hunters[i], evidenceNode -> evidenceData);
-                    			evidenceNode = evidenceNode -> next;
-                		}
-                		break;
-            		}
-		}
-	}
-}
 
 /*
   Function:  transferEvidenceData
