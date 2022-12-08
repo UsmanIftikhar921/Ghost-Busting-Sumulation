@@ -12,8 +12,8 @@
 #define NORMAL			0
 #define GHOSTLY			1
 #define MAX_STR			64
-#define FEAR_RATE		10
-#define BOREDOM_RATE		10
+#define FEAR_RATE		1
+#define BOREDOM_RATE		1
 #define MAX_FEAR		100
 #define MAX_HUNTERS		4
 #define USLEEP_TIME		50000
@@ -97,6 +97,7 @@ typedef struct BuildingType {
 	RoomListType * rooms;
 	HunterArrayType * hunters;
 	EvidenceListType * evidence;
+	int haunted;
 } BuildingType;
 
 
@@ -145,12 +146,10 @@ void cleanupEvidenceListNodes(EvidenceListType *);
 void initHunter(EvidenceClassType, char *, RoomType *, HunterType **, int);	// Initializes a HunterType
 void initHunterArray(HunterArrayType *);
 void collectEvidence(HunterType *);					// Collects all evidence from a room
-void shareEvidence(HunterType *);					// Shares evidence with another hunter
 int containsEvidenceType(EvidenceClassType , struct HunterType *);			// Checks if hunter's evidence array already has the evidence type we're adding
 void transferEvidenceData(HunterType *, EvidenceType *);		// Transfers evidence data to the hunter 
 void cleanupHunterData(HunterType *);					// Frees all data from a hunter
 void cleanupHunterArray(HunterArrayType *);				// Frees all data in a hunter array
-void moveHunter(HunterType *);                          // Moves the hunter to an adjacent room
 void removeHunterFromRoom(HunterType *, RoomType *);
 void addHunterToRoom(HunterType *, RoomType *);
 
@@ -159,3 +158,6 @@ void getHunterNames (char *, char *, char *, char *);
 void typeCalculator (EvidenceListType *); 
 void * hunterAction (void *);
 void * ghostAction (void *);
+void moveHunter (HunterType *);
+void shareEvidence(HunterType *);					// Shares evidence with another hunter
+int endGameConditions(HunterType *);

@@ -43,39 +43,6 @@ void initHunterArray(HunterArrayType * hunterArray) {
 }
 
 /*
-  Function:  moveHunter
-  Purpose:   moves a hunter from one room to the next
-       in:   a pointer to a HunterType
-   return:   a pointer to a HunterType with an updated room pointer
-*/
-void moveHunter (HunterType * hunter) {
-	// Check the rooms that are attached to the room the hunter is currently in:
-	RoomListType * roomList = hunter -> room -> attached;
-	RoomType * newRoom = randRoom(roomList, C_FALSE);
-
-
-	if (sem_trywait(&newRoom -> mutex) == 0) {	
-		// Decrease the number of hunters in the current room
-		hunter -> room -> hunters -> size--;
-
-	
-		// Remove hunter from linked list
-		removeHunterFromRoom(hunter, hunter -> room);
-
-		sem_post(&hunter -> room -> mutex);
-	
-		// Change the hunters's room pointer to a random room from that room's connected rooms
-		hunter -> room = newRoom;
-
-		// Add hunter to the linked list
-		addHunterToRoom(hunter, hunter -> room);
-		
-		// Increase the number of hunters in the current room
-		hunter -> room -> hunters -> size++;
-	}
-}
-
-/*
   Function:  removeHunterFromRoom
   Purpose:   remove hunter from the room's hunter list
        in:   a pointer to a hunter
@@ -134,6 +101,7 @@ void collectEvidence(HunterType * hunter){
 				
 				hunter -> boredom = BOREDOM_MAX;
 			} else {
+                hunter -> boredom -= BOREDOM_RATE;
 				printf("%s scans the %s and finds standard readings.\n", hunter -> name, hunter -> room -> name);
 			}
 			//else printf("THE EVIDENCE IS NOT OF INTEREST!\n");

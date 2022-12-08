@@ -19,6 +19,7 @@ void initBuilding(BuildingType * building){
 	initHunterArray(hunters);
 	hunters -> size = 4;
 	building -> hunters = hunters;
+	building -> haunted = GHOSTLY;
 	
 	// Allocate memory to the evidence array, initialize it after
 	EvidenceListType * evidence = (EvidenceListType*)calloc(1, sizeof(EvidenceListType));
