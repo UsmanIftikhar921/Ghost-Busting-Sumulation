@@ -81,8 +81,6 @@ void collectEvidence(HunterType * hunter){
 	int evidenceSize = evidenceList -> size;			// Size of the evidence list
 	EvidenceType * tempEvidence;					// Temporarily store the evidence in this variable
 	
-	//printf("COLLECTING EVIDENCE...\n");
-	
 	// Does the room have any evidence in it's evidence linked list?
 	if(evidenceSize > 0){
 		// If yes, collect a random piece of evidence (choose an int between 0 and size of the linked list)
@@ -100,10 +98,9 @@ void collectEvidence(HunterType * hunter){
 				printf("%s scans the %s and finds evidence that reinforces their findings!		(The hunter finds ghostly readings)\n", hunter -> name, hunter -> room -> name);
 				hunter -> boredom = BOREDOM_MAX;
 			} else {
-                hunter -> boredom -= BOREDOM_RATE;
+                		hunter -> boredom -= BOREDOM_RATE;
 				printf("%s scans the %s and finds standard readings.		(The hunter finds standard readings)\n", hunter -> name, hunter -> room -> name);
 			}
-			//else printf("THE EVIDENCE IS NOT OF INTEREST!\n");
 			removeEvidence(hunter -> room -> evidence, tempEvidence);
 		} else {
 			printf("%s hits his reader, something seems off about it.		(The hunter is getting interference)\n", hunter -> name);
@@ -128,7 +125,6 @@ void transferEvidenceData(HunterType * hunter, EvidenceType * evidence){
 	if (containsEvidenceType(evidenceClass, hunter) == C_FALSE ) {
 		addEvidence(hunter -> evidence, evidence);
 	}
-	//else printf("HUNTER ALREADY HAS EVIDENCE OF THIS TYPE!\n");
 }
 
 /*
@@ -171,7 +167,6 @@ int containsEvidenceType (EvidenceClassType evidenceClass, HunterType * hunter){
 void cleanupHunterArray(HunterArrayType * hunterArray){
 	for (int i = 0; i < MAX_HUNTERS; i++){
 		cleanupEvidenceListNodes(hunterArray -> hunters[i] -> evidence);
-		//free(hunterArray -> hunters[i] -> evidence);
 		
 		free(hunterArray -> hunters[i]);
 	}
