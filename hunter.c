@@ -94,22 +94,22 @@ void collectEvidence(HunterType * hunter){
 				if (containsEvidenceType(tempEvidence -> type, hunter) == C_FALSE) {
 					addEvidence(hunter -> evidence, tempEvidence);
 					
-					printf("%s scans the %s and finds a new piece of ghostly evidence!\n", hunter -> name, hunter -> room -> name);
+					printf("%s scans the %s and finds a new piece of ghostly evidence!		(The hunter finds ghostly readings)\n", hunter -> name, hunter -> room -> name);
 				}
 				// Store the evidence data by adding it to your own linked list
-				printf("%s scans the %s and finds evidence that reinforces their findings!\n", hunter -> name, hunter -> room -> name);
+				printf("%s scans the %s and finds evidence that reinforces their findings!		(The hunter finds ghostly readings)\n", hunter -> name, hunter -> room -> name);
 				hunter -> boredom = BOREDOM_MAX;
 			} else {
                 hunter -> boredom -= BOREDOM_RATE;
-				printf("%s scans the %s and finds standard readings.\n", hunter -> name, hunter -> room -> name);
+				printf("%s scans the %s and finds standard readings.		(The hunter finds standard readings)\n", hunter -> name, hunter -> room -> name);
 			}
 			//else printf("THE EVIDENCE IS NOT OF INTEREST!\n");
 			removeEvidence(hunter -> room -> evidence, tempEvidence);
 		} else {
-			printf("%s hits his reader, something seems off about it.\n", hunter -> name);
+			printf("%s hits his reader, something seems off about it.		(The hunter is getting interference)\n", hunter -> name);
 		}
 	} else {
-		printf("The %s seems perfectly normal to %s. Too normal...\n", hunter -> room -> name, hunter -> name);
+		printf("The %s seems perfectly normal to %s. Too normal...		(There is no evidence in the room)\n", hunter -> room -> name, hunter -> name);
 	}
 }
 
