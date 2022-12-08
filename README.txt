@@ -18,3 +18,6 @@ Once again, it brings us great joy to assist in investigating those ghosts. We m
 
 *(1) Simulation results may not accurately match actual ghost hunting results. Your experience may vary.
 *(2) These updates may or may not happen in the future, and are at the discretion of the CUGHS Technical Crew
+
+We have also accomplished some of the secret missions for extra points:
+    - We used version control to ensure we would never lose our progress (as seen in git.png)
