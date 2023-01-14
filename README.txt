@@ -1,5 +1,3 @@
-Authors: Byron McDonald (Carleton ID: 101247783) & Usman Iftikhar (Carleton ID: 101241220)
-
 Purpose: The Ghostly Hunting Simulator v1.00001 is A CUGHS certified program that is the apex of CUGHS Technology so far! All you need to do is enter the names of your hunters, and you can watch as a simulation of your hunt unfolds*(1)! For now, there is only one building that you can simulate, but in future updates we plan to allow you to create buildings of your own, as well as control the simulation to an extent*(2). For now, you'd have to do that yourself manually in the populate building function. There's truly a lot to explore, and I hope you have a good time exploring it!
 
 Source Files: building.c, room.c, ghost.c, hunter.c, evidence.c, helper.c, main.c. defs.h
